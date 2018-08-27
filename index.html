@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+<p> Time:
+</p><p id="time">0</p>
+
+
+<button type="button" onclick="startingPosition()">New starting position</button>
+<button type="button" onclick="increaseTime('1')">Time elapse by 1</button>
+
+<hr/>
+<svg height="560" id="gameboard" width="880">
+  <g class="planet" id="alpha">
+    <ellipse cx="440" cy="280" id="alpha_ellipse" rx="200" ry="100" style="opacity:1;stroke:#FF0000;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
+    <polygon class="alpha_hex" coord_q="21.0" coord_r="-3.0" id="alpha_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="620.0,242.48711306 640.0,242.48711306 650.0,259.807621135 640.0,277.128129211 620.0,277.128129211 610.0,259.807621135 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF0000;"/>
+    <text x="630.0" y="236.807621135" style="text-align:center;text-anchor:middle;font-size:8pt" id="21.0,-3.0">21.0,-3.0</text>
+    <polygon class="alpha_hex" coord_q="11.0" coord_r="5.0" id="alpha_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="320.0,346.410161514 340.0,346.410161514 350.0,363.730669589 340.0,381.051177665 320.0,381.051177665 310.0,363.730669589 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF0000;"/>
+    <text x="330.0" y="340.730669589" style="text-align:center;text-anchor:middle;font-size:8pt" id="11.0,5.0">11.0,5.0</text>
+    <polygon class="alpha_hex" coord_q="11.0" coord_r="-0.0" id="alpha_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="320.0,173.205080757 340.0,173.205080757 350.0,190.525588833 340.0,207.846096908 320.0,207.846096908 310.0,190.525588833 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF0000;"/>
+    <text x="330.0" y="167.525588833" style="text-align:center;text-anchor:middle;font-size:8pt" id="11.0,-0.0">11.0,-0.0</text>
+  </g>
+  <g class="planet" id="beta">
+    <ellipse cx="440" cy="280" id="beta_ellipse" rx="240" ry="130" style="opacity:1;stroke:#FF00FF;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
+    <polygon class="beta_hex" coord_q="23.0" coord_r="-3.0" id="beta_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="680.0,277.128129211 700.0,277.128129211 710.0,294.448637287 700.0,311.769145362 680.0,311.769145362 670.0,294.448637287 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF00FF;"/>
+    <text x="690.0" y="271.448637287" style="text-align:center;text-anchor:middle;font-size:8pt" id="23.0,-3.0">23.0,-3.0</text>
+    <polygon class="beta_hex" coord_q="17.0" coord_r="3.0" id="beta_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="500.0,381.051177665 520.0,381.051177665 530.0,398.371685741 520.0,415.692193817 500.0,415.692193817 490.0,398.371685741 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF00FF;"/>
+    <text x="510.0" y="375.371685741" style="text-align:center;text-anchor:middle;font-size:8pt" id="17.0,3.0">17.0,3.0</text>
+    <polygon class="beta_hex" coord_q="8.0" coord_r="6.0" id="beta_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="230.0,329.089653438 250.0,329.089653438 260.0,346.410161514 250.0,363.730669589 230.0,363.730669589 220.0,346.410161514 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF00FF;"/>
+    <text x="240.0" y="323.410161514" style="text-align:center;text-anchor:middle;font-size:8pt" id="8.0,6.0">8.0,6.0</text>
+    <polygon class="beta_hex" coord_q="8.0" coord_r="2.0" id="beta_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="230.0,190.525588833 250.0,190.525588833 260.0,207.846096908 250.0,225.166604984 230.0,225.166604984 220.0,207.846096908 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF00FF;"/>
+    <text x="240.0" y="184.846096908" style="text-align:center;text-anchor:middle;font-size:8pt" id="8.0,2.0">8.0,2.0</text>
+    <polygon class="beta_hex" coord_q="17.0" coord_r="-4.0" id="beta_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="500.0,138.564064606 520.0,138.564064606 530.0,155.884572681 520.0,173.205080757 500.0,173.205080757 490.0,155.884572681 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF00FF;"/>
+    <text x="510.0" y="132.884572681" style="text-align:center;text-anchor:middle;font-size:8pt" id="17.0,-4.0">17.0,-4.0</text>
+  </g>
+  <g class="planet" id="gamma">
+    <ellipse cx="440" cy="280" id="gamma_ellipse" rx="300" ry="180" style="opacity:1;stroke:#0000FF;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
+    <polygon class="gamma_hex" coord_q="25.0" coord_r="-4.0" id="gamma_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="740.0,277.128129211 760.0,277.128129211 770.0,294.448637287 760.0,311.769145362 740.0,311.769145362 730.0,294.448637287 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
+    <text x="750.0" y="271.448637287" style="text-align:center;text-anchor:middle;font-size:8pt" id="25.0,-4.0">25.0,-4.0</text>
+    <polygon class="gamma_hex" coord_q="21.0" coord_r="2.0" id="gamma_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="620.0,415.692193817 640.0,415.692193817 650.0,433.012701892 640.0,450.333209968 620.0,450.333209968 610.0,433.012701892 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
+    <text x="630.0" y="410.012701892" style="text-align:center;text-anchor:middle;font-size:8pt" id="21.0,2.0">21.0,2.0</text>
+    <polygon class="gamma_hex" coord_q="12.0" coord_r="7.0" id="gamma_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="350.0,433.012701892 370.0,433.012701892 380.0,450.333209968 370.0,467.653718044 350.0,467.653718044 340.0,450.333209968 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
+    <text x="360.0" y="427.333209968" style="text-align:center;text-anchor:middle;font-size:8pt" id="12.0,7.0">12.0,7.0</text>
+    <polygon class="gamma_hex" coord_q="6.0" coord_r="8.0" id="gamma_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="170.0,363.730669589 190.0,363.730669589 200.0,381.051177665 190.0,398.371685741 170.0,398.371685741 160.0,381.051177665 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
+    <text x="180.0" y="358.051177665" style="text-align:center;text-anchor:middle;font-size:8pt" id="6.0,8.0">6.0,8.0</text>
+    <polygon class="gamma_hex" coord_q="6.0" coord_r="3.0" id="gamma_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="170.0,190.525588833 190.0,190.525588833 200.0,207.846096908 190.0,225.166604984 170.0,225.166604984 160.0,207.846096908 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
+    <text x="180.0" y="184.846096908" style="text-align:center;text-anchor:middle;font-size:8pt" id="6.0,3.0">6.0,3.0</text>
+    <polygon class="gamma_hex" coord_q="12.0" coord_r="-3.0" id="gamma_5" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="350.0,86.6025403784 370.0,86.6025403784 380.0,103.923048454 370.0,121.24355653 350.0,121.24355653 340.0,103.923048454 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
+    <text x="360.0" y="80.9230484541" style="text-align:center;text-anchor:middle;font-size:8pt" id="12.0,-3.0">12.0,-3.0</text>
+    <polygon class="gamma_hex" coord_q="21.0" coord_r="-6.0" id="gamma_6" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="620.0,138.564064606 640.0,138.564064606 650.0,155.884572681 640.0,173.205080757 620.0,173.205080757 610.0,155.884572681 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
+    <text x="630.0" y="132.884572681" style="text-align:center;text-anchor:middle;font-size:8pt" id="21.0,-6.0">21.0,-6.0</text>
+  </g>
+  <g class="planet" id="delta">
+    <ellipse cx="440" cy="280" id="delta_ellipse" rx="340" ry="210" style="opacity:1;stroke:#FFFF00;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
+    <polygon class="delta_hex" coord_q="26.0" coord_r="-5.0" id="delta_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="770.0,259.807621135 790.0,259.807621135 800.0,277.128129211 790.0,294.448637287 770.0,294.448637287 760.0,277.128129211 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="780.0" y="254.128129211" style="text-align:center;text-anchor:middle;font-size:8pt" id="26.0,-5.0">26.0,-5.0</text>
+    <polygon class="delta_hex" coord_q="24.0" coord_r="-1.0" id="delta_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="710.0,363.730669589 730.0,363.730669589 740.0,381.051177665 730.0,398.371685741 710.0,398.371685741 700.0,381.051177665 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="720.0" y="358.051177665" style="text-align:center;text-anchor:middle;font-size:8pt" id="24.0,-1.0">24.0,-1.0</text>
+    <polygon class="delta_hex" coord_q="19.0" coord_r="4.0" id="delta_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="560.0,450.333209968 580.0,450.333209968 590.0,467.653718044 580.0,484.974226119 560.0,484.974226119 550.0,467.653718044 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="570.0" y="444.653718044" style="text-align:center;text-anchor:middle;font-size:8pt" id="19.0,4.0">19.0,4.0</text>
+    <polygon class="delta_hex" coord_q="13.0" coord_r="8.0" id="delta_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="380.0,484.974226119 400.0,484.974226119 410.0,502.294734195 400.0,519.615242271 380.0,519.615242271 370.0,502.294734195 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="390.0" y="479.294734195" style="text-align:center;text-anchor:middle;font-size:8pt" id="13.0,8.0">13.0,8.0</text>
+    <polygon class="delta_hex" coord_q="7.0" coord_r="9.0" id="delta_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="200.0,415.692193817 220.0,415.692193817 230.0,433.012701892 220.0,450.333209968 200.0,450.333209968 190.0,433.012701892 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="210.0" y="410.012701892" style="text-align:center;text-anchor:middle;font-size:8pt" id="7.0,9.0">7.0,9.0</text>
+    <polygon class="delta_hex" coord_q="4.0" coord_r="8.0" id="delta_5" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="110.0,329.089653438 130.0,329.089653438 140.0,346.410161514 130.0,363.730669589 110.0,363.730669589 100.0,346.410161514 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="120.0" y="323.410161514" style="text-align:center;text-anchor:middle;font-size:8pt" id="4.0,8.0">4.0,8.0</text>
+    <polygon class="delta_hex" coord_q="4.0" coord_r="4.0" id="delta_6" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="110.0,190.525588833 130.0,190.525588833 140.0,207.846096908 130.0,225.166604984 110.0,225.166604984 100.0,207.846096908 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="120.0" y="184.846096908" style="text-align:center;text-anchor:middle;font-size:8pt" id="4.0,4.0">4.0,4.0</text>
+    <polygon class="delta_hex" coord_q="7.0" coord_r="-0.0" id="delta_7" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="200.0,103.923048454 220.0,103.923048454 230.0,121.24355653 220.0,138.564064606 200.0,138.564064606 190.0,121.24355653 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="210.0" y="98.2435565298" style="text-align:center;text-anchor:middle;font-size:8pt" id="7.0,-0.0">7.0,-0.0</text>
+    <polygon class="delta_hex" coord_q="13.0" coord_r="-4.0" id="delta_8" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="380.0,69.2820323028 400.0,69.2820323028 410.0,86.6025403784 400.0,103.923048454 380.0,103.923048454 370.0,86.6025403784 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="390.0" y="63.6025403784" style="text-align:center;text-anchor:middle;font-size:8pt" id="13.0,-4.0">13.0,-4.0</text>
+    <polygon class="delta_hex" coord_q="19.0" coord_r="-7.0" id="delta_9" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="560.0,69.2820323028 580.0,69.2820323028 590.0,86.6025403784 580.0,103.923048454 560.0,103.923048454 550.0,86.6025403784 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="570.0" y="63.6025403784" style="text-align:center;text-anchor:middle;font-size:8pt" id="19.0,-7.0">19.0,-7.0</text>
+    <polygon class="delta_hex" coord_q="24.0" coord_r="-7.0" id="delta_10" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="710.0,155.884572681 730.0,155.884572681 740.0,173.205080757 730.0,190.525588833 710.0,190.525588833 700.0,173.205080757 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="720.0" y="150.205080757" style="text-align:center;text-anchor:middle;font-size:8pt" id="24.0,-7.0">24.0,-7.0</text>
+  </g>
+  <g class="planet" id="epsilon">
+    <ellipse cx="440" cy="280" id="epsilon_ellipse" rx="390" ry="230" style="opacity:1;stroke:#00FF00;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
+    <polygon class="epsilon_hex" coord_q="28.0" coord_r="-6.0" id="epsilon_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="830.0,259.807621135 850.0,259.807621135 860.0,277.128129211 850.0,294.448637287 830.0,294.448637287 820.0,277.128129211 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="840.0" y="254.128129211" style="text-align:center;text-anchor:middle;font-size:8pt" id="28.0,-6.0">28.0,-6.0</text>
+    <polygon class="epsilon_hex" coord_q="26.0" coord_r="-2.0" id="epsilon_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="770.0,363.730669589 790.0,363.730669589 800.0,381.051177665 790.0,398.371685741 770.0,398.371685741 760.0,381.051177665 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="780.0" y="358.051177665" style="text-align:center;text-anchor:middle;font-size:8pt" id="26.0,-2.0">26.0,-2.0</text>
+    <polygon class="epsilon_hex" coord_q="22.0" coord_r="3.0" id="epsilon_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="650.0,467.653718044 670.0,467.653718044 680.0,484.974226119 670.0,502.294734195 650.0,502.294734195 640.0,484.974226119 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="660.0" y="461.974226119" style="text-align:center;text-anchor:middle;font-size:8pt" id="22.0,3.0">22.0,3.0</text>
+    <polygon class="epsilon_hex" coord_q="16.0" coord_r="7.0" id="epsilon_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="470.0,502.294734195 490.0,502.294734195 500.0,519.615242271 490.0,536.935750346 470.0,536.935750346 460.0,519.615242271 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="480.0" y="496.615242271" style="text-align:center;text-anchor:middle;font-size:8pt" id="16.0,7.0">16.0,7.0</text>
+    <polygon class="epsilon_hex" coord_q="10.0" coord_r="9.0" id="epsilon_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="290.0,467.653718044 310.0,467.653718044 320.0,484.974226119 310.0,502.294734195 290.0,502.294734195 280.0,484.974226119 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="300.0" y="461.974226119" style="text-align:center;text-anchor:middle;font-size:8pt" id="10.0,9.0">10.0,9.0</text>
+    <polygon class="epsilon_hex" coord_q="5.0" coord_r="10.0" id="epsilon_5" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="140.0,415.692193817 160.0,415.692193817 170.0,433.012701892 160.0,450.333209968 140.0,450.333209968 130.0,433.012701892 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="150.0" y="410.012701892" style="text-align:center;text-anchor:middle;font-size:8pt" id="5.0,10.0">5.0,10.0</text>
+    <polygon class="epsilon_hex" coord_q="2.0" coord_r="9.0" id="epsilon_6" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="50.0,329.089653438 70.0,329.089653438 80.0,346.410161514 70.0,363.730669589 50.0,363.730669589 40.0,346.410161514 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="60.0" y="323.410161514" style="text-align:center;text-anchor:middle;font-size:8pt" id="2.0,9.0">2.0,9.0</text>
+    <polygon class="epsilon_hex" coord_q="2.0" coord_r="5.0" id="epsilon_7" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="50.0,190.525588833 70.0,190.525588833 80.0,207.846096908 70.0,225.166604984 50.0,225.166604984 40.0,207.846096908 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="60.0" y="184.846096908" style="text-align:center;text-anchor:middle;font-size:8pt" id="2.0,5.0">2.0,5.0</text>
+    <polygon class="epsilon_hex" coord_q="5.0" coord_r="1.0" id="epsilon_8" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="140.0,103.923048454 160.0,103.923048454 170.0,121.24355653 160.0,138.564064606 140.0,138.564064606 130.0,121.24355653 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="150.0" y="98.2435565298" style="text-align:center;text-anchor:middle;font-size:8pt" id="5.0,1.0">5.0,1.0</text>
+    <polygon class="epsilon_hex" coord_q="10.0" coord_r="-3.0" id="epsilon_9" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="290.0,51.9615242271 310.0,51.9615242271 320.0,69.2820323028 310.0,86.6025403784 290.0,86.6025403784 280.0,69.2820323028 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="300.0" y="46.2820323028" style="text-align:center;text-anchor:middle;font-size:8pt" id="10.0,-3.0">10.0,-3.0</text>
+    <polygon class="epsilon_hex" coord_q="16.0" coord_r="-7.0" id="epsilon_10" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="470.0,17.3205080757 490.0,17.3205080757 500.0,34.6410161514 490.0,51.9615242271 470.0,51.9615242271 460.0,34.6410161514 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="480.0" y="11.6410161514" style="text-align:center;text-anchor:middle;font-size:8pt" id="16.0,-7.0">16.0,-7.0</text>
+    <polygon class="epsilon_hex" coord_q="22.0" coord_r="-8.0" id="epsilon_11" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="650.0,86.6025403784 670.0,86.6025403784 680.0,103.923048454 670.0,121.24355653 650.0,121.24355653 640.0,103.923048454 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="660.0" y="80.9230484541" style="text-align:center;text-anchor:middle;font-size:8pt" id="22.0,-8.0">22.0,-8.0</text>
+    <polygon class="epsilon_hex" coord_q="26.0" coord_r="-8.0" id="epsilon_12" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="770.0,155.884572681 790.0,155.884572681 800.0,173.205080757 790.0,190.525588833 770.0,190.525588833 760.0,173.205080757 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
+    <text x="780.0" y="150.205080757" style="text-align:center;text-anchor:middle;font-size:8pt" id="26.0,-8.0">26.0,-8.0</text>
+  </g>
+  <rect height="20" id="player1" style="fill:#AAAAAA;" width="10" x="435" y="270"/>
+</svg>
+
+
+
+
+<script src="myScript.js"></script>
+
+
+</body>
+</html>
