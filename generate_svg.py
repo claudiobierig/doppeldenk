@@ -27,15 +27,16 @@ class Planet:
         self.name = planet_name
 
 planets = [
-            Planet((200,100),'#FF0000',3,'alpha'),
-            Planet((240,130),'#FF8000',5,'beta'),
-            Planet((300,180),'#FFFF00',7,'gamma'),
-            Planet((340,210),'#008800',11,'delta'),
-            Planet((390,230),'#000088',13,'epsilon')
+            Planet((150,100),'#FF0000',3,'alpha'),
+            Planet((210,130),'#FF8000',5,'beta'),
+            Planet((260,180),'#FFFF00',7,'gamma'),
+            Planet((320,210),'#008000',11,'delta'),
+            Planet((370,240),'#1E90FF',13,'epsilon')
           ]
 
 width = 2*(planets[-1].rx + padding)
 height = 2*(planets[-1].ry + padding)
+
 
 def get_hex_coordinates((x,y), hex_size):
     q = ( 2./3 * x ) / hex_size
@@ -146,8 +147,8 @@ def svg_hex(id, (cx, cy), colour, parent, parentname):
         str_points = str_points + str(point[0]) + "," + str(point[1]) + " "
 
     [q,r]=get_hex_coordinates((cx,cy), hex_size)
-    style = {   'stroke'        : '#000000',
-                'stroke-width'  : '0.3',
+    style = {   'stroke'        : '#FFFFFF',
+                'stroke-width'  : '1',
                 'fill'          : colour,
                 'fill-opacity'  : '0.5'
             }
@@ -172,13 +173,15 @@ def print_hexes(positions, colour, parent, parentname):
         svg_hex(index,hex_center,colour,parent,parentname)
         x = hex_center[0]
         y = hex_center[1] - hex_size/2 - font_size - font_padding
-        svg_text((x,y), str(int(hex_coordinates[0])) + "," + str(int(hex_coordinates[1])) + "," + str(int(- hex_coordinates[0] - hex_coordinates[1])), parent)
+        content = str(int(hex_coordinates[0])) + "," + str(int(hex_coordinates[1])) + "," + str(int(- hex_coordinates[0] - hex_coordinates[1]))
+        svg_text((x,y), content, parent, colour="#FFFFFF")
 
-def svg_text((x,y), content, parent, size=font_size):
+def svg_text((x,y), content, parent, size=font_size, colour="#000000"):
     text = etree.Element('text')
     text.set('x', str(x))
     text.set('y', str(y+font_size/2))
     text.set('style', "text-align:center;text-anchor:middle;font-size:" + str(size) + "pt")
+    text.set('fill', colour)
     text.text = content
     text.set('id', content)
     parent.append(text)
@@ -189,12 +192,13 @@ def draw_timebox((x,y),(w,h),name,time,parent):
     style = {
         'fill'          : '#AAAAAA',
         'stroke'        : '#000000',
-        'stroke-width'  : '1'
+        'stroke-width'  : '1',
+        'fill-opacity'  : '1'
     }
     if time % 10 ==0 :
-        style['fill-opacity'] = "1"
+        style['fill'] = "#AAAAAA"
     else:
-        style['fill-opacity'] = "0"
+        style['fill'] = "#FFFFFF"
     etree.SubElement(parent, 'rect', {
                                       'style'   : jsonToStyle(style),
                                       'id'      : name,
@@ -274,6 +278,9 @@ def draw_timeline(svg):
     width_top = (width - 2*width_corner)/29
     width_side = (height - 2*width_corner)/19
 
+    width_timeline = 2*width_corner + 29*width_top
+    height_timeline = 2*width_corner + 19*width_side
+
     draw_timebox((0,0),(width_corner,height_timebox),"timebox_0",0,layer);
     for i in range(1,30):
         draw_timebox((width_corner+(i-1)*width_top,0),(width_top,height_timebox),"timebox_" + str(i), i,layer)
@@ -295,13 +302,18 @@ def draw_timeline(svg):
     timemarkers = etree.SubElement(layer, 'g', {'id': 'time_markers'})
     draw_time_marker(timemarkers, (width_corner/2,width_corner/2), width_corner/3, "#FF00FF", "time_marker1")
 
+    return [width_timeline, height_timeline]
+
 def main():
     svg = etree.Element("svg", {"width" : str(width), "height": str(height), "id": "gameboard"})
+    etree.SubElement(svg, 'image', {'href' : 'bg.jpeg'})
+    [width_timeline, height_timeline] = draw_timeline(svg)
+    svg.set('width', str(width_timeline))
+    svg.set('height', str(height_timeline))
     for planet in planets:
-        draw_planet(svg,planet,(width/2,height/2))
+        draw_planet(svg,planet,(width_timeline/2,height_timeline/2))
 
-    draw_timeline(svg)
-    draw_ship(svg,(width/2,height/2),"#FF00FF","player1")
+    draw_ship(svg,(width_timeline/2,height_timeline/2),"#FF00FF","player1")
 
     with open("gameboard.svg","w") as f:
         f.write(etree.tostring(svg, pretty_print=True))

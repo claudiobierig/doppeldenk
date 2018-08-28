@@ -96,7 +96,7 @@ function fillPlanet(planetActive, hex)
 	}
 	else
 	{
-		hex.style["fill-opacity"] = "0.1";
+		hex.style["fill-opacity"] = "0.2";
 	}
 };
 
