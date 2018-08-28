@@ -58,11 +58,11 @@ function isShipAtHex(ship, hex)
 
 function computeDistance(position1, position2)
 {
-	const q_1 = position1.getAttribute("coord_q");
-	const r_1 = position1.getAttribute("coord_r");
-	const q_2 = position2.getAttribute("coord_q");
-	const r_2 = position2.getAttribute("coord_r");
-	return Math.max(Math.abs(q_1-q_2), Math.abs(r_1-r_2));
+	const q_1 = parseInt(position1.getAttribute("coord_q"));
+	const r_1 = parseInt(position1.getAttribute("coord_r"));
+	const q_2 = parseInt(position2.getAttribute("coord_q"));
+	const r_2 = parseInt(position2.getAttribute("coord_r"));
+	return Math.max(Math.abs(q_1-q_2), Math.abs(r_1-r_2), Math.abs(q_1+r_1 - q_2 - r_2));
 };
 
 function mouseOverHex(hex)
@@ -75,7 +75,8 @@ function mouseOutHex(hex)
 
 function resetTime()
 {
-	document.getElementById("time").innerHTML = "0";
+	let marker = document.getElementById("time_marker1");
+	setMarker(marker, 0);
 };
 
 function startingPositionPlanet(planet)
@@ -110,7 +111,7 @@ function startingPositionShip()
 function getShipHangar(hex, ship)
 {
 	//TODO: make this dependent on shipName and hexsize
-	let newPosition = [hex.points[5].x - ship.getAttribute("width") - 10, hex.points[5].y - ship.getAttribute("height")/2];
+	let newPosition = [hex.points[5].x - ship.getAttribute("width") - 3, hex.points[5].y - ship.getAttribute("height")/2];
 	return newPosition;
 };
 
@@ -162,22 +163,43 @@ function rotatePlanets()
 };
 
 
-function eventRotate(time)
+function executeEvent(event)
 {
-	return time % 30 == 0;
+	//TODO: only working for planet rotation at the moment
+	if(event.getAttribute("event") == "planet_rotation")
+	{
+		rotatePlanets();
+	}
 };
 
-function increaseTime(strTime)
+function setMarker(marker, time)
 {
-	const timeStart = parseInt(document.getElementById("time").innerHTML);
-	const timePassed = parseInt(strTime);
-	const timeEnd = timeStart + timePassed;
-	document.getElementById("time").innerHTML = timeEnd.toString();
-	for(let i=timeStart+1; i<=timeEnd;i++)
+	marker.setAttribute("time", time.toString());
+	const timebox = document.getElementById("timebox_" + time.toString());
+	marker.setAttribute("cx", (parseInt(timebox.getAttribute("x")) + parseInt(timebox.getAttribute("width"))/2).toString());
+	marker.setAttribute("cy", (parseInt(timebox.getAttribute("y")) + parseInt(timebox.getAttribute("height"))/2).toString());
+};
+
+
+function executeEvents(start, end)
+{
+	events = document.getElementsByClassName("event");
+	for(let i=0; i<events.length;i++)
 	{
-		if(eventRotate(i))
+		eventTime = parseInt(events[i].getAttribute("time"));
+		if(start < eventTime && eventTime <= end)
 		{
-			rotatePlanets();
+			executeEvent(events[i]);
 		}
 	}
+};
+function increaseTime(strTime)
+{
+	let marker = document.getElementById("time_marker1");
+	const timeStart = parseInt(marker.getAttribute("time"));
+	const timePassed = parseInt(strTime);
+	const timeEnd = timeStart + timePassed;
+	setMarker(marker,timeEnd);
+	executeEvents(timeStart, timeEnd);
+
 };

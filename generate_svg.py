@@ -8,9 +8,9 @@ import math
 
 # TODO: make this options
 hex_size = 20
-font_size = 8
+font_size = 6
 
-padding = 50
+padding = 100
 font_padding = 5
 filename = "index.html"
 
@@ -28,10 +28,10 @@ class Planet:
 
 planets = [
             Planet((200,100),'#FF0000',3,'alpha'),
-            Planet((240,130),'#FF00FF',5,'beta'),
-            Planet((300,180),'#0000FF',7,'gamma'),
-            Planet((340,210),'#FFFF00',11,'delta'),
-            Planet((390,230),'#00FF00',13,'epsilon')
+            Planet((240,130),'#FF8000',5,'beta'),
+            Planet((300,180),'#FFFF00',7,'gamma'),
+            Planet((340,210),'#008800',11,'delta'),
+            Planet((390,230),'#000088',13,'epsilon')
           ]
 
 width = 2*(planets[-1].rx + padding)
@@ -54,6 +54,11 @@ def jsonToStyle(json):
 
     return style_argument
 
+
+
+
+
+
 def draw_ship(svg, (cx, cy), colour, shipname):
     style = {
         'fill' : colour
@@ -67,6 +72,14 @@ def draw_ship(svg, (cx, cy), colour, shipname):
                                           'y'       : str(cy - ship_height/2)
                                           }
                             )
+
+
+
+
+
+
+
+
 
 def draw_planet(svg, planet, (cx, cy)):
     """
@@ -154,40 +167,146 @@ def svg_hex(id, (cx, cy), colour, parent, parentname):
     
 def print_hexes(positions, colour, parent, parentname):
     for index, position in enumerate(positions):
-        hex_center = get_hex_center(get_hex_coordinates(position, hex_size), hex_size)
+        hex_coordinates = get_hex_coordinates(position, hex_size)
+        hex_center = get_hex_center(hex_coordinates, hex_size)
         svg_hex(index,hex_center,colour,parent,parentname)
-        svg_text(hex_center,parent)
+        x = hex_center[0]
+        y = hex_center[1] - hex_size/2 - font_size - font_padding
+        svg_text((x,y), str(int(hex_coordinates[0])) + "," + str(int(hex_coordinates[1])) + "," + str(int(- hex_coordinates[0] - hex_coordinates[1])), parent)
 
-def svg_text((cx,cy), parent):
-    [q,r]=get_hex_coordinates((cx,cy), hex_size)
-    """
-    style = {   'text-align'        : 'center',
-                'text-anchor'       : 'middle',
-                'font-size'         : '4pt'
-            }
-    text_attribs = {
-                    'style'     :simplestyle.formatStyle(style),
-                    'x'         :cx,
-                    'y'         :cy
-                    }
-    """
+def svg_text((x,y), content, parent, size=font_size):
     text = etree.Element('text')
-    text.set('x', str(cx))
-    text.set('y', str(cy - hex_size/2 - font_size - font_padding))
-    text.set('style', "text-align:center;text-anchor:middle;font-size:" + str(font_size) + "pt")
-    text.text = str(q) + "," + str(r)
-    text.set('id', str(q) + "," + str(r))
+    text.set('x', str(x))
+    text.set('y', str(y+font_size/2))
+    text.set('style', "text-align:center;text-anchor:middle;font-size:" + str(size) + "pt")
+    text.text = content
+    text.set('id', content)
     parent.append(text)
 
+
+
+def draw_timebox((x,y),(w,h),name,time,parent):
+    style = {
+        'fill'          : '#AAAAAA',
+        'stroke'        : '#000000',
+        'stroke-width'  : '1'
+    }
+    if time % 10 ==0 :
+        style['fill-opacity'] = "1"
+    else:
+        style['fill-opacity'] = "0"
+    etree.SubElement(parent, 'rect', {
+                                      'style'   : jsonToStyle(style),
+                                      'id'      : name,
+                                      'time'    : str(time),
+                                      'width'   : str(w),
+                                      'height'  : str(h),
+                                      'x'       : str(x),
+                                      'y'       : str(y),
+                                      'class'   : 'timebox',
+                                      }
+                        )
+    svg_text((x+w/2,y+h/2),str(time),parent,8)
+    
+    events = []
+    if time % 20 == 0:
+        events.append("planet_rotation")
+
+    draw_events_for_one_timestep((x,y), (w,h), events, time, parent)
+
+def draw_event((cx,cy), r, event, time, parent):
+    #TODO: change this when we have different events
+    style = {
+        'fill'          : '#00FFFF'
+    }
+    etree.SubElement(parent, 'circle', {
+        'style' : jsonToStyle(style),
+        'id'    : time + "_" + event,
+        'cx'    : str(cx),
+        'cy'    : str(cy),
+        'r'     : str(r),
+        'time'  : time,
+        'event' : event,
+        'class' : 'event'
+        })
+
+def draw_events_for_one_timestep((x,y), (w,h), events, time, parent):
+    radius = min(w,h)/4
+
+    for index, event in enumerate(events):
+        cx=0
+        cy=0
+        if index ==0:
+            cx = x + w/4
+            cy = y + h/4
+        elif index ==1:
+            cx = x + 3*w/4
+            cy = y + h/4
+        elif index ==2:
+            cx = x + w/4
+            cy = y + 3*h/4
+        elif index ==3:
+            cx = x + 3*w/4
+            cy = y + 3*h/4
+        else:
+            print("error: too many events")
+
+        draw_event((cx,cy), radius, event, str(time), parent)
+
+def draw_time_marker(parent, (cx,cy), r, colour, name):
+    style = {
+        'fill'          : colour
+    }
+    etree.SubElement(parent, 'circle', {
+        'style' : jsonToStyle(style),
+        'id'    : name,
+        'cx'    : str(cx),
+        'cy'    : str(cy),
+        'r'     : str(r),
+        'time'  : '0'
+        })
+
+
+def draw_timeline(svg):
+    layer = etree.SubElement(svg, 'g', {'id': 'timeline'})
+    height_timebox = 30
+    width_corner = height_timebox
+    width_top = (width - 2*width_corner)/29
+    width_side = (height - 2*width_corner)/19
+
+    draw_timebox((0,0),(width_corner,height_timebox),"timebox_0",0,layer);
+    for i in range(1,30):
+        draw_timebox((width_corner+(i-1)*width_top,0),(width_top,height_timebox),"timebox_" + str(i), i,layer)
+
+    draw_timebox((width_corner+29*width_top,0),(width_corner,height_timebox),"timebox_30", 30,layer)
+    for i in range(31,50):
+        draw_timebox((width_corner+29*width_top,width_corner+(i-31)*width_side),(height_timebox,width_side),"timebox_" + str(i), i,layer)
+
+    draw_timebox((width_corner+29*width_top,width_corner+19*width_side),(width_corner,height_timebox),"timebox_50", 50,layer)
+
+    for i in range(51,80):
+        draw_timebox((width_corner+(79-i)*width_top,width_corner+19*width_side),(width_top,height_timebox),"timebox_" + str(i), i,layer)
+
+    draw_timebox((0,width_corner+19*width_side),(width_corner,height_timebox),"timebox_80",80,layer);
+
+    for i in range(81,100):
+        draw_timebox((0,width_corner+(99-i)*width_side),(height_timebox,width_side),"timebox_" + str(i), i,layer)
+
+    timemarkers = etree.SubElement(layer, 'g', {'id': 'time_markers'})
+    draw_time_marker(timemarkers, (width_corner/2,width_corner/2), width_corner/3, "#FF00FF", "time_marker1")
 
 def main():
     svg = etree.Element("svg", {"width" : str(width), "height": str(height), "id": "gameboard"})
     for planet in planets:
         draw_planet(svg,planet,(width/2,height/2))
-    draw_ship(svg,(width/2,height/2),"#AAAAAA","player1")
+
+    draw_timeline(svg)
+    draw_ship(svg,(width/2,height/2),"#FF00FF","player1")
 
     with open("gameboard.svg","w") as f:
         f.write(etree.tostring(svg, pretty_print=True))
+
+
 """
     #TODO try catch here. Instead generate new svg if html not existened or other than expected
     tree = html.parse(filename)

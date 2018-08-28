@@ -3,111 +3,315 @@
 <body>
 
 
-<p> Time:
-</p><p id="time">0</p>
-
-
 <button type="button" onclick="startingPosition()">New starting position</button>
-<button type="button" onclick="increaseTime('1')">Time elapse by 1</button>
 
 <hr/>
-<svg height="560" id="gameboard" width="880">
+<svg height="660" id="gameboard" width="980">
   <g class="planet" id="alpha">
-    <ellipse cx="440" cy="280" id="alpha_ellipse" rx="200" ry="100" style="opacity:1;stroke:#FF0000;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
-    <polygon class="alpha_hex" coord_q="21.0" coord_r="-3.0" id="alpha_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="620.0,242.48711306 640.0,242.48711306 650.0,259.807621135 640.0,277.128129211 620.0,277.128129211 610.0,259.807621135 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF0000;"/>
-    <text x="630.0" y="236.807621135" style="text-align:center;text-anchor:middle;font-size:8pt" id="21.0,-3.0">21.0,-3.0</text>
-    <polygon class="alpha_hex" coord_q="11.0" coord_r="5.0" id="alpha_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="320.0,346.410161514 340.0,346.410161514 350.0,363.730669589 340.0,381.051177665 320.0,381.051177665 310.0,363.730669589 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF0000;"/>
-    <text x="330.0" y="340.730669589" style="text-align:center;text-anchor:middle;font-size:8pt" id="11.0,5.0">11.0,5.0</text>
-    <polygon class="alpha_hex" coord_q="11.0" coord_r="-0.0" id="alpha_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="320.0,173.205080757 340.0,173.205080757 350.0,190.525588833 340.0,207.846096908 320.0,207.846096908 310.0,190.525588833 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF0000;"/>
-    <text x="330.0" y="167.525588833" style="text-align:center;text-anchor:middle;font-size:8pt" id="11.0,-0.0">11.0,-0.0</text>
+    <ellipse cx="490" cy="330" id="alpha_ellipse" rx="200" ry="100" style="opacity:1;stroke:#FF0000;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
+    <polygon class="alpha_hex" coord_q="23.0" coord_r="-2.0" id="alpha_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="680.0,311.769145362 700.0,311.769145362 710.0,329.089653438 700.0,346.410161514 680.0,346.410161514 670.0,329.089653438 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF0000;"/>
+    <text x="690.0" y="311.089653438" style="text-align:center;text-anchor:middle;font-size:6pt" id="23,-2,-21">23,-2,-21</text>
+    <polygon class="alpha_hex" coord_q="13.0" coord_r="6.0" id="alpha_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="380.0,415.692193817 400.0,415.692193817 410.0,433.012701892 400.0,450.333209968 380.0,450.333209968 370.0,433.012701892 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF0000;"/>
+    <text x="390.0" y="415.012701892" style="text-align:center;text-anchor:middle;font-size:6pt" id="13,6,-19">13,6,-19</text>
+    <polygon class="alpha_hex" coord_q="13.0" coord_r="1.0" id="alpha_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="380.0,242.48711306 400.0,242.48711306 410.0,259.807621135 400.0,277.128129211 380.0,277.128129211 370.0,259.807621135 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF0000;"/>
+    <text x="390.0" y="241.807621135" style="text-align:center;text-anchor:middle;font-size:6pt" id="13,1,-14">13,1,-14</text>
   </g>
   <g class="planet" id="beta">
-    <ellipse cx="440" cy="280" id="beta_ellipse" rx="240" ry="130" style="opacity:1;stroke:#FF00FF;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
-    <polygon class="beta_hex" coord_q="23.0" coord_r="-3.0" id="beta_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="680.0,277.128129211 700.0,277.128129211 710.0,294.448637287 700.0,311.769145362 680.0,311.769145362 670.0,294.448637287 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF00FF;"/>
-    <text x="690.0" y="271.448637287" style="text-align:center;text-anchor:middle;font-size:8pt" id="23.0,-3.0">23.0,-3.0</text>
-    <polygon class="beta_hex" coord_q="17.0" coord_r="3.0" id="beta_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="500.0,381.051177665 520.0,381.051177665 530.0,398.371685741 520.0,415.692193817 500.0,415.692193817 490.0,398.371685741 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF00FF;"/>
-    <text x="510.0" y="375.371685741" style="text-align:center;text-anchor:middle;font-size:8pt" id="17.0,3.0">17.0,3.0</text>
-    <polygon class="beta_hex" coord_q="8.0" coord_r="6.0" id="beta_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="230.0,329.089653438 250.0,329.089653438 260.0,346.410161514 250.0,363.730669589 230.0,363.730669589 220.0,346.410161514 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF00FF;"/>
-    <text x="240.0" y="323.410161514" style="text-align:center;text-anchor:middle;font-size:8pt" id="8.0,6.0">8.0,6.0</text>
-    <polygon class="beta_hex" coord_q="8.0" coord_r="2.0" id="beta_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="230.0,190.525588833 250.0,190.525588833 260.0,207.846096908 250.0,225.166604984 230.0,225.166604984 220.0,207.846096908 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF00FF;"/>
-    <text x="240.0" y="184.846096908" style="text-align:center;text-anchor:middle;font-size:8pt" id="8.0,2.0">8.0,2.0</text>
-    <polygon class="beta_hex" coord_q="17.0" coord_r="-4.0" id="beta_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="500.0,138.564064606 520.0,138.564064606 530.0,155.884572681 520.0,173.205080757 500.0,173.205080757 490.0,155.884572681 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF00FF;"/>
-    <text x="510.0" y="132.884572681" style="text-align:center;text-anchor:middle;font-size:8pt" id="17.0,-4.0">17.0,-4.0</text>
+    <ellipse cx="490" cy="330" id="beta_ellipse" rx="240" ry="130" style="opacity:1;stroke:#FF8000;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
+    <polygon class="beta_hex" coord_q="24.0" coord_r="-3.0" id="beta_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="710.0,294.448637287 730.0,294.448637287 740.0,311.769145362 730.0,329.089653438 710.0,329.089653438 700.0,311.769145362 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF8000;"/>
+    <text x="720.0" y="293.769145362" style="text-align:center;text-anchor:middle;font-size:6pt" id="24,-3,-21">24,-3,-21</text>
+    <polygon class="beta_hex" coord_q="19.0" coord_r="4.0" id="beta_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="560.0,450.333209968 580.0,450.333209968 590.0,467.653718044 580.0,484.974226119 560.0,484.974226119 550.0,467.653718044 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF8000;"/>
+    <text x="570.0" y="449.653718044" style="text-align:center;text-anchor:middle;font-size:6pt" id="19,4,-23">19,4,-23</text>
+    <polygon class="beta_hex" coord_q="10.0" coord_r="7.0" id="beta_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="290.0,398.371685741 310.0,398.371685741 320.0,415.692193817 310.0,433.012701892 290.0,433.012701892 280.0,415.692193817 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF8000;"/>
+    <text x="300.0" y="397.692193817" style="text-align:center;text-anchor:middle;font-size:6pt" id="10,7,-17">10,7,-17</text>
+    <polygon class="beta_hex" coord_q="10.0" coord_r="2.0" id="beta_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="290.0,225.166604984 310.0,225.166604984 320.0,242.48711306 310.0,259.807621135 290.0,259.807621135 280.0,242.48711306 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF8000;"/>
+    <text x="300.0" y="224.48711306" style="text-align:center;text-anchor:middle;font-size:6pt" id="10,2,-12">10,2,-12</text>
+    <polygon class="beta_hex" coord_q="19.0" coord_r="-3.0" id="beta_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="560.0,207.846096908 580.0,207.846096908 590.0,225.166604984 580.0,242.48711306 560.0,242.48711306 550.0,225.166604984 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FF8000;"/>
+    <text x="570.0" y="207.166604984" style="text-align:center;text-anchor:middle;font-size:6pt" id="19,-3,-16">19,-3,-16</text>
   </g>
   <g class="planet" id="gamma">
-    <ellipse cx="440" cy="280" id="gamma_ellipse" rx="300" ry="180" style="opacity:1;stroke:#0000FF;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
-    <polygon class="gamma_hex" coord_q="25.0" coord_r="-4.0" id="gamma_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="740.0,277.128129211 760.0,277.128129211 770.0,294.448637287 760.0,311.769145362 740.0,311.769145362 730.0,294.448637287 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
-    <text x="750.0" y="271.448637287" style="text-align:center;text-anchor:middle;font-size:8pt" id="25.0,-4.0">25.0,-4.0</text>
-    <polygon class="gamma_hex" coord_q="21.0" coord_r="2.0" id="gamma_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="620.0,415.692193817 640.0,415.692193817 650.0,433.012701892 640.0,450.333209968 620.0,450.333209968 610.0,433.012701892 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
-    <text x="630.0" y="410.012701892" style="text-align:center;text-anchor:middle;font-size:8pt" id="21.0,2.0">21.0,2.0</text>
-    <polygon class="gamma_hex" coord_q="12.0" coord_r="7.0" id="gamma_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="350.0,433.012701892 370.0,433.012701892 380.0,450.333209968 370.0,467.653718044 350.0,467.653718044 340.0,450.333209968 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
-    <text x="360.0" y="427.333209968" style="text-align:center;text-anchor:middle;font-size:8pt" id="12.0,7.0">12.0,7.0</text>
-    <polygon class="gamma_hex" coord_q="6.0" coord_r="8.0" id="gamma_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="170.0,363.730669589 190.0,363.730669589 200.0,381.051177665 190.0,398.371685741 170.0,398.371685741 160.0,381.051177665 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
-    <text x="180.0" y="358.051177665" style="text-align:center;text-anchor:middle;font-size:8pt" id="6.0,8.0">6.0,8.0</text>
-    <polygon class="gamma_hex" coord_q="6.0" coord_r="3.0" id="gamma_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="170.0,190.525588833 190.0,190.525588833 200.0,207.846096908 190.0,225.166604984 170.0,225.166604984 160.0,207.846096908 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
-    <text x="180.0" y="184.846096908" style="text-align:center;text-anchor:middle;font-size:8pt" id="6.0,3.0">6.0,3.0</text>
-    <polygon class="gamma_hex" coord_q="12.0" coord_r="-3.0" id="gamma_5" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="350.0,86.6025403784 370.0,86.6025403784 380.0,103.923048454 370.0,121.24355653 350.0,121.24355653 340.0,103.923048454 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
-    <text x="360.0" y="80.9230484541" style="text-align:center;text-anchor:middle;font-size:8pt" id="12.0,-3.0">12.0,-3.0</text>
-    <polygon class="gamma_hex" coord_q="21.0" coord_r="-6.0" id="gamma_6" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="620.0,138.564064606 640.0,138.564064606 650.0,155.884572681 640.0,173.205080757 620.0,173.205080757 610.0,155.884572681 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#0000FF;"/>
-    <text x="630.0" y="132.884572681" style="text-align:center;text-anchor:middle;font-size:8pt" id="21.0,-6.0">21.0,-6.0</text>
+    <ellipse cx="490" cy="330" id="gamma_ellipse" rx="300" ry="180" style="opacity:1;stroke:#FFFF00;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
+    <polygon class="gamma_hex" coord_q="26.0" coord_r="-4.0" id="gamma_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="770.0,294.448637287 790.0,294.448637287 800.0,311.769145362 790.0,329.089653438 770.0,329.089653438 760.0,311.769145362 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="780.0" y="293.769145362" style="text-align:center;text-anchor:middle;font-size:6pt" id="26,-4,-22">26,-4,-22</text>
+    <polygon class="gamma_hex" coord_q="23.0" coord_r="2.0" id="gamma_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="680.0,450.333209968 700.0,450.333209968 710.0,467.653718044 700.0,484.974226119 680.0,484.974226119 670.0,467.653718044 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="690.0" y="449.653718044" style="text-align:center;text-anchor:middle;font-size:6pt" id="23,2,-25">23,2,-25</text>
+    <polygon class="gamma_hex" coord_q="14.0" coord_r="8.0" id="gamma_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="410.0,502.294734195 430.0,502.294734195 440.0,519.615242271 430.0,536.935750346 410.0,536.935750346 400.0,519.615242271 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="420.0" y="501.615242271" style="text-align:center;text-anchor:middle;font-size:6pt" id="14,8,-22">14,8,-22</text>
+    <polygon class="gamma_hex" coord_q="7.0" coord_r="8.0" id="gamma_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="200.0,381.051177665 220.0,381.051177665 230.0,398.371685741 220.0,415.692193817 200.0,415.692193817 190.0,398.371685741 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="210.0" y="380.371685741" style="text-align:center;text-anchor:middle;font-size:6pt" id="7,8,-15">7,8,-15</text>
+    <polygon class="gamma_hex" coord_q="7.0" coord_r="4.0" id="gamma_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="200.0,242.48711306 220.0,242.48711306 230.0,259.807621135 220.0,277.128129211 200.0,277.128129211 190.0,259.807621135 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="210.0" y="241.807621135" style="text-align:center;text-anchor:middle;font-size:6pt" id="7,4,-11">7,4,-11</text>
+    <polygon class="gamma_hex" coord_q="14.0" coord_r="-3.0" id="gamma_5" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="410.0,121.24355653 430.0,121.24355653 440.0,138.564064606 430.0,155.884572681 410.0,155.884572681 400.0,138.564064606 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="420.0" y="120.564064606" style="text-align:center;text-anchor:middle;font-size:6pt" id="14,-3,-11">14,-3,-11</text>
+    <polygon class="gamma_hex" coord_q="23.0" coord_r="-6.0" id="gamma_6" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="680.0,173.205080757 700.0,173.205080757 710.0,190.525588833 700.0,207.846096908 680.0,207.846096908 670.0,190.525588833 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
+    <text x="690.0" y="172.525588833" style="text-align:center;text-anchor:middle;font-size:6pt" id="23,-6,-17">23,-6,-17</text>
   </g>
   <g class="planet" id="delta">
-    <ellipse cx="440" cy="280" id="delta_ellipse" rx="340" ry="210" style="opacity:1;stroke:#FFFF00;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
-    <polygon class="delta_hex" coord_q="26.0" coord_r="-5.0" id="delta_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="770.0,259.807621135 790.0,259.807621135 800.0,277.128129211 790.0,294.448637287 770.0,294.448637287 760.0,277.128129211 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="780.0" y="254.128129211" style="text-align:center;text-anchor:middle;font-size:8pt" id="26.0,-5.0">26.0,-5.0</text>
-    <polygon class="delta_hex" coord_q="24.0" coord_r="-1.0" id="delta_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="710.0,363.730669589 730.0,363.730669589 740.0,381.051177665 730.0,398.371685741 710.0,398.371685741 700.0,381.051177665 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="720.0" y="358.051177665" style="text-align:center;text-anchor:middle;font-size:8pt" id="24.0,-1.0">24.0,-1.0</text>
-    <polygon class="delta_hex" coord_q="19.0" coord_r="4.0" id="delta_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="560.0,450.333209968 580.0,450.333209968 590.0,467.653718044 580.0,484.974226119 560.0,484.974226119 550.0,467.653718044 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="570.0" y="444.653718044" style="text-align:center;text-anchor:middle;font-size:8pt" id="19.0,4.0">19.0,4.0</text>
-    <polygon class="delta_hex" coord_q="13.0" coord_r="8.0" id="delta_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="380.0,484.974226119 400.0,484.974226119 410.0,502.294734195 400.0,519.615242271 380.0,519.615242271 370.0,502.294734195 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="390.0" y="479.294734195" style="text-align:center;text-anchor:middle;font-size:8pt" id="13.0,8.0">13.0,8.0</text>
-    <polygon class="delta_hex" coord_q="7.0" coord_r="9.0" id="delta_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="200.0,415.692193817 220.0,415.692193817 230.0,433.012701892 220.0,450.333209968 200.0,450.333209968 190.0,433.012701892 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="210.0" y="410.012701892" style="text-align:center;text-anchor:middle;font-size:8pt" id="7.0,9.0">7.0,9.0</text>
-    <polygon class="delta_hex" coord_q="4.0" coord_r="8.0" id="delta_5" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="110.0,329.089653438 130.0,329.089653438 140.0,346.410161514 130.0,363.730669589 110.0,363.730669589 100.0,346.410161514 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="120.0" y="323.410161514" style="text-align:center;text-anchor:middle;font-size:8pt" id="4.0,8.0">4.0,8.0</text>
-    <polygon class="delta_hex" coord_q="4.0" coord_r="4.0" id="delta_6" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="110.0,190.525588833 130.0,190.525588833 140.0,207.846096908 130.0,225.166604984 110.0,225.166604984 100.0,207.846096908 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="120.0" y="184.846096908" style="text-align:center;text-anchor:middle;font-size:8pt" id="4.0,4.0">4.0,4.0</text>
-    <polygon class="delta_hex" coord_q="7.0" coord_r="-0.0" id="delta_7" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="200.0,103.923048454 220.0,103.923048454 230.0,121.24355653 220.0,138.564064606 200.0,138.564064606 190.0,121.24355653 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="210.0" y="98.2435565298" style="text-align:center;text-anchor:middle;font-size:8pt" id="7.0,-0.0">7.0,-0.0</text>
-    <polygon class="delta_hex" coord_q="13.0" coord_r="-4.0" id="delta_8" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="380.0,69.2820323028 400.0,69.2820323028 410.0,86.6025403784 400.0,103.923048454 380.0,103.923048454 370.0,86.6025403784 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="390.0" y="63.6025403784" style="text-align:center;text-anchor:middle;font-size:8pt" id="13.0,-4.0">13.0,-4.0</text>
-    <polygon class="delta_hex" coord_q="19.0" coord_r="-7.0" id="delta_9" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="560.0,69.2820323028 580.0,69.2820323028 590.0,86.6025403784 580.0,103.923048454 560.0,103.923048454 550.0,86.6025403784 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="570.0" y="63.6025403784" style="text-align:center;text-anchor:middle;font-size:8pt" id="19.0,-7.0">19.0,-7.0</text>
-    <polygon class="delta_hex" coord_q="24.0" coord_r="-7.0" id="delta_10" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="710.0,155.884572681 730.0,155.884572681 740.0,173.205080757 730.0,190.525588833 710.0,190.525588833 700.0,173.205080757 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#FFFF00;"/>
-    <text x="720.0" y="150.205080757" style="text-align:center;text-anchor:middle;font-size:8pt" id="24.0,-7.0">24.0,-7.0</text>
+    <ellipse cx="490" cy="330" id="delta_ellipse" rx="340" ry="210" style="opacity:1;stroke:#008800;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
+    <polygon class="delta_hex" coord_q="28.0" coord_r="-4.0" id="delta_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="830.0,329.089653438 850.0,329.089653438 860.0,346.410161514 850.0,363.730669589 830.0,363.730669589 820.0,346.410161514 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="840.0" y="328.410161514" style="text-align:center;text-anchor:middle;font-size:6pt" id="28,-4,-24">28,-4,-24</text>
+    <polygon class="delta_hex" coord_q="26.0" coord_r="-0.0" id="delta_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="770.0,433.012701892 790.0,433.012701892 800.0,450.333209968 790.0,467.653718044 770.0,467.653718044 760.0,450.333209968 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="780.0" y="432.333209968" style="text-align:center;text-anchor:middle;font-size:6pt" id="26,0,-26">26,0,-26</text>
+    <polygon class="delta_hex" coord_q="21.0" coord_r="5.0" id="delta_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="620.0,519.615242271 640.0,519.615242271 650.0,536.935750346 640.0,554.256258422 620.0,554.256258422 610.0,536.935750346 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="630.0" y="518.935750346" style="text-align:center;text-anchor:middle;font-size:6pt" id="21,5,-26">21,5,-26</text>
+    <polygon class="delta_hex" coord_q="15.0" coord_r="8.0" id="delta_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="440.0,519.615242271 460.0,519.615242271 470.0,536.935750346 460.0,554.256258422 440.0,554.256258422 430.0,536.935750346 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="450.0" y="518.935750346" style="text-align:center;text-anchor:middle;font-size:6pt" id="15,8,-23">15,8,-23</text>
+    <polygon class="delta_hex" coord_q="9.0" coord_r="10.0" id="delta_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="260.0,484.974226119 280.0,484.974226119 290.0,502.294734195 280.0,519.615242271 260.0,519.615242271 250.0,502.294734195 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="270.0" y="484.294734195" style="text-align:center;text-anchor:middle;font-size:6pt" id="9,10,-19">9,10,-19</text>
+    <polygon class="delta_hex" coord_q="5.0" coord_r="9.0" id="delta_5" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="140.0,381.051177665 160.0,381.051177665 170.0,398.371685741 160.0,415.692193817 140.0,415.692193817 130.0,398.371685741 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="150.0" y="380.371685741" style="text-align:center;text-anchor:middle;font-size:6pt" id="5,9,-14">5,9,-14</text>
+    <polygon class="delta_hex" coord_q="5.0" coord_r="5.0" id="delta_6" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="140.0,242.48711306 160.0,242.48711306 170.0,259.807621135 160.0,277.128129211 140.0,277.128129211 130.0,259.807621135 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="150.0" y="241.807621135" style="text-align:center;text-anchor:middle;font-size:6pt" id="5,5,-10">5,5,-10</text>
+    <polygon class="delta_hex" coord_q="9.0" coord_r="-0.0" id="delta_7" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="260.0,138.564064606 280.0,138.564064606 290.0,155.884572681 280.0,173.205080757 260.0,173.205080757 250.0,155.884572681 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="270.0" y="137.884572681" style="text-align:center;text-anchor:middle;font-size:6pt" id="9,0,-9">9,0,-9</text>
+    <polygon class="delta_hex" coord_q="15.0" coord_r="-4.0" id="delta_8" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="440.0,103.923048454 460.0,103.923048454 470.0,121.24355653 460.0,138.564064606 440.0,138.564064606 430.0,121.24355653 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="450.0" y="103.24355653" style="text-align:center;text-anchor:middle;font-size:6pt" id="15,-4,-11">15,-4,-11</text>
+    <polygon class="delta_hex" coord_q="21.0" coord_r="-7.0" id="delta_9" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="620.0,103.923048454 640.0,103.923048454 650.0,121.24355653 640.0,138.564064606 620.0,138.564064606 610.0,121.24355653 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="630.0" y="103.24355653" style="text-align:center;text-anchor:middle;font-size:6pt" id="21,-7,-14">21,-7,-14</text>
+    <polygon class="delta_hex" coord_q="26.0" coord_r="-7.0" id="delta_10" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="770.0,190.525588833 790.0,190.525588833 800.0,207.846096908 790.0,225.166604984 770.0,225.166604984 760.0,207.846096908 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#008800;"/>
+    <text x="780.0" y="189.846096908" style="text-align:center;text-anchor:middle;font-size:6pt" id="26,-7,-19">26,-7,-19</text>
   </g>
   <g class="planet" id="epsilon">
-    <ellipse cx="440" cy="280" id="epsilon_ellipse" rx="390" ry="230" style="opacity:1;stroke:#00FF00;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
-    <polygon class="epsilon_hex" coord_q="28.0" coord_r="-6.0" id="epsilon_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="830.0,259.807621135 850.0,259.807621135 860.0,277.128129211 850.0,294.448637287 830.0,294.448637287 820.0,277.128129211 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="840.0" y="254.128129211" style="text-align:center;text-anchor:middle;font-size:8pt" id="28.0,-6.0">28.0,-6.0</text>
-    <polygon class="epsilon_hex" coord_q="26.0" coord_r="-2.0" id="epsilon_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="770.0,363.730669589 790.0,363.730669589 800.0,381.051177665 790.0,398.371685741 770.0,398.371685741 760.0,381.051177665 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="780.0" y="358.051177665" style="text-align:center;text-anchor:middle;font-size:8pt" id="26.0,-2.0">26.0,-2.0</text>
-    <polygon class="epsilon_hex" coord_q="22.0" coord_r="3.0" id="epsilon_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="650.0,467.653718044 670.0,467.653718044 680.0,484.974226119 670.0,502.294734195 650.0,502.294734195 640.0,484.974226119 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="660.0" y="461.974226119" style="text-align:center;text-anchor:middle;font-size:8pt" id="22.0,3.0">22.0,3.0</text>
-    <polygon class="epsilon_hex" coord_q="16.0" coord_r="7.0" id="epsilon_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="470.0,502.294734195 490.0,502.294734195 500.0,519.615242271 490.0,536.935750346 470.0,536.935750346 460.0,519.615242271 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="480.0" y="496.615242271" style="text-align:center;text-anchor:middle;font-size:8pt" id="16.0,7.0">16.0,7.0</text>
-    <polygon class="epsilon_hex" coord_q="10.0" coord_r="9.0" id="epsilon_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="290.0,467.653718044 310.0,467.653718044 320.0,484.974226119 310.0,502.294734195 290.0,502.294734195 280.0,484.974226119 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="300.0" y="461.974226119" style="text-align:center;text-anchor:middle;font-size:8pt" id="10.0,9.0">10.0,9.0</text>
-    <polygon class="epsilon_hex" coord_q="5.0" coord_r="10.0" id="epsilon_5" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="140.0,415.692193817 160.0,415.692193817 170.0,433.012701892 160.0,450.333209968 140.0,450.333209968 130.0,433.012701892 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="150.0" y="410.012701892" style="text-align:center;text-anchor:middle;font-size:8pt" id="5.0,10.0">5.0,10.0</text>
-    <polygon class="epsilon_hex" coord_q="2.0" coord_r="9.0" id="epsilon_6" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="50.0,329.089653438 70.0,329.089653438 80.0,346.410161514 70.0,363.730669589 50.0,363.730669589 40.0,346.410161514 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="60.0" y="323.410161514" style="text-align:center;text-anchor:middle;font-size:8pt" id="2.0,9.0">2.0,9.0</text>
-    <polygon class="epsilon_hex" coord_q="2.0" coord_r="5.0" id="epsilon_7" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="50.0,190.525588833 70.0,190.525588833 80.0,207.846096908 70.0,225.166604984 50.0,225.166604984 40.0,207.846096908 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="60.0" y="184.846096908" style="text-align:center;text-anchor:middle;font-size:8pt" id="2.0,5.0">2.0,5.0</text>
-    <polygon class="epsilon_hex" coord_q="5.0" coord_r="1.0" id="epsilon_8" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="140.0,103.923048454 160.0,103.923048454 170.0,121.24355653 160.0,138.564064606 140.0,138.564064606 130.0,121.24355653 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="150.0" y="98.2435565298" style="text-align:center;text-anchor:middle;font-size:8pt" id="5.0,1.0">5.0,1.0</text>
-    <polygon class="epsilon_hex" coord_q="10.0" coord_r="-3.0" id="epsilon_9" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="290.0,51.9615242271 310.0,51.9615242271 320.0,69.2820323028 310.0,86.6025403784 290.0,86.6025403784 280.0,69.2820323028 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="300.0" y="46.2820323028" style="text-align:center;text-anchor:middle;font-size:8pt" id="10.0,-3.0">10.0,-3.0</text>
-    <polygon class="epsilon_hex" coord_q="16.0" coord_r="-7.0" id="epsilon_10" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="470.0,17.3205080757 490.0,17.3205080757 500.0,34.6410161514 490.0,51.9615242271 470.0,51.9615242271 460.0,34.6410161514 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="480.0" y="11.6410161514" style="text-align:center;text-anchor:middle;font-size:8pt" id="16.0,-7.0">16.0,-7.0</text>
-    <polygon class="epsilon_hex" coord_q="22.0" coord_r="-8.0" id="epsilon_11" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="650.0,86.6025403784 670.0,86.6025403784 680.0,103.923048454 670.0,121.24355653 650.0,121.24355653 640.0,103.923048454 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="660.0" y="80.9230484541" style="text-align:center;text-anchor:middle;font-size:8pt" id="22.0,-8.0">22.0,-8.0</text>
-    <polygon class="epsilon_hex" coord_q="26.0" coord_r="-8.0" id="epsilon_12" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="770.0,155.884572681 790.0,155.884572681 800.0,173.205080757 790.0,190.525588833 770.0,190.525588833 760.0,173.205080757 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#00FF00;"/>
-    <text x="780.0" y="150.205080757" style="text-align:center;text-anchor:middle;font-size:8pt" id="26.0,-8.0">26.0,-8.0</text>
+    <ellipse cx="490" cy="330" id="epsilon_ellipse" rx="390" ry="230" style="opacity:1;stroke:#000088;stroke-width:1;stroke-opacity:0.5;fill:none;"/>
+    <polygon class="epsilon_hex" coord_q="29.0" coord_r="-5.0" id="epsilon_0" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="860.0,311.769145362 880.0,311.769145362 890.0,329.089653438 880.0,346.410161514 860.0,346.410161514 850.0,329.089653438 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="870.0" y="311.089653438" style="text-align:center;text-anchor:middle;font-size:6pt" id="29,-5,-24">29,-5,-24</text>
+    <polygon class="epsilon_hex" coord_q="28.0" coord_r="-1.0" id="epsilon_1" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="830.0,433.012701892 850.0,433.012701892 860.0,450.333209968 850.0,467.653718044 830.0,467.653718044 820.0,450.333209968 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="840.0" y="432.333209968" style="text-align:center;text-anchor:middle;font-size:6pt" id="28,-1,-27">28,-1,-27</text>
+    <polygon class="epsilon_hex" coord_q="24.0" coord_r="3.0" id="epsilon_2" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="710.0,502.294734195 730.0,502.294734195 740.0,519.615242271 730.0,536.935750346 710.0,536.935750346 700.0,519.615242271 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="720.0" y="501.615242271" style="text-align:center;text-anchor:middle;font-size:6pt" id="24,3,-27">24,3,-27</text>
+    <polygon class="epsilon_hex" coord_q="18.0" coord_r="7.0" id="epsilon_3" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="530.0,536.935750346 550.0,536.935750346 560.0,554.256258422 550.0,571.576766498 530.0,571.576766498 520.0,554.256258422 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="540.0" y="536.256258422" style="text-align:center;text-anchor:middle;font-size:6pt" id="18,7,-25">18,7,-25</text>
+    <polygon class="epsilon_hex" coord_q="12.0" coord_r="10.0" id="epsilon_4" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="350.0,536.935750346 370.0,536.935750346 380.0,554.256258422 370.0,571.576766498 350.0,571.576766498 340.0,554.256258422 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="360.0" y="536.256258422" style="text-align:center;text-anchor:middle;font-size:6pt" id="12,10,-22">12,10,-22</text>
+    <polygon class="epsilon_hex" coord_q="7.0" coord_r="11.0" id="epsilon_5" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="200.0,484.974226119 220.0,484.974226119 230.0,502.294734195 220.0,519.615242271 200.0,519.615242271 190.0,502.294734195 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="210.0" y="484.294734195" style="text-align:center;text-anchor:middle;font-size:6pt" id="7,11,-18">7,11,-18</text>
+    <polygon class="epsilon_hex" coord_q="4.0" coord_r="9.0" id="epsilon_6" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="110.0,363.730669589 130.0,363.730669589 140.0,381.051177665 130.0,398.371685741 110.0,398.371685741 100.0,381.051177665 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="120.0" y="363.051177665" style="text-align:center;text-anchor:middle;font-size:6pt" id="4,9,-13">4,9,-13</text>
+    <polygon class="epsilon_hex" coord_q="4.0" coord_r="6.0" id="epsilon_7" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="110.0,259.807621135 130.0,259.807621135 140.0,277.128129211 130.0,294.448637287 110.0,294.448637287 100.0,277.128129211 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="120.0" y="259.128129211" style="text-align:center;text-anchor:middle;font-size:6pt" id="4,6,-10">4,6,-10</text>
+    <polygon class="epsilon_hex" coord_q="7.0" coord_r="2.0" id="epsilon_8" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="200.0,173.205080757 220.0,173.205080757 230.0,190.525588833 220.0,207.846096908 200.0,207.846096908 190.0,190.525588833 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="210.0" y="172.525588833" style="text-align:center;text-anchor:middle;font-size:6pt" id="7,2,-9">7,2,-9</text>
+    <polygon class="epsilon_hex" coord_q="12.0" coord_r="-3.0" id="epsilon_9" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="350.0,86.6025403784 370.0,86.6025403784 380.0,103.923048454 370.0,121.24355653 350.0,121.24355653 340.0,103.923048454 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="360.0" y="85.9230484541" style="text-align:center;text-anchor:middle;font-size:6pt" id="12,-3,-9">12,-3,-9</text>
+    <polygon class="epsilon_hex" coord_q="18.0" coord_r="-6.0" id="epsilon_10" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="530.0,86.6025403784 550.0,86.6025403784 560.0,103.923048454 550.0,121.24355653 530.0,121.24355653 520.0,103.923048454 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="540.0" y="85.9230484541" style="text-align:center;text-anchor:middle;font-size:6pt" id="18,-6,-12">18,-6,-12</text>
+    <polygon class="epsilon_hex" coord_q="24.0" coord_r="-8.0" id="epsilon_11" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="710.0,121.24355653 730.0,121.24355653 740.0,138.564064606 730.0,155.884572681 710.0,155.884572681 700.0,138.564064606 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="720.0" y="120.564064606" style="text-align:center;text-anchor:middle;font-size:6pt" id="24,-8,-16">24,-8,-16</text>
+    <polygon class="epsilon_hex" coord_q="28.0" coord_r="-7.0" id="epsilon_12" onclick="clickHex(this)" onmouseout="mouseOutHex(this)" onmouseover="mouseOverHex(this)" points="830.0,225.166604984 850.0,225.166604984 860.0,242.48711306 850.0,259.807621135 830.0,259.807621135 820.0,242.48711306 " style="fill-opacity:0.5;stroke:#000000;stroke-width:0.3;fill:#000088;"/>
+    <text x="840.0" y="224.48711306" style="text-align:center;text-anchor:middle;font-size:6pt" id="28,-7,-21">28,-7,-21</text>
   </g>
-  <rect height="20" id="player1" style="fill:#AAAAAA;" width="10" x="435" y="270"/>
+  <g id="timeline">
+    <rect class="timebox" height="30" id="timebox_0" style="fill-opacity:1;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="0" width="30" x="0" y="0"/>
+    <text x="15" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="0">0</text>
+    <circle class="event" cx="7" cy="7" event="planet_rotation" id="0_planet_rotation" r="7" style="fill:#00FFFF;" time="0"/>
+    <rect class="timebox" height="30" id="timebox_1" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="1" width="31" x="30" y="0"/>
+    <text x="45" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="1">1</text>
+    <rect class="timebox" height="30" id="timebox_2" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="2" width="31" x="61" y="0"/>
+    <text x="76" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="2">2</text>
+    <rect class="timebox" height="30" id="timebox_3" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="3" width="31" x="92" y="0"/>
+    <text x="107" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="3">3</text>
+    <rect class="timebox" height="30" id="timebox_4" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="4" width="31" x="123" y="0"/>
+    <text x="138" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="4">4</text>
+    <rect class="timebox" height="30" id="timebox_5" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="5" width="31" x="154" y="0"/>
+    <text x="169" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="5">5</text>
+    <rect class="timebox" height="30" id="timebox_6" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="6" width="31" x="185" y="0"/>
+    <text x="200" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="6">6</text>
+    <rect class="timebox" height="30" id="timebox_7" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="7" width="31" x="216" y="0"/>
+    <text x="231" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="7">7</text>
+    <rect class="timebox" height="30" id="timebox_8" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="8" width="31" x="247" y="0"/>
+    <text x="262" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="8">8</text>
+    <rect class="timebox" height="30" id="timebox_9" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="9" width="31" x="278" y="0"/>
+    <text x="293" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="9">9</text>
+    <rect class="timebox" height="30" id="timebox_10" style="fill-opacity:1;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="10" width="31" x="309" y="0"/>
+    <text x="324" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="10">10</text>
+    <rect class="timebox" height="30" id="timebox_11" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="11" width="31" x="340" y="0"/>
+    <text x="355" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="11">11</text>
+    <rect class="timebox" height="30" id="timebox_12" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="12" width="31" x="371" y="0"/>
+    <text x="386" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="12">12</text>
+    <rect class="timebox" height="30" id="timebox_13" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="13" width="31" x="402" y="0"/>
+    <text x="417" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="13">13</text>
+    <rect class="timebox" height="30" id="timebox_14" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="14" width="31" x="433" y="0"/>
+    <text x="448" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="14">14</text>
+    <rect class="timebox" height="30" id="timebox_15" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="15" width="31" x="464" y="0"/>
+    <text x="479" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="15">15</text>
+    <rect class="timebox" height="30" id="timebox_16" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="16" width="31" x="495" y="0"/>
+    <text x="510" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="16">16</text>
+    <rect class="timebox" height="30" id="timebox_17" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="17" width="31" x="526" y="0"/>
+    <text x="541" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="17">17</text>
+    <rect class="timebox" height="30" id="timebox_18" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="18" width="31" x="557" y="0"/>
+    <text x="572" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="18">18</text>
+    <rect class="timebox" height="30" id="timebox_19" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="19" width="31" x="588" y="0"/>
+    <text x="603" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="19">19</text>
+    <rect class="timebox" height="30" id="timebox_20" style="fill-opacity:1;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="20" width="31" x="619" y="0"/>
+    <text x="634" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="20">20</text>
+    <circle class="event" cx="626" cy="7" event="planet_rotation" id="20_planet_rotation" r="7" style="fill:#00FFFF;" time="20"/>
+    <rect class="timebox" height="30" id="timebox_21" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="21" width="31" x="650" y="0"/>
+    <text x="665" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="21">21</text>
+    <rect class="timebox" height="30" id="timebox_22" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="22" width="31" x="681" y="0"/>
+    <text x="696" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="22">22</text>
+    <rect class="timebox" height="30" id="timebox_23" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="23" width="31" x="712" y="0"/>
+    <text x="727" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="23">23</text>
+    <rect class="timebox" height="30" id="timebox_24" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="24" width="31" x="743" y="0"/>
+    <text x="758" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="24">24</text>
+    <rect class="timebox" height="30" id="timebox_25" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="25" width="31" x="774" y="0"/>
+    <text x="789" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="25">25</text>
+    <rect class="timebox" height="30" id="timebox_26" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="26" width="31" x="805" y="0"/>
+    <text x="820" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="26">26</text>
+    <rect class="timebox" height="30" id="timebox_27" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="27" width="31" x="836" y="0"/>
+    <text x="851" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="27">27</text>
+    <rect class="timebox" height="30" id="timebox_28" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="28" width="31" x="867" y="0"/>
+    <text x="882" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="28">28</text>
+    <rect class="timebox" height="30" id="timebox_29" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="29" width="31" x="898" y="0"/>
+    <text x="913" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="29">29</text>
+    <rect class="timebox" height="30" id="timebox_30" style="fill-opacity:1;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="30" width="30" x="929" y="0"/>
+    <text x="944" y="18" style="text-align:center;text-anchor:middle;font-size:8pt" id="30">30</text>
+    <rect class="timebox" height="31" id="timebox_31" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="31" width="30" x="929" y="30"/>
+    <text x="944" y="48" style="text-align:center;text-anchor:middle;font-size:8pt" id="31">31</text>
+    <rect class="timebox" height="31" id="timebox_32" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="32" width="30" x="929" y="61"/>
+    <text x="944" y="79" style="text-align:center;text-anchor:middle;font-size:8pt" id="32">32</text>
+    <rect class="timebox" height="31" id="timebox_33" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="33" width="30" x="929" y="92"/>
+    <text x="944" y="110" style="text-align:center;text-anchor:middle;font-size:8pt" id="33">33</text>
+    <rect class="timebox" height="31" id="timebox_34" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="34" width="30" x="929" y="123"/>
+    <text x="944" y="141" style="text-align:center;text-anchor:middle;font-size:8pt" id="34">34</text>
+    <rect class="timebox" height="31" id="timebox_35" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="35" width="30" x="929" y="154"/>
+    <text x="944" y="172" style="text-align:center;text-anchor:middle;font-size:8pt" id="35">35</text>
+    <rect class="timebox" height="31" id="timebox_36" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="36" width="30" x="929" y="185"/>
+    <text x="944" y="203" style="text-align:center;text-anchor:middle;font-size:8pt" id="36">36</text>
+    <rect class="timebox" height="31" id="timebox_37" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="37" width="30" x="929" y="216"/>
+    <text x="944" y="234" style="text-align:center;text-anchor:middle;font-size:8pt" id="37">37</text>
+    <rect class="timebox" height="31" id="timebox_38" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="38" width="30" x="929" y="247"/>
+    <text x="944" y="265" style="text-align:center;text-anchor:middle;font-size:8pt" id="38">38</text>
+    <rect class="timebox" height="31" id="timebox_39" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="39" width="30" x="929" y="278"/>
+    <text x="944" y="296" style="text-align:center;text-anchor:middle;font-size:8pt" id="39">39</text>
+    <rect class="timebox" height="31" id="timebox_40" style="fill-opacity:1;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="40" width="30" x="929" y="309"/>
+    <text x="944" y="327" style="text-align:center;text-anchor:middle;font-size:8pt" id="40">40</text>
+    <circle class="event" cx="936" cy="316" event="planet_rotation" id="40_planet_rotation" r="7" style="fill:#00FFFF;" time="40"/>
+    <rect class="timebox" height="31" id="timebox_41" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="41" width="30" x="929" y="340"/>
+    <text x="944" y="358" style="text-align:center;text-anchor:middle;font-size:8pt" id="41">41</text>
+    <rect class="timebox" height="31" id="timebox_42" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="42" width="30" x="929" y="371"/>
+    <text x="944" y="389" style="text-align:center;text-anchor:middle;font-size:8pt" id="42">42</text>
+    <rect class="timebox" height="31" id="timebox_43" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="43" width="30" x="929" y="402"/>
+    <text x="944" y="420" style="text-align:center;text-anchor:middle;font-size:8pt" id="43">43</text>
+    <rect class="timebox" height="31" id="timebox_44" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="44" width="30" x="929" y="433"/>
+    <text x="944" y="451" style="text-align:center;text-anchor:middle;font-size:8pt" id="44">44</text>
+    <rect class="timebox" height="31" id="timebox_45" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="45" width="30" x="929" y="464"/>
+    <text x="944" y="482" style="text-align:center;text-anchor:middle;font-size:8pt" id="45">45</text>
+    <rect class="timebox" height="31" id="timebox_46" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="46" width="30" x="929" y="495"/>
+    <text x="944" y="513" style="text-align:center;text-anchor:middle;font-size:8pt" id="46">46</text>
+    <rect class="timebox" height="31" id="timebox_47" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="47" width="30" x="929" y="526"/>
+    <text x="944" y="544" style="text-align:center;text-anchor:middle;font-size:8pt" id="47">47</text>
+    <rect class="timebox" height="31" id="timebox_48" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="48" width="30" x="929" y="557"/>
+    <text x="944" y="575" style="text-align:center;text-anchor:middle;font-size:8pt" id="48">48</text>
+    <rect class="timebox" height="31" id="timebox_49" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="49" width="30" x="929" y="588"/>
+    <text x="944" y="606" style="text-align:center;text-anchor:middle;font-size:8pt" id="49">49</text>
+    <rect class="timebox" height="30" id="timebox_50" style="fill-opacity:1;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="50" width="30" x="929" y="619"/>
+    <text x="944" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="50">50</text>
+    <rect class="timebox" height="30" id="timebox_51" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="51" width="31" x="898" y="619"/>
+    <text x="913" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="51">51</text>
+    <rect class="timebox" height="30" id="timebox_52" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="52" width="31" x="867" y="619"/>
+    <text x="882" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="52">52</text>
+    <rect class="timebox" height="30" id="timebox_53" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="53" width="31" x="836" y="619"/>
+    <text x="851" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="53">53</text>
+    <rect class="timebox" height="30" id="timebox_54" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="54" width="31" x="805" y="619"/>
+    <text x="820" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="54">54</text>
+    <rect class="timebox" height="30" id="timebox_55" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="55" width="31" x="774" y="619"/>
+    <text x="789" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="55">55</text>
+    <rect class="timebox" height="30" id="timebox_56" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="56" width="31" x="743" y="619"/>
+    <text x="758" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="56">56</text>
+    <rect class="timebox" height="30" id="timebox_57" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="57" width="31" x="712" y="619"/>
+    <text x="727" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="57">57</text>
+    <rect class="timebox" height="30" id="timebox_58" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="58" width="31" x="681" y="619"/>
+    <text x="696" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="58">58</text>
+    <rect class="timebox" height="30" id="timebox_59" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="59" width="31" x="650" y="619"/>
+    <text x="665" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="59">59</text>
+    <rect class="timebox" height="30" id="timebox_60" style="fill-opacity:1;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="60" width="31" x="619" y="619"/>
+    <text x="634" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="60">60</text>
+    <circle class="event" cx="626" cy="626" event="planet_rotation" id="60_planet_rotation" r="7" style="fill:#00FFFF;" time="60"/>
+    <rect class="timebox" height="30" id="timebox_61" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="61" width="31" x="588" y="619"/>
+    <text x="603" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="61">61</text>
+    <rect class="timebox" height="30" id="timebox_62" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="62" width="31" x="557" y="619"/>
+    <text x="572" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="62">62</text>
+    <rect class="timebox" height="30" id="timebox_63" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="63" width="31" x="526" y="619"/>
+    <text x="541" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="63">63</text>
+    <rect class="timebox" height="30" id="timebox_64" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="64" width="31" x="495" y="619"/>
+    <text x="510" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="64">64</text>
+    <rect class="timebox" height="30" id="timebox_65" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="65" width="31" x="464" y="619"/>
+    <text x="479" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="65">65</text>
+    <rect class="timebox" height="30" id="timebox_66" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="66" width="31" x="433" y="619"/>
+    <text x="448" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="66">66</text>
+    <rect class="timebox" height="30" id="timebox_67" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="67" width="31" x="402" y="619"/>
+    <text x="417" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="67">67</text>
+    <rect class="timebox" height="30" id="timebox_68" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="68" width="31" x="371" y="619"/>
+    <text x="386" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="68">68</text>
+    <rect class="timebox" height="30" id="timebox_69" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="69" width="31" x="340" y="619"/>
+    <text x="355" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="69">69</text>
+    <rect class="timebox" height="30" id="timebox_70" style="fill-opacity:1;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="70" width="31" x="309" y="619"/>
+    <text x="324" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="70">70</text>
+    <rect class="timebox" height="30" id="timebox_71" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="71" width="31" x="278" y="619"/>
+    <text x="293" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="71">71</text>
+    <rect class="timebox" height="30" id="timebox_72" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="72" width="31" x="247" y="619"/>
+    <text x="262" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="72">72</text>
+    <rect class="timebox" height="30" id="timebox_73" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="73" width="31" x="216" y="619"/>
+    <text x="231" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="73">73</text>
+    <rect class="timebox" height="30" id="timebox_74" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="74" width="31" x="185" y="619"/>
+    <text x="200" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="74">74</text>
+    <rect class="timebox" height="30" id="timebox_75" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="75" width="31" x="154" y="619"/>
+    <text x="169" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="75">75</text>
+    <rect class="timebox" height="30" id="timebox_76" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="76" width="31" x="123" y="619"/>
+    <text x="138" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="76">76</text>
+    <rect class="timebox" height="30" id="timebox_77" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="77" width="31" x="92" y="619"/>
+    <text x="107" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="77">77</text>
+    <rect class="timebox" height="30" id="timebox_78" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="78" width="31" x="61" y="619"/>
+    <text x="76" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="78">78</text>
+    <rect class="timebox" height="30" id="timebox_79" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="79" width="31" x="30" y="619"/>
+    <text x="45" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="79">79</text>
+    <rect class="timebox" height="30" id="timebox_80" style="fill-opacity:1;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="80" width="30" x="0" y="619"/>
+    <text x="15" y="637" style="text-align:center;text-anchor:middle;font-size:8pt" id="80">80</text>
+    <circle class="event" cx="7" cy="626" event="planet_rotation" id="80_planet_rotation" r="7" style="fill:#00FFFF;" time="80"/>
+    <rect class="timebox" height="31" id="timebox_81" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="81" width="30" x="0" y="588"/>
+    <text x="15" y="606" style="text-align:center;text-anchor:middle;font-size:8pt" id="81">81</text>
+    <rect class="timebox" height="31" id="timebox_82" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="82" width="30" x="0" y="557"/>
+    <text x="15" y="575" style="text-align:center;text-anchor:middle;font-size:8pt" id="82">82</text>
+    <rect class="timebox" height="31" id="timebox_83" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="83" width="30" x="0" y="526"/>
+    <text x="15" y="544" style="text-align:center;text-anchor:middle;font-size:8pt" id="83">83</text>
+    <rect class="timebox" height="31" id="timebox_84" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="84" width="30" x="0" y="495"/>
+    <text x="15" y="513" style="text-align:center;text-anchor:middle;font-size:8pt" id="84">84</text>
+    <rect class="timebox" height="31" id="timebox_85" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="85" width="30" x="0" y="464"/>
+    <text x="15" y="482" style="text-align:center;text-anchor:middle;font-size:8pt" id="85">85</text>
+    <rect class="timebox" height="31" id="timebox_86" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="86" width="30" x="0" y="433"/>
+    <text x="15" y="451" style="text-align:center;text-anchor:middle;font-size:8pt" id="86">86</text>
+    <rect class="timebox" height="31" id="timebox_87" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="87" width="30" x="0" y="402"/>
+    <text x="15" y="420" style="text-align:center;text-anchor:middle;font-size:8pt" id="87">87</text>
+    <rect class="timebox" height="31" id="timebox_88" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="88" width="30" x="0" y="371"/>
+    <text x="15" y="389" style="text-align:center;text-anchor:middle;font-size:8pt" id="88">88</text>
+    <rect class="timebox" height="31" id="timebox_89" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="89" width="30" x="0" y="340"/>
+    <text x="15" y="358" style="text-align:center;text-anchor:middle;font-size:8pt" id="89">89</text>
+    <rect class="timebox" height="31" id="timebox_90" style="fill-opacity:1;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="90" width="30" x="0" y="309"/>
+    <text x="15" y="327" style="text-align:center;text-anchor:middle;font-size:8pt" id="90">90</text>
+    <rect class="timebox" height="31" id="timebox_91" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="91" width="30" x="0" y="278"/>
+    <text x="15" y="296" style="text-align:center;text-anchor:middle;font-size:8pt" id="91">91</text>
+    <rect class="timebox" height="31" id="timebox_92" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="92" width="30" x="0" y="247"/>
+    <text x="15" y="265" style="text-align:center;text-anchor:middle;font-size:8pt" id="92">92</text>
+    <rect class="timebox" height="31" id="timebox_93" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="93" width="30" x="0" y="216"/>
+    <text x="15" y="234" style="text-align:center;text-anchor:middle;font-size:8pt" id="93">93</text>
+    <rect class="timebox" height="31" id="timebox_94" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="94" width="30" x="0" y="185"/>
+    <text x="15" y="203" style="text-align:center;text-anchor:middle;font-size:8pt" id="94">94</text>
+    <rect class="timebox" height="31" id="timebox_95" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="95" width="30" x="0" y="154"/>
+    <text x="15" y="172" style="text-align:center;text-anchor:middle;font-size:8pt" id="95">95</text>
+    <rect class="timebox" height="31" id="timebox_96" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="96" width="30" x="0" y="123"/>
+    <text x="15" y="141" style="text-align:center;text-anchor:middle;font-size:8pt" id="96">96</text>
+    <rect class="timebox" height="31" id="timebox_97" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="97" width="30" x="0" y="92"/>
+    <text x="15" y="110" style="text-align:center;text-anchor:middle;font-size:8pt" id="97">97</text>
+    <rect class="timebox" height="31" id="timebox_98" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="98" width="30" x="0" y="61"/>
+    <text x="15" y="79" style="text-align:center;text-anchor:middle;font-size:8pt" id="98">98</text>
+    <rect class="timebox" height="31" id="timebox_99" style="fill-opacity:0;stroke:#000000;stroke-width:1;fill:#AAAAAA;" time="99" width="30" x="0" y="30"/>
+    <text x="15" y="48" style="text-align:center;text-anchor:middle;font-size:8pt" id="99">99</text>
+    <g id="time_markers">
+      <circle cx="15" cy="15" id="time_marker1" r="10" style="fill:#FF00FF;" time="0"/>
+    </g>
+  </g>
+  <rect height="20" id="player1" style="fill:#FF00FF;" width="10" x="485" y="320"/>
 </svg>
-
 
 
 
