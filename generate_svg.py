@@ -26,12 +26,24 @@ class Planet:
         self.number_of_hexes = number_hexes
         self.name = planet_name
 
+class Player:
+    def __init__(self,player_name,col):
+        self.name = player_name
+        self.colour = col
+
 planets = [
             Planet((150,100),'#FF0000',3,'alpha'),
             Planet((210,130),'#FF8000',5,'beta'),
             Planet((260,180),'#FFFF00',7,'gamma'),
             Planet((320,210),'#008000',11,'delta'),
             Planet((370,240),'#1E90FF',13,'epsilon')
+          ]
+
+players = [
+            Player("player1", "#FF0000"),
+            Player("player2", "#0000FF"),
+            Player("player3", "#FFFFFF"),
+            Player("player4", "#00FF00")
           ]
 
 width = 2*(planets[-1].rx + padding)
@@ -54,31 +66,6 @@ def jsonToStyle(json):
         style_argument = style_argument + attribute + ":" + value + ";"
 
     return style_argument
-
-
-
-
-
-
-def draw_ship(svg, (cx, cy), colour, shipname):
-    style = {
-        'fill' : colour
-    }
-    ship = etree.SubElement(svg, 'rect', {
-                                          'style'   : jsonToStyle(style),
-                                          'id'      : shipname,
-                                          'width'   : str(ship_width),
-                                          'height'  : str(ship_height),
-                                          'x'       : str(cx - ship_width/2),
-                                          'y'       : str(cy - ship_height/2)
-                                          }
-                            )
-
-
-
-
-
-
 
 
 
@@ -114,9 +101,12 @@ def svg_ellipse((rx, ry), (cx, cy), colour, parent, id, fill="none",
     style = {   'stroke'        : colour,
                 'stroke-width'  : stroke_width,
                 'stroke-opacity': stroke_opacity,
-                'fill'          : fill,
-                'opacity'       : opacity
+                #'fill'          : fill,
+                #'opacity'       : opacity
             }
+    if fill:
+        style['fill'] = fill
+        style['opacity'] = opacity
 
     ell_attribs = {
         'style'     : jsonToStyle(style),
@@ -129,7 +119,7 @@ def svg_ellipse((rx, ry), (cx, cy), colour, parent, id, fill="none",
     
     etree.SubElement(parent, 'ellipse', ell_attribs )
 
-def svg_hex(id, (cx, cy), colour, parent, parentname):
+def svg_hex(id, (cx, cy), colour, parent, parentname, fill_opacity="0.5"):
     #<polygon points="200,10 250,190 160,210" style="fill:lime;stroke:purple;stroke-width:1" />
     hex_width = float(2*hex_size)
     hex_height = math.sqrt(3)*hex_size
@@ -150,7 +140,7 @@ def svg_hex(id, (cx, cy), colour, parent, parentname):
     style = {   'stroke'        : '#FFFFFF',
                 'stroke-width'  : '1',
                 'fill'          : colour,
-                'fill-opacity'  : '0.5'
+                'fill-opacity'  : fill_opacity
             }
     ell_attribs = {
         'style'  :jsonToStyle(style),
@@ -257,19 +247,6 @@ def draw_events_for_one_timestep((x,y), (w,h), events, time, parent):
 
         draw_event((cx,cy), radius, event, str(time), parent)
 
-def draw_time_marker(parent, (cx,cy), r, colour, name):
-    style = {
-        'fill'          : colour
-    }
-    etree.SubElement(parent, 'circle', {
-        'style' : jsonToStyle(style),
-        'id'    : name,
-        'cx'    : str(cx),
-        'cy'    : str(cy),
-        'r'     : str(r),
-        'time'  : '0'
-        })
-
 
 def draw_timeline(svg):
     layer = etree.SubElement(svg, 'g', {'id': 'timeline'})
@@ -299,13 +276,81 @@ def draw_timeline(svg):
     for i in range(81,100):
         draw_timebox((0,width_corner+(99-i)*width_side),(height_timebox,width_side),"timebox_" + str(i), i,layer)
 
-    timemarkers = etree.SubElement(layer, 'g', {'id': 'time_markers'})
-    draw_time_marker(timemarkers, (width_corner/2,width_corner/2), width_corner/3, "#FF00FF", "time_marker1")
+    
 
     return [width_timeline, height_timeline]
 
+def timemarker_symbol(svg):
+    symbol = etree.SubElement(svg, 'symbol', {'id': 'timemarker', 'view_box' : '0 0 30 15'})
+    svg_ellipse((12, 4), (15, 9), "#000000", symbol, "bottom", False, "1", "1", "1")
+    etree.SubElement(symbol, 'rect', {
+                                      'id'      : "middle",
+                                      'width'   : "24",
+                                      'height'  : "4",
+                                      'x'       : "3",
+                                      'y'       : "5"
+                                      }
+                        )
+    svg_ellipse((12, 4), (15, 5), "#000000", symbol, "top", False, "1", "1", "1")
+    linestyle = {
+        'stroke'        : '#000000',
+        'stroke-width'  : '1',
+    }
+    etree.SubElement(symbol, 'line', {
+                                    'x1': "3",
+                                    'x2': "3",
+                                    'y1': "5",
+                                    'y2': "9",
+                                    'style': jsonToStyle(linestyle),
+                                   }
+        )
+    etree.SubElement(symbol, 'line', {
+                                    'x1': "27",
+                                    'x2': "27",
+                                    'y1': "5",
+                                    'y2': "9",
+                                    'style': jsonToStyle(linestyle),
+                                   }
+        )
+
+def draw_sun(svg,(width,height),r):
+    etree.SubElement(svg,'circle', {'id': 'sun', 'cx': str(width/2), 'cy': str(height/2), 'r': str(r), 'style': 'fill:yellow'})
+
+def draw_ship(parent, player, (x,y)):
+    style = {
+        'fill' : player.colour
+    }
+    etree.SubElement(parent, 'rect', {
+                                          'style'   : jsonToStyle(style),
+                                          'class'   : 'ship',
+                                          'id'      : "ship_" + player.name,
+                                          'width'   : str(ship_width),
+                                          'height'  : str(ship_height),
+                                          'x'       : str(x),
+                                          'y'       : str(y)
+                                          }
+                            )
+
+def draw_time_marker(parent, player, (x,y)):
+    etree.SubElement(parent, 'use', {'href' : "#timemarker",
+                                  'id'   : "timemarker_" + player.name,
+                                  'x'    : str(x),
+                                  'y'    : str(y),
+                                  'time' : "0",
+                                  'class': "timemarker",
+                                  'style': "fill:" + player.colour})
+
+
+def draw_players(svg):
+    players_group = etree.SubElement(svg, 'g', {'id': 'players'})
+    for index, player in enumerate(players):
+        player_group = etree.SubElement(players_group, 'g', {'id': player.name})
+        draw_time_marker(player_group, player, (0,15-index*4))
+        draw_ship(player_group, player, (index*(ship_width+10) + 50,50))
+
 def main():
     svg = etree.Element("svg", {"width" : str(width), "height": str(height), "id": "gameboard"})
+    timemarker_symbol(svg)
     etree.SubElement(svg, 'image', {'href' : 'bg.jpeg'})
     [width_timeline, height_timeline] = draw_timeline(svg)
     svg.set('width', str(width_timeline))
@@ -313,25 +358,11 @@ def main():
     for planet in planets:
         draw_planet(svg,planet,(width_timeline/2,height_timeline/2))
 
-    draw_ship(svg,(width_timeline/2,height_timeline/2),"#FF00FF","player1")
+    draw_players(svg)
+    draw_sun(svg, (width_timeline,height_timeline), hex_size)
 
     with open("gameboard.svg","w") as f:
         f.write(etree.tostring(svg, pretty_print=True))
-
-
-"""
-    #TODO try catch here. Instead generate new svg if html not existened or other than expected
-    tree = html.parse(filename)
-    gameboard = tree.getroot().get_element_by_id("gameboard")
-    parent = gameboard.getparent()
-    parent.replace(gameboard,svg)
-    
-    print(etree.tostring(svg, pretty_print=True))
-    #write to file
-    with open(filename,"w") as f:
-        f.write(etree.tostring(tree, pretty_print=True))
-"""
-    
 
 
 
