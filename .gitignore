@@ -1,3 +1,7 @@
 *.svg
 node_modules
 package-lock.json
+#Visual Studio Code stuff
+launch.json
+config.py
+objectdb
