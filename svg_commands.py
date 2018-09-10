@@ -4,7 +4,6 @@ Module containing Svg class and helper functions
 """
 import math
 from lxml import etree
-import lxml
 
 
 def json_to_style(json):
@@ -25,11 +24,11 @@ class Svg(object):
     """
     def __init__(self, root=None, width=0, height=0, id_name="svg_element"):
         if root is None:
-            self.root = lxml.etree.Element("svg",
-                                           {"width": str(width),
-                                            "height": str(height),
-                                            "id": id_name
-                                           })
+            self.root = etree.Element("svg",
+                                      {"width": str(width),
+                                       "height": str(height),
+                                       "id": id_name
+                                      })
         else:
             self.root = root
 
@@ -61,11 +60,12 @@ class Svg(object):
         (center_x, center_y) = center
         style = {
             'stroke': stroke_colour,
-            'stroke-width': stroke_width,
-            'stroke-opacity': stroke_opacity
+            'stroke-width': str(stroke_width),
+            'stroke-opacity': str(stroke_opacity),
         }
-        if fill:
-            style['fill'] = str(fill)
+
+        if fill is not None:
+            style['fill'] = fill
             style['opacity'] = str(opacity)
 
         ell_attribs = {
@@ -139,7 +139,7 @@ class Svg(object):
             self,
             position,
             content,
-            font_size="8pt",
+            font_size=8,
             font_colour="#000000",
             text_align="center",
             text_anchor="middle"):
@@ -149,8 +149,8 @@ class Svg(object):
         (position_x, position_y) = position
         style = {
             'text-align': text_align,
-            'text_anchor': text_anchor,
-            'font_size': font_size
+            'text-anchor': text_anchor,
+            'font-size': str(font_size) + "pt"
         }
         attributes = {
             'style': json_to_style(style),
@@ -299,13 +299,18 @@ class Svg(object):
         disc = etree.SubElement(self.root, 'use', arguments)
         return Svg(disc)
 
-    def create_image(self, parent, image_name):
+    def create_image(self, image_name):
         """
         Create an image in root and return it.
         """
-        image = etree.SubElement(parent, 'image', {'href': image_name})
+        image = etree.SubElement(self.root, 'image', {'href': image_name})
         return Svg(image)
 
+    def get_string(self):
+        """
+        return root element converted to string
+        """
+        return etree.tostring(self.root, pretty_print=True)
 
 def main():
     """
