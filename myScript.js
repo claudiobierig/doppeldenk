@@ -6,19 +6,19 @@ const number_of_markers_to_y = [15,19,23,27];
 function getRandomArbitrary(min, max)
 {
     return Math.floor(Math.random() * (max - min) + min);
-};
+}
 
 function getRandomPlanet()
 {
 	const planets = document.getElementsByClassName("planet");
 	const i = getRandomArbitrary(0,planets.length);
 	return planets[i].id;
-};
+}
 
 function isActive(hex)
 {
 	return hex.style["fill-opacity"] == "1";
-};
+}
 
 function getActiveHex(planetName)
 {
@@ -30,7 +30,7 @@ function getActiveHex(planetName)
 			return hexes[i];
 		}
 	}
-};
+}
 
 function getActivePlayer()
 {
@@ -47,12 +47,12 @@ function getActivePlayer()
 			}
 	}
 	return active_player.parentNode;
-};
+}
 
 function getActiveShip()
 {
 	return getShip(getActivePlayer().getAttribute("id"));
-};
+}
 
 function clickHex(hex)
 {
@@ -63,7 +63,7 @@ function clickHex(hex)
     	setShipPosition(hex, getActivePlayer().getAttribute("id"));
     	increaseTime(distance, getActivePlayer().getAttribute("id"));
     }
-};
+}
 
 function isShipAtHex(ship, hex)
 {
@@ -81,15 +81,15 @@ function computeDistance(position1, position2)
 	const q_2 = parseInt(position2.getAttribute("coord_q"));
 	const r_2 = parseInt(position2.getAttribute("coord_r"));
 	return Math.max(Math.abs(q_1-q_2), Math.abs(r_1-r_2), Math.abs(q_1+r_1 - q_2 - r_2));
-};
+}
 
 function mouseOverHex(hex)
 {
-};
+}
 
 function mouseOutHex(hex)
 {
-};
+}
 
 function resetTime()
 {
@@ -101,7 +101,7 @@ function resetTime()
 		let marker = document.getElementById("timemarker_" + player_names[i]);
 		setMarker(marker, 0);
 	}
-};
+}
 
 function startingPositionPlanet(planet)
 {
@@ -110,7 +110,7 @@ function startingPositionPlanet(planet)
 	for (let i = 0; i < hexes.length; i++) {
 		fillPlanet(i==newStartingPosition, hexes[i]);
 	}
-};
+}
 
 function fillPlanet(planetActive, hex)
 {
@@ -122,20 +122,20 @@ function fillPlanet(planetActive, hex)
 	{
 		hex.style["fill-opacity"] = "0.2";
 	}
-};
+}
 
 function startingPositionShip(player_name)
 {
 	const startingPlanet = getRandomPlanet();
 	const startingHex = getActiveHex(startingPlanet);
 	setShipPosition(startingHex, player_name);
-};
+}
 
 
 function getShipHangar(hex, ship)
 {
 	//TODO: make this dependent on shipName and hexsize
-	let newPosition = [0,0]
+	let newPosition = [0,0];
 	const shipName = ship.getAttribute("id");
 	if(shipName == "ship_player1"){
 		newPosition = [hex.points[5].x - ship.getAttribute("width") - 3, hex.points[5].y - ship.getAttribute("height")/2];
@@ -147,7 +147,7 @@ function getShipHangar(hex, ship)
 		newPosition = [hex.points[3].x - ship.getAttribute("width")/2, 3 + hex.points[3].y + ship.getAttribute("height")];
 	}
 	return newPosition;
-};
+}
 
 function setShipPosition(toHex, player_name)
 {
@@ -157,7 +157,7 @@ function setShipPosition(toHex, player_name)
 	ship.setAttribute("y",newPosition[1]);
 	ship.setAttribute("coord_q",toHex.getAttribute("coord_q"));
 	ship.setAttribute("coord_r",toHex.getAttribute("coord_r"));
-};
+}
 
 function startingPosition()
 {
@@ -169,7 +169,7 @@ function startingPosition()
 	for(let i=0; i<player_names.length; i++){
 		startingPositionShip(player_names[i]);
 	}
-};
+}
 
 function rotatePlanet(planetName)
 {
@@ -190,7 +190,7 @@ function rotatePlanet(planetName)
 		}	
 	}
 	
-};
+}
 
 function rotatePlanets()
 {
@@ -198,7 +198,7 @@ function rotatePlanets()
 	for(let i=0;i<planets.length;i++){
 		rotatePlanet(planets[i].id);
 	}
-};
+}
 
 
 function executeEvent(event)
@@ -208,7 +208,7 @@ function executeEvent(event)
 	{
 		rotatePlanets();
 	}
-};
+}
 
 function setMarker(marker, time)
 {
@@ -226,7 +226,7 @@ function setMarker(marker, time)
 	let player = marker.parentNode;
 	let players = player.parentNode;
 	players.appendChild(player);
-};
+}
 
 
 function executeEvents(start)
@@ -241,7 +241,7 @@ function executeEvents(start)
 			executeEvent(events[i]);
 		}
 	}
-};
+}
 
 function getShip(player_name)
 {
@@ -251,7 +251,7 @@ function getShip(player_name)
 function getMarker(player_name)
 {
 	return document.getElementById("timemarker_" + player_name);
-};
+}
 
 
 function increaseTime(strTime, player_name)
@@ -262,6 +262,6 @@ function increaseTime(strTime, player_name)
 	const timeEnd = timeStart + timePassed;
 	setMarker(marker,timeEnd);
 	executeEvents(timeStart);
-};
+}
 
 startingPosition();

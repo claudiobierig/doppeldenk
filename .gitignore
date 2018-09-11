@@ -2,6 +2,7 @@
 *.pyc
 node_modules
 package-lock.json
+.jshintrc
 #Visual Studio Code stuff
 launch.json
 config.py
