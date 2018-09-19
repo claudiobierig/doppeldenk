@@ -3,7 +3,10 @@
 generate the main gameboard
 """
 import math
+from gamesettings import PLANETS
+from gamesettings import PLAYERS
 from svg_commands import Svg
+import generate_svg_symbols
 
 HEX_SIZE = 20
 FONT_SIZE = 6
@@ -18,44 +21,6 @@ SIZE_TIMEBOX = 30
 NUMBER_TIMEBOXES_WIDTH = 31
 NUMBER_TIMEBOXES_HEIGHT = 21
 PADDING_TIMEBOXES = 20
-
-
-class Planet(object):
-    """
-    Data class for one planet
-    """
-    def __init__(self, radius, col, number_hexes, planet_name):
-        (radius_x, radius_y) = radius
-        self.radius_x = radius_x
-        self.radius_y = radius_y
-        self.colour = col
-        self.number_of_hexes = number_hexes
-        self.name = planet_name
-
-
-class Player(object):
-    """
-    Data class for one player
-    """
-    def __init__(self, player_name, col):
-        self.name = player_name
-        self.colour = col
-
-
-PLANETS = [
-    Planet((150, 100), '#FF0000', 3, 'alpha'),
-    Planet((210, 130), '#FF8000', 5, 'beta'),
-    Planet((260, 180), '#FFFF00', 7, 'gamma'),
-    Planet((320, 210), '#008000', 11, 'delta'),
-    Planet((370, 240), '#1E90FF', 13, 'epsilon')
-]
-
-PLAYERS = [
-    Player("player1", "#FF0000"),
-    Player("player2", "#0000FF"),
-    Player("player3", "#FFFFFF"),
-    Player("player4", "#00FF00")
-]
 
 WIDTH = NUMBER_TIMEBOXES_WIDTH * SIZE_TIMEBOX
 HEIGHT = NUMBER_TIMEBOXES_HEIGHT * SIZE_TIMEBOX
@@ -96,7 +61,7 @@ def draw_planet(svg, planet, center):
     """
     (center_x, center_y) = center
     layer = svg.create_subgroup(planet.name, class_name='planet')
-    layer.create_ellipse((planet.rx, planet.ry),
+    layer.create_ellipse((planet.radius_x, planet.radius_y),
                          (center_x, center_y),
                          planet.colour,
                          planet.name + "_ellipse",
@@ -106,10 +71,10 @@ def draw_planet(svg, planet, center):
     degrees = range(0, planet.number_of_hexes)
     degrees[:] = [x * 2 * math.pi / planet.number_of_hexes for x in degrees]
     positions = [
-        (planet.rx *
+        (planet.radius_x *
          math.cos(x) +
          center_x,
-         planet.ry *
+         planet.radius_y *
          math.sin(x) +
          center_y) for x in degrees]
     print_hexes(positions, planet.colour, layer, planet.name)
@@ -255,12 +220,9 @@ def draw_players(svg):
             'time': '0',
             'class': 'timemarker'
         }
-        player_group.create_3d_disc(
-            "timemarker_" + player.name,
-            (0,
-             15 - index * 4),
-            fill_colour=player.colour,
-            additional_arguments=additional_arguments_disc)
+        player_group.use_symbol("disc_3d", "timemarker_" + player.name,
+                                (0, 15 - index*4), fill_colour=player.colour,
+                                additional_arguments=additional_arguments_disc)
         player_group.create_rectangle((index * (SHIP_WIDTH + 10) + 50, 50),
                                       (SHIP_WIDTH, SHIP_HEIGHT),
                                       "ship_" + player.name,
@@ -274,7 +236,7 @@ def main():
     draw the main board
     """
     svg = Svg(width=str(WIDTH), height=str(HEIGHT), id_name="gameboard")
-    svg.add_posibility_for_disc_3d()
+    generate_svg_symbols.add_posibility_for_disc_3d(svg)
     svg.create_image("bg.jpeg")
     draw_timeline(svg)
     for planet in PLANETS:

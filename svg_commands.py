@@ -235,69 +235,86 @@ class Svg(object):
         circle = etree.SubElement(self.root, 'circle', arguments)
         return Svg(circle)
 
-    def add_posibility_for_disc_3d(self):
+    def create_line(self, position_start, position_end,
+                    stroke_colour="#000000",
+                    stroke_width="1"):
         """
-        Create a symbol, which represents a 3d disc in root and return it
+        create a line in root and return it
         """
-        symbol = Svg(etree.SubElement(self.root,
-                                      'symbol',
-                                      {'id': 'disc_3d',
-                                       'view_box': '0 0 30 15'
-                                      }))
-        symbol.create_ellipse((12, 4), (15, 9), "#000000",
-                              "bottom", stroke_opacity="1")
-        symbol.create_rectangle((3, 5), (24, 4), "middle")
-        symbol.create_ellipse((12, 4), (15, 5), "#000000",
-                              "top", stroke_opacity="1")
-        linestyle = {
-            'stroke': '#000000',
-            'stroke-width': '1',
+        (start_x, start_y) = position_start
+        (end_x, end_y) = position_end
+        style = {
+            'stroke': stroke_colour,
+            'stroke-width': str(stroke_width)
         }
-        etree.SubElement(symbol.root, 'line',
-                         {
-                             'x1': "3",
-                             'x2': "3",
-                             'y1': "5",
-                             'y2': "9",
-                             'style': json_to_style(linestyle),
-                         }
-                        )
-        etree.SubElement(symbol.root, 'line',
-                         {
-                             'x1': "27",
-                             'x2': "27",
-                             'y1': "5",
-                             'y2': "9",
-                             'style': json_to_style(linestyle),
-                         })
-        return symbol
+        arguments = {
+            'x1' : str(start_x),
+            'x2' : str(end_x),
+            'y1' : str(start_y),
+            'y2' : str(end_y),
+            'style' : json_to_style(style)
+        }
+        line = etree.SubElement(self.root, 'line', arguments)
+        return Svg(line)
 
-    def create_3d_disc(self, id_name, position,
-                       fill_colour, additional_arguments=None):
+    def create_path(self, commands, stroke_colour, fill_colour):
         """
-        Create a 3d disc in root and return it.
-        This will only work when add_posibility_for_disc_3d was called before.
+        create a path in root and return it
+        """
+        arguments = {
+            'd' : commands,
+            'stroke' : stroke_colour,
+            'fill' : fill_colour
+        }
+        path = etree.SubElement(self.root, 'path', arguments)
+        return Svg(path)
+
+    def create_polygon(self, points, fill_colour):
+        """
+        create a polygon in root and return it
+        """
+        style = {
+            'fill' : fill_colour
+        }
+        arguments = {
+            'style' : json_to_style(style),
+            'points' : points
+        }
+        polygon = etree.SubElement(self.root, 'polygon', arguments)
+        return Svg(polygon)
+
+    def use_symbol(self, symbol_name, id_name, position,
+                   fill_colour=None, additional_arguments=None):
+        """use a symbol which had to be defined earlier
+
+        Arguments:
+            symbol_name {string} -- name of the symbol
+            id_name {string} -- id
+            position {(int, int)} -- (x, y)
+
+        Keyword Arguments:
+            fill_colour {string} -- colour (default: {None})
+            additional_arguments {json} -- any additional arguments (default: {None})
         """
         (position_x, position_y) = position
         if additional_arguments is None:
             additional_arguments = {}
 
-        style = {
-            'fill': fill_colour
-        }
         arguments = {
-            'href': '#disc_3d',
+            'href': '#' + symbol_name,
             'id': id_name,
             'x': str(position_x),
-            'y': str(position_y),
-            'style': json_to_style(style)
+            'y': str(position_y)
         }
+
+        if fill_colour is not None:
+            arguments["style"] = json_to_style({'fill' : fill_colour})
 
         for attribute, value in additional_arguments.items():
             arguments[attribute] = value
 
-        disc = etree.SubElement(self.root, 'use', arguments)
-        return Svg(disc)
+        symbol = etree.SubElement(self.root, 'use', arguments)
+        return Svg(symbol)
 
     def create_image(self, image_name):
         """
