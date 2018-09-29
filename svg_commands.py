@@ -32,7 +32,7 @@ class Svg(object):
         else:
             self.root = root
 
-    def create_subgroup(self, group_id, class_name=None):
+    def create_subgroup(self, group_id, class_name=None, additional_arguments=None):
         """
         create a subgroup in root and return it
         """
@@ -40,6 +40,8 @@ class Svg(object):
         if class_name is not None:
             arguments['class'] = str(class_name)
 
+        if additional_arguments is not None:
+            arguments.update(additional_arguments)
         group = etree.SubElement(self.root, 'g', arguments)
         return Svg(group)
 
@@ -257,15 +259,27 @@ class Svg(object):
         line = etree.SubElement(self.root, 'line', arguments)
         return Svg(line)
 
-    def create_path(self, commands, stroke_colour, fill_colour):
+    def create_path(self, commands, stroke_colour=None, fill_colour=None,
+                    id_name=None, additional_arguments=None):
         """
         create a path in root and return it
         """
         arguments = {
-            'd' : commands,
-            'stroke' : stroke_colour,
-            'fill' : fill_colour
+            'd' : commands
         }
+
+        if stroke_colour is not None:
+            arguments["stroke"] = stroke_colour
+
+        if fill_colour is not None:
+            arguments["fill"] = fill_colour
+
+        if id_name is not None:
+            arguments['id'] = id_name
+
+        if additional_arguments is not None:
+            arguments.update(additional_arguments)
+
         path = etree.SubElement(self.root, 'path', arguments)
         return Svg(path)
 
@@ -283,30 +297,31 @@ class Svg(object):
         polygon = etree.SubElement(self.root, 'polygon', arguments)
         return Svg(polygon)
 
-    def use_symbol(self, symbol_name, id_name, position,
+    def use_symbol(self, symbol_name, id_name, position=None,
                    fill_colour=None, additional_arguments=None):
         """use a symbol which had to be defined earlier
 
         Arguments:
             symbol_name {string} -- name of the symbol
             id_name {string} -- id
-            position {(int, int)} -- (x, y)
+            position {(int, int)} -- (x, y) (default: {None})
 
         Keyword Arguments:
             fill_colour {string} -- colour (default: {None})
             additional_arguments {json} -- any additional arguments (default: {None})
         """
-        (position_x, position_y) = position
         if additional_arguments is None:
             additional_arguments = {}
 
         arguments = {
             'href': '#' + symbol_name,
-            'id': id_name,
-            'x': str(position_x),
-            'y': str(position_y)
+            'id': id_name
         }
 
+        if position is not None:
+            (position_x, position_y) = position
+            arguments['x'] = str(position_x)
+            arguments['y'] = str(position_y)
         if fill_colour is not None:
             arguments["style"] = json_to_style({'fill' : fill_colour})
 

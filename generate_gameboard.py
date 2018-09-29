@@ -228,7 +228,6 @@ def draw_players(svg):
                                       "ship_" + player.name,
                                       fill_colour=player.colour,
                                       additional_arguments={'class': 'ship'})
-        #draw_ship(player_group, player, (index*(ship_width+10) + 50,50))
 
 
 def main():
