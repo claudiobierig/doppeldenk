@@ -343,7 +343,7 @@ class Svg(object):
         """
         return root element converted to string
         """
-        return etree.tostring(self.root, pretty_print=True)
+        return etree.tostring(self.root, pretty_print=True).decode('utf-8')
 
 def main():
     """

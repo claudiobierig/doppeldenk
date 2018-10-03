@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 generate the resource wheel
 """
@@ -68,7 +68,7 @@ def main():
                                                   gamesettings.RESOURCE_SELL_PRICES)
     draw_background(svg)
     draw_foreground(svg)
-    svg_string = svg.get_string().decode('utf-8')
+    svg_string = svg.get_string()
     print(svg_string)
     with open("wheel.svg", "w") as out_file:
         out_file.write(svg_string)
