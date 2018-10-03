@@ -139,6 +139,7 @@ class Svg(object):
 
     def create_text(
             self,
+            id_name,
             position,
             content,
             font_size=8,
@@ -159,7 +160,7 @@ class Svg(object):
             'x': str(position_x),
             'y': str(position_y),
             'fill': font_colour,
-            'id': content
+            'id': id_name
         }
 
         text = etree.SubElement(self.root, 'text', attributes)

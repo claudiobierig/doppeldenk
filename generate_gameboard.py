@@ -94,8 +94,10 @@ def print_hexes(positions, colour, parent, parentname):
         position_y = hex_center[1] - HEX_SIZE / 2 - FONT_SIZE - FONT_PADDING
         content = str(int(hex_coordinates[0])) + "," + str(int(
             hex_coordinates[1])) + "," + str(int(- hex_coordinates[0] - hex_coordinates[1]))
-        parent.create_text((position_x, position_y), content, font_size=FONT_SIZE,
-                           font_colour="#FFFFFF")
+        parent.create_text(
+            parentname + "_coordinates_" + str(index), (position_x, position_y),
+            content, font_size=FONT_SIZE, font_colour="#FFFFFF"
+        )
 
 
 def draw_timebox(position, size, name, time, parent):
@@ -119,8 +121,11 @@ def draw_timebox(position, size, name, time, parent):
                             stroke_width=1,
                             fill_opacity=1,
                             additional_arguments=additional_arguments)
-    parent.create_text((position_x + width / 2, position_y + height / 2 + 4), str(time),
-                       font_size=8)
+    parent.create_text(
+        "timebox_text_" + str(time),
+        (position_x + width / 2, position_y + height / 2 + 4),
+        str(time), font_size=8
+    )
 
     events = []
     if time % 20 == 0:
@@ -227,6 +232,7 @@ def draw_players(svg):
                                       (SHIP_WIDTH, SHIP_HEIGHT),
                                       "ship_" + player.name,
                                       fill_colour=player.colour,
+                                      stroke_colour="black",
                                       additional_arguments={'class': 'ship'})
 
 

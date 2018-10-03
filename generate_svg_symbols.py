@@ -113,8 +113,10 @@ def add_posibility_for_wheel(
         for x in degrees_1
     ]
     for index, position in enumerate(position_numbers_1):
-        symbol.create_text(position, str(values_1[index]),
-                           font_size=font_size, font_colour=colour_2)
+        symbol.create_text(
+            "wheel_1_" + str(values_1[index]), position, str(values_1[index]),
+            font_size=font_size, font_colour=colour_2
+        )
 
     number_of_segments_2 = len(values_2)
     degrees_2 = list(reversed(range(0, number_of_segments_2)))
@@ -130,8 +132,10 @@ def add_posibility_for_wheel(
     ]
 
     for index, position in enumerate(position_numbers_2):
-        symbol.create_text(position, str(values_2[index]),
-                           font_size=font_size, font_colour=colour_1)
+        symbol.create_text(
+            "wheel_2_" + str(values_2[index]), position, str(values_2[index]),
+            font_size=font_size, font_colour=colour_1
+        )
 
     return symbol
 

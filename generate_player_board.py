@@ -31,6 +31,7 @@ def create_playerboard(svg, player, position):
     )
     font_size = 8
     subgroup.create_text(
+        "playerboard_name_" + player.name,
         [position[0] + 10, position[1] + 10 + font_size],
         player.name,
         text_anchor="left",
@@ -53,6 +54,7 @@ def create_playerboard(svg, player, position):
         [position[0] + 15, position[1] + 35]
     )
     subgroup.create_text(
+        "coins_" + player.name,
         [position[0] + 55, position[1] + 40 + font_size],
         "0",
         text_anchor="end",
