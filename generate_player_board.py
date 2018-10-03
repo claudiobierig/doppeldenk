@@ -95,8 +95,8 @@ def main():
     for index, player in enumerate(PLAYERS):
         create_playerboard(svg, player, [10, 5 + 80*index])
 
-    svg_string = svg.get_string()
-    print svg_string
+    svg_string = svg.get_string().decode('utf-8')
+    print(svg_string)
     with open("playerboard.svg", "w") as out_file:
         out_file.write(svg_string)
 

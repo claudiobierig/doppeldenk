@@ -25,8 +25,8 @@ def draw_background(svg):
                             fill_colour=planet.colour)
 
     number_of_segments = len(gamesettings.RESOURCE_BUY_PRICES)
-    degrees_start = range(0, number_of_segments)
-    degrees_end = range(number_of_segments, 2*number_of_segments)
+    degrees_start = list(range(0, number_of_segments))
+    degrees_end = list(range(number_of_segments, 2*number_of_segments))
     degrees_start[:] = [x * math.pi / number_of_segments for x in degrees_start]
     degrees_end[:] = [x * math.pi / number_of_segments for x in degrees_end]
     positions_start = [
@@ -68,8 +68,8 @@ def main():
                                                   gamesettings.RESOURCE_SELL_PRICES)
     draw_background(svg)
     draw_foreground(svg)
-    svg_string = svg.get_string()
-    print svg_string
+    svg_string = svg.get_string().decode('utf-8')
+    print(svg_string)
     with open("wheel.svg", "w") as out_file:
         out_file.write(svg_string)
 

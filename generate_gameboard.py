@@ -68,7 +68,7 @@ def draw_planet(svg, planet, center):
                          fill="none")
 
     # compute degree where the hexes should be
-    degrees = range(0, planet.number_of_hexes)
+    degrees = list(range(0, planet.number_of_hexes))
     degrees[:] = [x * 2 * math.pi / planet.number_of_hexes for x in degrees]
     positions = [
         (planet.radius_x *
@@ -178,7 +178,7 @@ def draw_events_for_one_timestep(
             center_x = position_x + 3 * width / 4
             center_y = position_y + 3 * height / 4
         else:
-            print "error: too many events"
+            print("error: too many events")
 
         draw_event((center_x, center_y), radius, event, str(time), parent)
 
@@ -249,8 +249,8 @@ def main():
 
     draw_sun(svg, (WIDTH, HEIGHT), HEX_SIZE)
     draw_players(svg)
-    svg_string = svg.get_string()
-    print svg_string
+    svg_string = svg.get_string().decode('utf-8')
+    print(svg_string)
     with open("gameboard.svg", "w") as out_file:
         out_file.write(svg_string)
 

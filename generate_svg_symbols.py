@@ -92,7 +92,7 @@ def add_posibility_for_wheel(
                           colour_2)
 
     number_of_segments = len(values_1) + len(values_2)
-    degrees = range(0, number_of_segments)
+    degrees = list(range(0, number_of_segments))
     degrees[:] = [2 * x * math.pi / number_of_segments for x in degrees]
     positions = [(radius * math.cos(x) + size / 2,
                   radius * math.sin(x) + size / 2)
@@ -104,7 +104,7 @@ def add_posibility_for_wheel(
     padding_numbers = 10
     radius_numbers = radius - padding_numbers
     number_of_segments_1 = len(values_1)
-    degrees_1 = range(0, number_of_segments_1)
+    degrees_1 = list(range(0, number_of_segments_1))
     degrees_1[:] = [- math.pi / 2 + (2 * x + 1) * math.pi / number_of_segments
                     for x in degrees_1]
     position_numbers_1 = [
@@ -123,8 +123,6 @@ def add_posibility_for_wheel(
     degrees_2[:] = [math.pi / 2 + (2 * x + 1) * math.pi / number_of_segments
                     for x in degrees_2]
 
-    print degrees_1
-    print degrees_2
     position_numbers_2 = [
         (radius_numbers * math.cos(x) + size / 2,
          radius_numbers * math.sin(x) + size / 2 + font_size / 2)
@@ -488,7 +486,7 @@ def main():
     """
     no main implemented
     """
-    print "no main implemented"
+    print("no main implemented")
 
 
 if __name__ == '__main__':

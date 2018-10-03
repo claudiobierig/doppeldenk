@@ -349,7 +349,7 @@ def main():
     """
     no main implemented
     """
-    print "no main implemented"
+    print("no main implemented")
 
 
 if __name__ == '__main__':
