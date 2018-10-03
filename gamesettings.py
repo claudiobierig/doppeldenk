@@ -2,6 +2,7 @@
 """
 gamesettings
 """
+import json
 
 class Planet(object):
     """
@@ -24,22 +25,26 @@ class Player(object):
         self.name = player_name
         self.colour = col
 
+JSON_FILE = "gamesettings.json"
+with open(JSON_FILE, "r") as json_file:
+    JSON_CONTENT = json.load(json_file)
 
 PLANETS = [
-    Planet((150, 100), '#FF0000', 3, 'alpha'),
-    Planet((210, 130), '#FF8000', 5, 'beta'),
-    Planet((260, 180), '#FFFF00', 7, 'gamma'),
-    Planet((320, 210), '#008000', 11, 'delta'),
-    Planet((370, 240), '#1E90FF', 13, 'epsilon')
+    Planet(
+        planet["radius"],
+        planet["colour"],
+        planet["number_hexes"],
+        planet["name"]
+    ) for planet in JSON_CONTENT["planets"]
 ]
 
 PLAYERS = [
-    Player("player1", "#FF0000"),
-    Player("player2", "#0000FF"),
-    Player("player3", "#FFFFFF"),
-    Player("player4", "#00FF00")
+    Player(
+        player["name"],
+        player["colour"]
+    ) for player in JSON_CONTENT["players"]
 ]
 
-RESOURCE_BUY_PRICES = [2, 3, 4, 5, 6, 7]
+RESOURCE_BUY_PRICES = JSON_CONTENT["resource_buy_prices"]
 
-RESOURCE_SELL_PRICES = [1, 2, 3, 4, 5, 6]
+RESOURCE_SELL_PRICES = JSON_CONTENT["resource_sell_prices"]
