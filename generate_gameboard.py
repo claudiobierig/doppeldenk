@@ -250,7 +250,7 @@ def main():
     draw_sun(svg, (WIDTH, HEIGHT), HEX_SIZE)
     draw_players(svg)
     svg_string = svg.get_string()
-    print(svg_string)
+    #print(svg_string)
     with open("gameboard.svg", "w") as out_file:
         out_file.write(svg_string)
 
