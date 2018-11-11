@@ -2,9 +2,9 @@
 """
 generate a player board
 """
-from gamesettings import PLAYERS
-from svg_commands import Svg
-import generate_svg_symbols
+from spacetrading.create_svg.gamesettings import PLAYERS
+from spacetrading.create_svg.svg_commands import Svg
+from spacetrading.create_svg import generate_svg_symbols
 
 WIDTH = 160
 HEIGHT = 320
@@ -96,9 +96,10 @@ def main():
         create_playerboard(svg, player, [10, 5 + 80*index])
 
     svg_string = svg.get_string()
+    return svg_string
     #print(svg_string)
-    with open("playerboard.svg", "w") as out_file:
-        out_file.write(svg_string)
+    #with open("playerboard.svg", "w") as out_file:
+    #    out_file.write(svg_string)
 
 
 if __name__ == '__main__':
