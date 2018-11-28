@@ -345,6 +345,9 @@ class Svg(object):
         """
         return etree.tostring(self.root, pretty_print=True).decode('utf-8')
 
+    def __str__(self):
+        return get_string(self)
+
 def main():
     """
     no main implemented

@@ -5,13 +5,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 
 from spacetrading import models
-from spacetrading.create_svg import generate_player_board
+#from create_svg import generate_player_board
 from spacetrading import forms
 
 @login_required
 def index(request):
     """View function for home page of site."""
-    svg_string = generate_player_board.main()
+    svg_string = "hello"#generate_player_board.main()
     context = {
         'num_books': "1",
         'svg': svg_string
