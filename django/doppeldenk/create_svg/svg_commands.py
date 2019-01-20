@@ -22,17 +22,22 @@ class Svg(object):
     """
     Class managing SVG elements via lxml.etree
     """
+
     def __init__(self, root=None, width=0, height=0, id_name="svg_element"):
         if root is None:
             self.root = etree.Element("svg",
                                       {"width": str(width),
                                        "height": str(height),
                                        "id": id_name
-                                      })
+                                       })
         else:
             self.root = root
 
-    def create_subgroup(self, group_id, class_name=None, additional_arguments=None):
+    def create_subgroup(
+            self,
+            group_id,
+            class_name=None,
+            additional_arguments=None):
         """
         create a subgroup in root and return it
         """
@@ -253,11 +258,11 @@ class Svg(object):
             'stroke-width': str(stroke_width)
         }
         arguments = {
-            'x1' : str(start_x),
-            'x2' : str(end_x),
-            'y1' : str(start_y),
-            'y2' : str(end_y),
-            'style' : json_to_style(style)
+            'x1': str(start_x),
+            'x2': str(end_x),
+            'y1': str(start_y),
+            'y2': str(end_y),
+            'style': json_to_style(style)
         }
         line = etree.SubElement(self.root, 'line', arguments)
         return Svg(line)
@@ -268,7 +273,7 @@ class Svg(object):
         create a path in root and return it
         """
         arguments = {
-            'd' : commands
+            'd': commands
         }
 
         if stroke_colour is not None:
@@ -291,11 +296,11 @@ class Svg(object):
         create a polygon in root and return it
         """
         style = {
-            'fill' : fill_colour
+            'fill': fill_colour
         }
         arguments = {
-            'style' : json_to_style(style),
-            'points' : points
+            'style': json_to_style(style),
+            'points': points
         }
         polygon = etree.SubElement(self.root, 'polygon', arguments)
         return Svg(polygon)
@@ -326,7 +331,7 @@ class Svg(object):
             arguments['x'] = str(position_x)
             arguments['y'] = str(position_y)
         if fill_colour is not None:
-            arguments["style"] = json_to_style({'fill' : fill_colour})
+            arguments["style"] = json_to_style({'fill': fill_colour})
 
         for attribute, value in additional_arguments.items():
             arguments[attribute] = value
@@ -349,7 +354,8 @@ class Svg(object):
         return etree.tostring(self.root, pretty_print=True).decode('utf-8')
 
     def __str__(self):
-        return get_string(self)
+        return self.get_string()
+
 
 def main():
     """
