@@ -35,7 +35,8 @@ def get_hex_coordinates(position, hex_size):
     """
     convert position to hex coordinate
     """
-    (position_x, position_y) = (position[0] - WIDTH/2, position[1] - HEIGHT/2)
+    (position_x, position_y) = (
+        position[0] - WIDTH / 2, position[1] - HEIGHT / 2)
     coord_q = (2. / 3 * position_x) / hex_size
     coord_r = (-1. / 3 * position_x + math.sqrt(3) / 3 * position_y) / hex_size
     coord_s = -(coord_q + coord_r)
@@ -43,7 +44,6 @@ def get_hex_coordinates(position, hex_size):
     rounded_q = round(coord_q)
     rounded_r = round(coord_r)
     rounded_s = round(coord_s)
-    
 
     q_diff = abs(rounded_q - coord_q)
     r_diff = abs(rounded_r - coord_r)
@@ -65,20 +65,25 @@ def get_hex_center(coordinates, hex_size):
     """
     (coord_q, coord_r) = coordinates
     position_x = hex_size * 3. / 2 * coord_q
-    position_y = hex_size * (math.sqrt(3) / 2 * coord_q + math.sqrt(3) * coord_r)
-    return [position_x + WIDTH/2, position_y + HEIGHT/2]
+    position_y = hex_size * \
+        (math.sqrt(3) / 2 * coord_q + math.sqrt(3) * coord_r)
+    return [position_x + WIDTH / 2, position_y + HEIGHT / 2]
+
 
 def axial_to_oddq(axial_coordinates):
     cube_z = axial_coordinates[0] + axial_coordinates[1]
     col = axial_coordinates[0]
-    row = cube_z + (axial_coordinates[0] - (axial_coordinates[0]&1))/2
+    row = cube_z + (axial_coordinates[0] - (axial_coordinates[0] & 1)) / 2
     return [col, row]
+
 
 def oddq_to_axial(oddq_coordinates):
     x = oddq_coordinates[1]
-    z = oddq_coordinates[0] - (oddq_coordinates[1] -(oddq_coordinates[1]&1))/2
-    y = -x-z
+    z = oddq_coordinates[0] - \
+        (oddq_coordinates[1] - (oddq_coordinates[1] & 1)) / 2
+    y = -x - z
     return [x, y]
+
 
 def draw_planet(svg, planet, center):
     """
@@ -126,17 +131,23 @@ def print_hexes(positions, colour, parent, parentname):
         content = str(int(hex_coordinates[0])) + "," + str(int(
             hex_coordinates[1])) + "," + str(int(- hex_coordinates[0] - hex_coordinates[1]))
         parent.create_text(
-            parentname + "_coordinates_" + str(index), (position_x, position_y),
-            content, font_size=FONT_SIZE, font_colour="#FFFFFF"
-        )
+            parentname +
+            "_coordinates_" +
+            str(index),
+            (position_x,
+             position_y),
+            content,
+            font_size=FONT_SIZE,
+            font_colour="#FFFFFF")
+
 
 def draw_hex_grid(parent):
-    for row in range(-7,8):
-        for column in range(-13,14):
+    for row in range(-7, 8):
+        for column in range(-13, 14):
             coords = oddq_to_axial([row, column])
             hex_center = get_hex_center(coords, HEX_SIZE)
             parent.create_hex(
-                "background_hex_"+str(row)+"_"+str(column),
+                "background_hex_" + str(row) + "_" + str(column),
                 hex_center,
                 coords,
                 HEX_SIZE,
@@ -147,6 +158,7 @@ def draw_hex_grid(parent):
                 stroke_opacity="0.5",
                 stroke_width="0.5"
             )
+
 
 def draw_timebox(position, size, name, time, parent):
     """
@@ -179,7 +191,8 @@ def draw_timebox(position, size, name, time, parent):
     if time % 20 == 0:
         events.append("planet_rotation")
 
-    draw_events_for_one_timestep((position_x, position_y), (width, height), events, time, parent)
+    draw_events_for_one_timestep(
+        (position_x, position_y), (width, height), events, time, parent)
 
 
 def draw_event(center, radius, event, time, parent):
@@ -259,7 +272,8 @@ def draw_sun(svg, size, radius):
     draw the sun in the middle
     """
     (width, height) = size
-    svg.create_circle((width / 2, height / 2), radius, 'sun', fill_colour='yellow')
+    svg.create_circle((width / 2, height / 2), radius,
+                      'sun', fill_colour='yellow')
 
 
 def draw_players(svg):
@@ -274,7 +288,7 @@ def draw_players(svg):
             'class': 'timemarker'
         }
         player_group.use_symbol("disc_3d", "timemarker_" + player.name,
-                                (0, 15 - index*4), fill_colour=player.colour,
+                                (0, 15 - index * 4), fill_colour=player.colour,
                                 additional_arguments=additional_arguments_disc)
         player_group.create_rectangle((index * (SHIP_WIDTH + 10) + 50, 50),
                                       (SHIP_WIDTH, SHIP_HEIGHT),
@@ -299,7 +313,7 @@ def main():
     draw_sun(svg, (WIDTH, HEIGHT), HEX_SIZE)
     draw_players(svg)
     svg_string = svg.get_string()
-    #print(svg_string)
+    # print(svg_string)
     with open("gameboard.svg", "w") as out_file:
         out_file.write(svg_string)
 
