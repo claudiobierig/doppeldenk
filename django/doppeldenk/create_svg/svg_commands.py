@@ -95,7 +95,8 @@ class Svg(object):
             stroke_width="1",
             onclick="clickHex(this)",
             onmouseover="mouseOverHex(this)",
-            onmouseout="mouseOutHex(this)"):
+            onmouseout="mouseOutHex(this)",
+            stroke_opacity="1"):
         """
         Create a hex in root and return it
         """
@@ -119,6 +120,7 @@ class Svg(object):
         style = {
             'stroke': stroke_colour,
             'stroke-width': str(stroke_width),
+            'stroke-opacity': str(stroke_opacity),
             'fill': fill_colour,
             'fill-opacity': str(fill_opacity)
         }
@@ -337,6 +339,7 @@ class Svg(object):
         Create an image in root and return it.
         """
         image = etree.SubElement(self.root, 'image', {'href': image_name})
+        image.text = " "
         return Svg(image)
 
     def get_string(self):

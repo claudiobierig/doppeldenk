@@ -35,10 +35,28 @@ def get_hex_coordinates(position, hex_size):
     """
     convert position to hex coordinate
     """
-    (position_x, position_y) = position
+    (position_x, position_y) = (position[0] - WIDTH/2, position[1] - HEIGHT/2)
     coord_q = (2. / 3 * position_x) / hex_size
     coord_r = (-1. / 3 * position_x + math.sqrt(3) / 3 * position_y) / hex_size
-    return [round(coord_q), round(coord_r)]
+    coord_s = -(coord_q + coord_r)
+
+    rounded_q = round(coord_q)
+    rounded_r = round(coord_r)
+    rounded_s = round(coord_s)
+    
+
+    q_diff = abs(rounded_q - coord_q)
+    r_diff = abs(rounded_r - coord_r)
+    s_diff = abs(rounded_s - coord_s)
+
+    if q_diff > r_diff and q_diff > s_diff:
+        rounded_q = -(rounded_r + rounded_s)
+    elif r_diff > s_diff:
+        rounded_r = -(rounded_q + rounded_s)
+    else:
+        rounded_s = -(rounded_q + rounded_r)
+
+    return [rounded_q, rounded_r]
 
 
 def get_hex_center(coordinates, hex_size):
@@ -48,8 +66,19 @@ def get_hex_center(coordinates, hex_size):
     (coord_q, coord_r) = coordinates
     position_x = hex_size * 3. / 2 * coord_q
     position_y = hex_size * (math.sqrt(3) / 2 * coord_q + math.sqrt(3) * coord_r)
-    return [position_x, position_y]
+    return [position_x + WIDTH/2, position_y + HEIGHT/2]
 
+def axial_to_oddq(axial_coordinates):
+    cube_z = axial_coordinates[0] + axial_coordinates[1]
+    col = axial_coordinates[0]
+    row = cube_z + (axial_coordinates[0] - (axial_coordinates[0]&1))/2
+    return [col, row]
+
+def oddq_to_axial(oddq_coordinates):
+    x = oddq_coordinates[1]
+    z = oddq_coordinates[0] - (oddq_coordinates[1] -(oddq_coordinates[1]&1))/2
+    y = -x-z
+    return [x, y]
 
 def draw_planet(svg, planet, center):
     """
@@ -65,7 +94,8 @@ def draw_planet(svg, planet, center):
                          (center_x, center_y),
                          planet.colour,
                          planet.name + "_ellipse",
-                         fill="none")
+                         fill="none",
+                         stroke_width="2")
 
     # compute degree where the hexes should be
     degrees = list(range(0, planet.number_of_hexes))
@@ -77,6 +107,7 @@ def draw_planet(svg, planet, center):
          planet.radius_y *
          math.sin(x) +
          center_y) for x in degrees]
+    #positions.append([WIDTH/2, HEIGHT/2])
     print_hexes(positions, planet.colour, layer, planet.name)
 
 
@@ -89,7 +120,7 @@ def print_hexes(positions, colour, parent, parentname):
         hex_center = get_hex_center(hex_coordinates, HEX_SIZE)
         parent.create_hex(parentname + "_" + str(index), hex_center,
                           hex_coordinates, HEX_SIZE, colour,
-                          parentname + "_hex")
+                          parentname + "_hex", fill_opacity="0.3")
         position_x = hex_center[0]
         position_y = hex_center[1] - HEX_SIZE / 2 - FONT_SIZE - FONT_PADDING
         content = str(int(hex_coordinates[0])) + "," + str(int(
@@ -99,6 +130,23 @@ def print_hexes(positions, colour, parent, parentname):
             content, font_size=FONT_SIZE, font_colour="#FFFFFF"
         )
 
+def draw_hex_grid(parent):
+    for row in range(-7,8):
+        for column in range(-13,14):
+            coords = oddq_to_axial([row, column])
+            hex_center = get_hex_center(coords, HEX_SIZE)
+            parent.create_hex(
+                "background_hex_"+str(row)+"_"+str(column),
+                hex_center,
+                coords,
+                HEX_SIZE,
+                "white",
+                "background_hex",
+                fill_opacity="0",
+                stroke_colour="white",
+                stroke_opacity="0.5",
+                stroke_width="0.5"
+            )
 
 def draw_timebox(position, size, name, time, parent):
     """
@@ -244,6 +292,7 @@ def main():
     generate_svg_symbols.add_posibility_for_disc_3d(svg)
     svg.create_image("bg.jpeg")
     draw_timeline(svg)
+    draw_hex_grid(svg)
     for planet in PLANETS:
         draw_planet(svg, planet, (WIDTH / 2, HEIGHT / 2))
 
