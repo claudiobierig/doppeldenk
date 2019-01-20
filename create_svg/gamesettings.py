@@ -30,7 +30,7 @@ JSON_FILE = "gamesettings.json"
 
 JSON_CONTENT = {
     "planets": [
-        { 
+        {
             "name": "alpha",
             "radius": [150, 100],
             "colour": "#FF0000",
