@@ -1,0 +1,205 @@
+TODO:
+
+Change main board (2h)
+- change how hexes are coloured
+
+Remodel Image (1h)
+- image includes data
+- image includes size, width
+
+Generate planet board (4h)
+- generate symbol
+
+First set of rules without examples, etc. (2h)
+
+create code that generates printing material (8h)
+
+svg module so it can be used to generate templates
+- Remove unused stuff
+- Create plan, what needs to be set
+- Do this step by step for everything that is implemented in Django
+
+
+Django
+- Create db entries for 4 Users
+- Create Login/Create/Join/Active pages
+- Remodel current python code to create a template, which displays current game status
+ - Add market and playerboards
+- Add forms
+- Somehow work with clicking in the svgs instead of a form
+
+
+
+Which pages are needed
+x Login
+- Create Game (form)
+- Join Game (list of game_instances filtered, link to action join)
+- List my active games (list of game_instances filtered, link to the game)
+- Show special game
+ - create svg from game_instance
+  - create template
+   - which parts need to be adaptive
+ - form to perform next move
+
+- Create models
+ - game_instance
+  - number_of_players (int)
+  - players[4] (NULL possible)
+  - planets[5]
+  - get_next_player (return player)
+  - next_move (int)
+  - sort_of_move
+  - state (waiting, running, finished)
+
+ - planet
+  - name (string)
+  - number_of_hexes (int)
+  - current_position (int)
+  - buy_resources[5] (enum)
+  - buy_resources_price[5] (int)
+  - sell_resources[5] (enum)
+  - sell_resources_price[5] (int)
+
+ - player
+  - user (user)
+  - resources[9] (enum)
+  - money (int)
+  - ship_position (planet)
+  - hangar
+
+
+
+
+
+All outdated
+Bugs:
+- 2nd round not working
+
+Refactoring:
+
+
+8h
+- Refactoring
+ x text needs a different id
+ - remove any data from svg and into one js class, which can later be moved to db
+  - values from class should only be used via getters/setters
+ 
+
+4h
+- show resources on wheel (random setup)
+- deal with multiple resources on one spot
+
+8h
+- add js functionality
+ - possibility to buy/sell
+ - save somewhere if we traded a resource this round
+ 
+8h
+- add production and settlement events
+ - production -> turn wheel
+ - settlement: add cubes to wheel
+ - add production and settlement events to timeline (4 player)
+
+4h
+different player count
+html:
+- possibility to choose number of players/ timeline accordingly
+js:
+- startingPosition needs to deactivate ships/markers which are not in play
+
+8h
+- prettify html
+ - try bootstrap
+ - startpage only with button and number of players
+ - get svgs for ships (serenity, millenium falk, bsg, enterprise)
+ - get planet images in active hexes
+
+8h
+- add history
+
+4h
+- hover: show time needed to this planet
+
+80h
+- add database
+
+
+Draft Tiles, which will be puzzled in a second phase, repeat.
+Place Meeple/Dice to activate or improve tiles.
+
+
+Wincondition: Most money, tie breaker: finished last
+Game End: 3 rounds
+
+
+Every one starts with one ship, at one starting planet, one starting contract, resources, starting money
+Timeline as in teben for each ship
+one turn:
+- buy resource at the current planet (increase time by resources/crewmembers)
+- fly to different planet (increase time depending on ship and distance)
+- fullfill contract (choose contract from open contracts (increase time depending on contract or resources/crewmembers)
+
+Events happening when time has passed (at the end of a subturn):
+- drafting
+- production on all planets
+- planets move around the sun
+- settlement
+
+
+Cards:
+- ships (differ in speed, cargohall, crew) (skip at start to simplify: speed ?, cargo 6, crew 1)
+- contracts (resources, payment (stoneage hut mechanism to start, resources 3-8), time(#resources), planet)
+- planets
+- resources
+
+
+Bord setup:
+Draw 3 different planets and 3 different resources. Each planet will produce one of the resources. Cost at the beginning at 1/2/3/4/5/6.
+Place 6 contracts open next to the bord (cost 0,0,0,1,2,4)
+
+
+Start with 3 ships, 3 contracts, 3 planets, 6 resources in drafting hand
+keep 1 ship, 1 contract, 1 planet, 2 resources
+place shipmarker on planet, resources into cargohall of ship, keep contract hidden,
+pass rest to net player
+
+Buying:
+- Any number of resources that fits into the cargohall at the current price.
+- For each type of resource increase price of corresponding resource by one
+
+Flying:
+- just count the difference and divide by speed rounded up
+
+Contract:
+- pay the resources, get the money, take a new contract from open contracts 
+
+
+Events:
+- draft:
+  take one ship, one planet, one contract, two resources. place the ship on the planet and discard the cards
+  place the time marker of the ship on the drafting spot (which order?)
+- production:
+  Increase price by #round for all resources (happen at different times for #players)
+- planets move around:
+  each planet moves in different speed around the sun
+- settlement:
+  draw a planet and a resource. this planet will now produce this resource, price at the given starting cost. If the planet already produces this resource place a second marker on the track. when buying only one marker is increased
+
+
+Open Ideas:
+- maybe some buildings, action cards, ship improvements
+- global goals such as #contracts on different planets
+
+3 4 5 6 7 
+ o o o o o
+2 o o o o 
+ o o o o o
+1 o o o o 
+ o o o o o
+ abcdefghi
+
+4 resources
+3 planets, each 2 resources buying/selling
+
+9 buys != 1 production
+
