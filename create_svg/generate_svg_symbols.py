@@ -5,8 +5,8 @@ generate svg symbols
 import math
 from lxml import etree
 
-from svg_commands import Svg
-from svg_commands import json_to_style
+from .svg_commands import Svg
+from .svg_commands import json_to_style
 
 
 def add_posibility_for_disc_3d(svg):

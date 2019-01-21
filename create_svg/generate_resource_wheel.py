@@ -4,9 +4,9 @@ generate the resource wheel
 """
 
 import math
-from svg_commands import Svg
-import generate_svg_symbols
-import gamesettings
+from .svg_commands import Svg
+from . import generate_svg_symbols
+from . import gamesettings
 
 WIDTH = 320
 HEIGHT = 320

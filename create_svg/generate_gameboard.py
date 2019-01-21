@@ -3,10 +3,10 @@
 generate the main gameboard
 """
 import math
-from gamesettings import PLANETS
-from gamesettings import PLAYERS
-from svg_commands import Svg
-import generate_svg_symbols
+from .gamesettings import PLANETS
+from .gamesettings import PLAYERS
+from .svg_commands import Svg
+from . import generate_svg_symbols
 
 HEX_SIZE = 20
 FONT_SIZE = 6
@@ -71,6 +71,9 @@ def get_hex_center(coordinates, hex_size):
 
 
 def axial_to_oddq(axial_coordinates):
+    """
+    convert axial coordinates to column row coordinates
+    """
     cube_z = axial_coordinates[0] + axial_coordinates[1]
     col = axial_coordinates[0]
     row = cube_z + (axial_coordinates[0] - (axial_coordinates[0] & 1)) / 2
@@ -78,11 +81,14 @@ def axial_to_oddq(axial_coordinates):
 
 
 def oddq_to_axial(oddq_coordinates):
-    x = oddq_coordinates[1]
-    z = oddq_coordinates[0] - \
+    """
+    convert column row coordinates to axial coordinates
+    """
+    x_coord = oddq_coordinates[1]
+    z_coord = oddq_coordinates[0] - \
         (oddq_coordinates[1] - (oddq_coordinates[1] & 1)) / 2
-    y = -x - z
-    return [x, y]
+    y_coord = -x_coord - z_coord
+    return [x_coord, y_coord]
 
 
 def draw_planet(svg, planet, center):
@@ -142,6 +148,9 @@ def print_hexes(positions, colour, parent, parentname):
 
 
 def draw_hex_grid(parent):
+    """
+    draw the hex grid
+    """
     for row in range(-7, 8):
         for column in range(-13, 14):
             coords = oddq_to_axial([row, column])

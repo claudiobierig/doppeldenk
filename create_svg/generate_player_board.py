@@ -2,9 +2,9 @@
 """
 generate a player board
 """
-from gamesettings import PLAYERS
-from svg_commands import Svg
-import generate_svg_symbols
+from .gamesettings import PLAYERS
+from .svg_commands import Svg
+from . import generate_svg_symbols
 
 WIDTH = 160
 HEIGHT = 320
