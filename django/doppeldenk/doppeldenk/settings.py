@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'spacetrading.apps.SpacetradingConfig'
+    'spacetrading.apps.SpacetradingConfig',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,8 @@ STATICFILES_DIRS = [
 print(STATICFILES_DIRS)
 
 LOGIN_REDIRECT_URL = '/'
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}
