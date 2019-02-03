@@ -34,7 +34,10 @@ def create_game(request):
                 form.cleaned_data['number_of_players'],
                 request.user
             )
-            return HttpResponseRedirect(reverse('games'))
+            if form.cleaned_data['number_of_players'] is 1:
+                return HttpResponseRedirect(reverse('active_games'))
+            else:
+                return HttpResponseRedirect(reverse('open_games'))
     else:
         form = forms.NewGame(initial={'name': '', 'number_of_players': 1})
 
@@ -43,15 +46,26 @@ def create_game(request):
     }
     return render(request, 'spacetrading/create_game.html', context=context)
 
-class GameListView(LoginRequiredMixin, generic.ListView):
+class ActiveGameListView(LoginRequiredMixin, generic.ListView):
     model = models.Game
     context_object_name = 'game_list'   # your own name for the list as a template variable
     template_name = 'spacetrading/game_list.html'
+    paginate_by = 10
 
     def get_queryset(self):
-        #games = set()
-        #for player in models.Player.objects.filter(user=self.request.user).prefetch_related('game'):
-        #    games.add(player.game)
         games = models.Game.objects.filter(players__user=self.request.user).filter(game_state='r')
         
         return games
+
+class OpenGameListView(LoginRequiredMixin, generic.ListView):
+    model = models.Game
+    context_object_name = 'game_list'   # your own name for the list as a template variable
+    template_name = 'spacetrading/game_list.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        games = models.Game.objects.filter(game_state='w')
+        return games
+
+class GameDetailView(generic.DetailView):
+    model = models.Game

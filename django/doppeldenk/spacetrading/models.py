@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -189,6 +190,10 @@ class Game(models.Model):
     )
 
     objects = GameManager()
+
+    def get_absolute_url(self):
+        """Returns the url to access a game."""
+        return reverse('game_detail', args=[str(self.id)])
 
     def __str__(self):
         """String for representing the Model object."""

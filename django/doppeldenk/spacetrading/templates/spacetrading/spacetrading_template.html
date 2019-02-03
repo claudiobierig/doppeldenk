@@ -17,7 +17,8 @@
       {% block sidebar %}
         <ul class="sidebar-nav">
           <li>User: {{ user.get_username }}</li>
-          <li><a href="{% url 'games'%}">Active Games</a></li>
+          <li><a href="{% url 'active_games'%}">Active Games</a></li>
+          <li><a href="{% url 'open_games'%}">Open Games</a></li>
           <li><a href="{% url 'create_game'%}">Create new game</a></li>
           <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
         </ul>

@@ -3,13 +3,32 @@
 {% block content %}
   <h1>Game List</h1>
   {% if game_list %}
-  <ul>
+    <table class="table table-hover table-sm  table-striped">
+      <thead class="thead-dark">
+          <tr>
+            <th scope="col" width="50px">#</th>
+            <th scope="col" width="150px">Game Name</th>
+            <th scope="col">Players</th>
+          </tr>
+        </thead>
+    <tbody>
     {% for game in game_list %}
-      <li>
-        {{ game }}
-      </li>
+      <tr>
+          <th scope="row">
+              <a href="{{ game.get_absolute_url }}">{{ game.id }}</a>
+          </th>
+          <td>
+            {{ game.game_name }}
+          </td>
+          <td>
+          {% for player in game.players.all %}
+            {{ player.user.get_username}}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
     {% endfor %}
-  </ul>
+    </tbody>
+    </table>
   {% else %}
     <p>There are no games.</p>
   {% endif %}       
