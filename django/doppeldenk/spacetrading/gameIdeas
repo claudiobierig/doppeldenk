@@ -21,8 +21,8 @@ svg module so it can be used to generate templates
 
 
 Django
-- Create db entries for 4 Users
-- Create Login/Create/Join/Active pages
+x Create db entries for 4 Users
+- Create Create/Join/Active pages
 - Remodel current python code to create a template, which displays current game status
  - Add market and playerboards
 - Add forms
