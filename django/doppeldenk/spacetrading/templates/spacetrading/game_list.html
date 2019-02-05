@@ -1,34 +1,57 @@
 {% extends "spacetrading/spacetrading_template.html" %}
 
 {% block content %}
-  <h1>Game List</h1>
-  {% if game_list %}
+  <h1>{{ headline }}</h1>
+    {% if game_list %}
+    {% if joinable %}
+    <form action="" method="post">
+    {% csrf_token %}
+    {% endif %}
     <table class="table table-hover table-sm  table-striped">
       <thead class="thead-dark">
           <tr>
+            <th scope="col" width="20px"></th>
             <th scope="col" width="50px">#</th>
             <th scope="col" width="150px">Game Name</th>
             <th scope="col">Players</th>
+            <th scope="col">Settings</th>
           </tr>
         </thead>
     <tbody>
     {% for game in game_list %}
       <tr>
           <th scope="row">
-              <a href="{{ game.get_absolute_url }}">{{ game.id }}</a>
+            {% if joinable %}
+              {% if not game.is_active %}
+                {% if not user in game.get_users %}
+                <button type="submit" name="join_{{ game.id }}" class="btn btn-sm">
+                  <i class="fas fa-angle-right"></i>
+                </button>
+                {% endif %}
+              {% endif %}
+            {% endif %}
           </th>
-          <td>
+          <td class="align-middle">
+            <a href="{{ game.get_absolute_url }}">{{ game.id }}</a>
+          </td>
+          <td class="align-middle">
             {{ game.game_name }}
           </td>
-          <td>
+          <td class="align-middle">
           {% for player in game.players.all %}
             {{ player.user.get_username}}{% if not forloop.last %}, {% endif %}
           {% endfor %}
-        </td>
+          </td>
+          <td class="align-middle">
+            {{ game.number_of_players }}
+          </td>
       </tr>
     {% endfor %}
     </tbody>
     </table>
+    {% if joinable %}
+    </form>
+    {% endif %}
   {% else %}
     <p>There are no games.</p>
   {% endif %}       

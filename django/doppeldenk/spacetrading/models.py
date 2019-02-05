@@ -16,11 +16,13 @@ RESOURCES = (
 
 
 class PlanetManager(models.Manager):
-    def create_planet(self, name="", number_of_hexes=1, current_position=0,
-                        buy_resources=['0','0','0','0','0'],
-                        cost_buy_resource=[0,0,0,0,0],
-                        sell_resources=['0','0','0','0','0'],
-                        cost_sell_resource=[0,0,0,0,0]):
+    def create_planet(
+            self, name="", number_of_hexes=1, current_position=0,
+            buy_resources=['0', '0', '0', '0', '0'],
+            cost_buy_resource=[0, 0, 0, 0, 0],
+            sell_resources=['0', '0', '0', '0', '0'],
+            cost_sell_resource=[0, 0, 0, 0, 0]
+    ):
         planet = self.create(name=name, number_of_hexes=number_of_hexes, current_position=current_position,
             buy_resources=buy_resources,
             cost_buy_resource=cost_buy_resource,
@@ -195,6 +197,17 @@ class Game(models.Model):
         """Returns the url to access a game."""
         return reverse('game_detail', args=[str(self.id)])
 
+    def is_active(self):
+        """Return True if game_state is running otherwise False"""
+        return (self.game_state is 'r')
+
+    def get_users(self):
+        user_group_set = set() #self.players.select_related('user')
+        for player in self.players.all():
+            user_group_set.add(player.user)
+
+        return user_group_set
+
     def __str__(self):
         """String for representing the Model object."""
         return str(
@@ -238,3 +251,16 @@ def create_game(name, number_of_players, user):
         game.game_state = 'r'
     game.save()
     player.save()
+
+def join_game(primary_key_game, user):
+    print("join_game")
+    game = Game.objects.get(pk=primary_key_game)
+    player = Player.objects.create_player(user=user)
+    game.players.add(player)
+    print("joined game")
+    number_of_joined_players = game.players.count()
+    if number_of_joined_players >= game.number_of_players:
+        #TODO: error handling for > case
+        game.game_state = 'r'
+
+    game.save()

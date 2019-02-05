@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView
 
+import re
+
 from spacetrading import models
 #from create_svg import generate_player_board
 from spacetrading import forms
@@ -27,17 +29,19 @@ def create_game(request):
     """Create a game"""
     # If this is a POST request then process the Form data
     if request.method == 'POST':
+        print(request.POST)
         form = forms.NewGame(request.POST)
+        print(form.data)
         if form.is_valid():
             models.create_game(
                 form.cleaned_data['name'],
                 form.cleaned_data['number_of_players'],
                 request.user
             )
-            if form.cleaned_data['number_of_players'] is 1:
+            if form.cleaned_data['number_of_players'] == 1:
                 return HttpResponseRedirect(reverse('active_games'))
-            else:
-                return HttpResponseRedirect(reverse('open_games'))
+
+            return HttpResponseRedirect(reverse('open_games'))
     else:
         form = forms.NewGame(initial={'name': '', 'number_of_players': 1})
 
@@ -52,6 +56,13 @@ class ActiveGameListView(LoginRequiredMixin, generic.ListView):
     template_name = 'spacetrading/game_list.html'
     paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['headline'] = "Active Games"
+        context['joinable'] = False
+        return context
+
+
     def get_queryset(self):
         games = models.Game.objects.filter(players__user=self.request.user).filter(game_state='r')
         
@@ -63,9 +74,24 @@ class OpenGameListView(LoginRequiredMixin, generic.ListView):
     template_name = 'spacetrading/game_list.html'
     paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['headline'] = "Open Games"
+        context['joinable'] = True
+        return context
+
     def get_queryset(self):
         games = models.Game.objects.filter(game_state='w')
         return games
+    
+    def post(self, request, *args, **kwargs):
+        for key, _ in request.POST.items():
+            if(re.match("join_\\d+", key)):
+                primary_key_game = key[5:]
+                print("Want to join game " + primary_key_game)
+                models.join_game(primary_key_game, request.user)
+
+        return HttpResponseRedirect(reverse('open_games'))
 
 class GameDetailView(generic.DetailView):
     model = models.Game
