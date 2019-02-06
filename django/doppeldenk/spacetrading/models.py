@@ -3,6 +3,8 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.urls import reverse
 
+import random
+
 # Create your models here.
 
 RESOURCES = (
@@ -220,44 +222,47 @@ class Game(models.Model):
         )
 
 def create_game(name, number_of_players, user):
+    #TODO: make this error safe and in doubt clean up afterwards
     game = Game.objects.create_game()
     game.game_name = name
     game.number_of_players = number_of_players
-    game.save()
+    b_resources = ['1', '2', '3', '4', '5']
+    s_resources = ['1', '2', '3', '4', '5']
+    random.shuffle(b_resources)
+    #TODO: make sure not the same resource at the planet
+    random.shuffle(s_resources)
+    min_buy_price = 2
+    max_buy_price = 4
+    min_sell_price = 3
+    max_sell_price = 5
 
     player = Player.objects.create_player(user=user)
     game.players.add(player)
-    planet_alpha = Planet.objects.create_planet(
-        name="alpha",
-        number_of_hexes=3,
-        current_position=0,
-        buy_resources=['0', '0', '0', '0', '0'],
-        cost_buy_resource=[0, 0, 0, 0, 0],
-        sell_resources=['0', '0', '0', '0', '0'],
-        cost_sell_resource=[0, 0, 0, 0, 0]
-    )
-    planet_beta = Planet.objects.create_planet(
-        name="beta",
-        number_of_hexes=5,
-        current_position=2,
-        buy_resources=['0', '0', '0', '0', '0'],
-        cost_buy_resource=[0, 0, 0, 0, 0],
-        sell_resources=['0', '0', '0', '0', '0'],
-        cost_sell_resource=[0, 0, 0, 0, 0]
-    )
-    game.planets.add(planet_alpha, planet_beta)
-    player.ship_position_id = planet_alpha.id
+    planets = [["alpha", 3], ["beta", 5], ["gamma", 7], ["delta", 11], ["epsilon", 13]]
+    starting_position = random.randint(0, 5)
+    for index, pl in enumerate(planets):
+        planet = Planet.objects.create_planet(
+            name=pl[0],
+            number_of_hexes=pl[1],
+            current_position=random.randint(0, pl[1]),
+            buy_resources=[b_resources[index], '0', '0', '0', '0'],
+            cost_buy_resource=[random.randint(min_buy_price, max_buy_price + 1), 0, 0, 0, 0],
+            sell_resources=[s_resources[index], '0', '0', '0', '0'],
+            cost_sell_resource=[random.randint(min_sell_price, max_sell_price + 1), 0, 0, 0, 0]
+        )
+        game.planets.add(planet)
+        if index is starting_position:
+            player.ship_position_id = planet.id
+    
     if number_of_players == 1:
         game.game_state = 'r'
     game.save()
     player.save()
 
 def join_game(primary_key_game, user):
-    print("join_game")
     game = Game.objects.get(pk=primary_key_game)
     player = Player.objects.create_player(user=user)
     game.players.add(player)
-    print("joined game")
     number_of_joined_players = game.players.count()
     if number_of_joined_players >= game.number_of_players:
         #TODO: error handling for > case
