@@ -69,7 +69,7 @@ def main():
     draw_background(svg)
     draw_foreground(svg)
     svg_string = svg.get_string()
-    #print(svg_string)
+    print("resource wheel")
     with open("wheel.svg", "w") as out_file:
         out_file.write(svg_string)
 

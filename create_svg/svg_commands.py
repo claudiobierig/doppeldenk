@@ -339,11 +339,11 @@ class Svg(object):
         symbol = etree.SubElement(self.root, 'use', arguments)
         return Svg(symbol)
 
-    def create_image(self, image_name):
+    def create_image(self, image_name, width, height, x_pos, y_pos):
         """
         Create an image in root and return it.
         """
-        image = etree.SubElement(self.root, 'image', {'href': image_name})
+        image = etree.SubElement(self.root, 'image', {'href': image_name, 'width': width, 'height': height, 'x': x_pos, 'y': y_pos})
         image.text = " "
         return Svg(image)
 

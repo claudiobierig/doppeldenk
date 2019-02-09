@@ -151,6 +151,10 @@ def draw_hex_grid(parent):
     """
     draw the hex grid
     """
+    #TODO: Compute list of hexes which need to be colored
+    #for each planet return:
+    #planet: [color, [row,column], position, planetname]
+    #add all to one list
     for row in range(-7, 8):
         for column in range(-13, 14):
             coords = oddq_to_axial([row, column])
@@ -313,7 +317,7 @@ def main():
     """
     svg = Svg(width=str(WIDTH), height=str(HEIGHT), id_name="gameboard")
     generate_svg_symbols.add_posibility_for_disc_3d(svg)
-    svg.create_image("bg.jpeg")
+    svg.create_image("bg.jpeg", width="1200", height="876", x_pos="0", y_pos="0")
     draw_timeline(svg)
     draw_hex_grid(svg)
     for planet in PLANETS:
@@ -322,7 +326,7 @@ def main():
     draw_sun(svg, (WIDTH, HEIGHT), HEX_SIZE)
     draw_players(svg)
     svg_string = svg.get_string()
-    # print(svg_string)
+    print("gameboard")
     with open("gameboard.svg", "w") as out_file:
         out_file.write(svg_string)
 

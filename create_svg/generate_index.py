@@ -16,7 +16,7 @@ def main():
     generate_player_board.main()
     generate_resource_wheel.main()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    files = ["top_of_index.txt", "gameboard.svg", "playerboard.svg",
+    files = ["top_of_index.txt", "../gameboard.svg", "playerboard.svg",
              "wheel.svg", "bottom_of_index.txt"]
     with open("index.html", 'w') as out_file:
         for file_name in files:

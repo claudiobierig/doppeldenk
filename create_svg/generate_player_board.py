@@ -97,7 +97,7 @@ def main():
 
     svg_string = svg.get_string()
 
-    #print(svg_string)
+    print("player board")
     with open("playerboard.svg", "w") as out_file:
         out_file.write(svg_string)
 
