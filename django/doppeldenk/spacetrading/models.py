@@ -244,11 +244,11 @@ def create_game(name, number_of_players, user):
         planet = Planet.objects.create_planet(
             name=pl[0],
             number_of_hexes=pl[1],
-            current_position=random.randint(0, pl[1]),
+            current_position=random.randint(0, pl[1] - 1),
             buy_resources=[b_resources[index], '0', '0', '0', '0'],
-            cost_buy_resource=[random.randint(min_buy_price, max_buy_price + 1), 0, 0, 0, 0],
+            cost_buy_resource=[random.randint(min_buy_price, max_buy_price), 0, 0, 0, 0],
             sell_resources=[s_resources[index], '0', '0', '0', '0'],
-            cost_sell_resource=[random.randint(min_sell_price, max_sell_price + 1), 0, 0, 0, 0]
+            cost_sell_resource=[random.randint(min_sell_price, max_sell_price), 0, 0, 0, 0]
         )
         game.planets.add(planet)
         if index is starting_position:

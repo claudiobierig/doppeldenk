@@ -159,6 +159,7 @@ def draw_hex_grid(parent, center):
             hex_coordinates = get_hex_coordinates(position, HEX_SIZE)
             colored_hexes.append([hex_coordinates, planet, index])
 
+    layer = parent.create_subgroup('hex_grid', class_name='hex_grid')
     for row in range(-7, 8):
         for column in range(-13, 14):
             coords = oddq_to_axial([row, column])
@@ -169,11 +170,21 @@ def draw_hex_grid(parent, center):
                 if coords == h[0]:
                     name_hex = h[1].name + "_" + str(h[2])
                     colour = h[1].colour
-                    fill_opacity = "0.3"
+                    #for planet:
+                    #if planet.name == h[1].name ( if planet.current_position == h[2] "1" else "0.3")
+                    str_fill_opacity = ("{% for planet in game.planets.all %} {% if planet.name == '" + h[1].name +"' %}"
+                        "{% if planet.current_position == " + str(h[2]) + " %}"
+                        " 1 "
+                        "{% else %}"
+                        " 0.2 "
+                        "{% endif %}"
+                        "{% endif %} {% endfor %}")
+                    #print(str_fill_opacity)
+                    fill_opacity = str_fill_opacity
                     break
             
             hex_center = get_hex_center(coords, HEX_SIZE)
-            parent.create_hex(
+            layer.create_hex(
                 name_hex,
                 hex_center,
                 coords,
@@ -331,7 +342,7 @@ def main():
     """
     svg = Svg(width=str(WIDTH), height=str(HEIGHT), id_name="gameboard")
     generate_svg_symbols.add_posibility_for_disc_3d(svg)
-    svg.create_image("bg.jpeg", width="1200", height="876", x_pos="0", y_pos="0")
+    svg.create_image("/static/auth/bg.jpeg", width="1200", height="876", x_pos="0", y_pos="0")
     draw_timeline(svg)
     draw_hex_grid(svg, (WIDTH / 2, HEIGHT / 2))
     for planet in PLANETS:
