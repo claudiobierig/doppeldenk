@@ -7,12 +7,13 @@ class Planet(object):
     """
     Data class for one planet
     """
-    def __init__(self, radius, col, number_hexes, planet_name):
+    def __init__(self, radius, col, number_hexes, offset, planet_name):
         (radius_x, radius_y) = radius
         self.radius_x = radius_x
         self.radius_y = radius_y
         self.colour = col
         self.number_of_hexes = number_hexes
+        self.offset = offset
         self.name = planet_name
 
 
@@ -34,31 +35,36 @@ JSON_CONTENT = {
             "name": "alpha",
             "radius": [150, 100],
             "colour": "#FF0000",
-            "number_hexes": 3
+            "number_hexes": 3,
+            "offset": 0
         },
         {
             "name": "beta",
             "radius": [210, 130],
             "colour": "#FF8000",
-            "number_hexes": 5
+            "number_hexes": 5,
+            "offset": 0.2
         },
         {
             "name": "gamma",
             "radius": [260, 180],
             "colour": "#FFFF00",
-            "number_hexes": 7
+            "number_hexes": 7,
+            "offset": 0.4
         },
         {
             "name": "delta",
             "radius": [320, 210],
             "colour": "#008000",
-            "number_hexes": 11
+            "number_hexes": 11,
+            "offset": 0.6
         },
         {
             "name": "epsilon",
             "radius": [370, 240],
             "colour": "#1E90FF",
-            "number_hexes": 13
+            "number_hexes": 13,
+            "offset": 0.8
         }
     ],
     "players": [
@@ -88,6 +94,7 @@ PLANETS = [
         planet["radius"],
         planet["colour"],
         planet["number_hexes"],
+        planet["offset"],
         planet["name"]
     ) for planet in JSON_CONTENT["planets"]
 ]
