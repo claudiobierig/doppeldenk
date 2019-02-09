@@ -91,7 +91,7 @@ def oddq_to_axial(oddq_coordinates):
     return [x_coord, y_coord]
 
 
-def draw_planet(svg, planet, center):
+def draw_planet_ellipse(svg, planet, center):
     """
     0. generate subgroup
     1. draw ellipse
@@ -107,19 +107,6 @@ def draw_planet(svg, planet, center):
                          planet.name + "_ellipse",
                          fill="none",
                          stroke_width="2")
-
-    # compute degree where the hexes should be
-    degrees = list(range(0, planet.number_of_hexes))
-    degrees[:] = [x * 2 * math.pi / planet.number_of_hexes for x in degrees]
-    positions = [
-        (planet.radius_x *
-         math.cos(x) +
-         center_x,
-         planet.radius_y *
-         math.sin(x) +
-         center_y) for x in degrees]
-    #positions.append([WIDTH/2, HEIGHT/2])
-    print_hexes(positions, planet.colour, layer, planet.name)
 
 
 def print_hexes(positions, colour, parent, parentname):
@@ -147,7 +134,7 @@ def print_hexes(positions, colour, parent, parentname):
             font_colour="#FFFFFF")
 
 
-def draw_hex_grid(parent):
+def draw_hex_grid(parent, center):
     """
     draw the hex grid
     """
@@ -155,18 +142,45 @@ def draw_hex_grid(parent):
     #for each planet return:
     #planet: [color, [row,column], position, planetname]
     #add all to one list
+    # compute degree where the hexes should be
+    (center_x, center_y) = center
+    colored_hexes = []
+    for planet in PLANETS:
+        degrees = list(range(0, planet.number_of_hexes))
+        degrees[:] = [planet.offset + x * 2 * math.pi / planet.number_of_hexes for x in degrees]
+        positions = [
+            (planet.radius_x *
+            math.cos(x) +
+            center_x,
+            planet.radius_y *
+            math.sin(x) +
+            center_y) for x in degrees]
+        for index, position in enumerate(positions):
+            hex_coordinates = get_hex_coordinates(position, HEX_SIZE)
+            colored_hexes.append([hex_coordinates, planet, index])
+
     for row in range(-7, 8):
         for column in range(-13, 14):
             coords = oddq_to_axial([row, column])
+            name_hex = "background_hex" + "_" + str(row) + "_" + str(column)
+            colour = "white"
+            fill_opacity = "0"
+            for h in colored_hexes:
+                if coords == h[0]:
+                    name_hex = h[1].name + "_" + str(h[2])
+                    colour = h[1].colour
+                    fill_opacity = "0.3"
+                    break
+            
             hex_center = get_hex_center(coords, HEX_SIZE)
             parent.create_hex(
-                "background_hex_" + str(row) + "_" + str(column),
+                name_hex,
                 hex_center,
                 coords,
                 HEX_SIZE,
-                "white",
-                "background_hex",
-                fill_opacity="0",
+                colour,
+                name_hex,
+                fill_opacity=fill_opacity,
                 stroke_colour="white",
                 stroke_opacity="0.5",
                 stroke_width="0.5"
@@ -200,12 +214,12 @@ def draw_timebox(position, size, name, time, parent):
         str(time), font_size=8
     )
 
-    events = []
-    if time % 20 == 0:
-        events.append("planet_rotation")
+    #events = []
+    #if time % 20 == 0:
+    #    events.append("planet_rotation")
 
-    draw_events_for_one_timestep(
-        (position_x, position_y), (width, height), events, time, parent)
+    #draw_events_for_one_timestep(
+    #    (position_x, position_y), (width, height), events, time, parent)
 
 
 def draw_event(center, radius, event, time, parent):
@@ -319,14 +333,14 @@ def main():
     generate_svg_symbols.add_posibility_for_disc_3d(svg)
     svg.create_image("bg.jpeg", width="1200", height="876", x_pos="0", y_pos="0")
     draw_timeline(svg)
-    draw_hex_grid(svg)
+    draw_hex_grid(svg, (WIDTH / 2, HEIGHT / 2))
     for planet in PLANETS:
-        draw_planet(svg, planet, (WIDTH / 2, HEIGHT / 2))
+        draw_planet_ellipse(svg, planet, (WIDTH / 2, HEIGHT / 2))
 
     draw_sun(svg, (WIDTH, HEIGHT), HEX_SIZE)
-    draw_players(svg)
+    #draw_players(svg)
     svg_string = svg.get_string()
-    print("gameboard")
+    #print("gameboard")
     with open("gameboard.svg", "w") as out_file:
         out_file.write(svg_string)
 
