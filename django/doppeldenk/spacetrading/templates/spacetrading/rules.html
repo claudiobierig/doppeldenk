@@ -1,0 +1,61 @@
+{% extends "spacetrading/spacetrading_template.html" %}
+
+{% block content %}
+<h1>Rules Spacetrading</h1>
+<h2>1. Goal</h2>
+Every player plays a mergent in a solar system with multiple inhabited planets.<br>
+The players fly from planet to planet, buy and sell resources and bribe politicians to gain influence in the mergent councile.<br>
+The player who has the most influence in the end of the game wins.
+<h2>2. Scoring and end of game</h2>
+Each planet in the solar system sends 11 politicians to the mergent councile.<br>
+During the game the players can pay bribes to the politicians.
+<ul>
+    <li>The player who has paid the most sends 5 politicians, 2nd 3, 3rd 2 and 4th 1.</li>
+    <li>If a player paid no bribe, no politician will be send.</li>
+    <li>If multiple players tie, the number is split and rounded down.</li>
+</ul>
+Tiebreakers are in this order:
+<ul>
+    <li>Money</li>
+    <li>Number of resources</li>
+    <li>Who has spent less time</li>
+    <li>Who moved last</li>
+</ul>
+<h2>3. Setup</h2>
+Planet Setup:
+<ul>
+    <li>Planets are set random on one field of their planet track.</li>
+    <li>Each planet has one random resource it buys and one random resource it sells.</li>
+    <li>The prices are random: 2-4 for buying, 4-6 for selling.</li>
+    <li>Each resource is bought once and sold once.</li>
+</ul>
+Player Setup (probably need to do this differently due to balancing, but until the rest is implemented):
+<ul>
+    <li>The timemarkers for all players are shuffeled and placed on the 0 spot stacked on each other.</li>
+    <li>All spaceships are placed at a random hex on the gameboard, where no planet is placed.</li>
+    <li>Each player starts with no resources.</li>
+    <li>The players start with 10, 11, 12, 13 money from the bottom of the stack to the top.</li>
+    <li>All players have 0 influence on all planets.</li>
+</ul>
+Event Setup
+<ul>
+    <li>The planet movement event timemarker is placed on the 10 spot.</li>
+    <li>The Supply and demant timemarker is placed on the 40, 30, 25, 20 (TODO) spot for 1, 2, 3, 4 players respectively.</li>
+</ul>
+<h2>4. Gameplay</h2>
+If it is a players turn he performs the actions b), c) and d), where b) is mandatory and c) and d) are optional.
+<h3>a) Determining who's turn it is</h3>
+The next turn will be performed from the player who has progressed the least on the timeline.<br>
+As tiebreaker it is the player who's timemarker is on top.<br>
+If an event is the next player after this consideration, the event will be performed and the next player is determined after the same rules.
+<h3>b) Flying to another position</h3>
+The active player chooses and destination hex, which is different from the current position.<br>
+The timemarker is increased by the distance of the hex to the current position plus two.<br>
+If another timemarker is already at this space the marker is placed on top.
+<h3>c) Trading</h3>
+<h3>d) Bribe</h3>
+<h3>e) Events</h2>
+<h4>e*) Planet movement</h3>
+<h4>e**) Adjust supply and demant</h3>
+<h4>e***) Possible future events</h3>
+{% endblock %}

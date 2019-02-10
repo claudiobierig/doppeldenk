@@ -50,6 +50,10 @@ def create_game(request):
     }
     return render(request, 'spacetrading/create_game.html', context=context)
 
+@login_required
+def rules(request):
+    return render(request, 'spacetrading/rules.html')
+
 class ActiveGameListView(LoginRequiredMixin, generic.ListView):
     model = models.Game
     context_object_name = 'game_list'   # your own name for the list as a template variable
