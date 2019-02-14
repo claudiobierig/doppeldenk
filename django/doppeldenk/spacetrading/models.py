@@ -19,23 +19,38 @@ RESOURCES = (
 
 class PlanetManager(models.Manager):
     def create_planet(
-            self, name="", number_of_hexes=1, current_position=0,
-            buy_resources=['0', '0', '0', '0', '0'],
-            cost_buy_resource=[0, 0, 0, 0, 0],
-            sell_resources=['0', '0', '0', '0', '0'],
-            cost_sell_resource=[0, 0, 0, 0, 0]
+            self, colour = "#000000", name = "", number_of_hexes = 1, current_position = 0,
+            buy_resources = None,
+            cost_buy_resource = None,
+            sell_resources = None,
+            cost_sell_resource = None,
+            position_of_hexes = None
     ):
-        planet = self.create(name=name, number_of_hexes=number_of_hexes, current_position=current_position,
+        if buy_resources is None:
+            buy_resources = ['0', '0', '0', '0', '0']
+        if cost_buy_resource is None:
+            cost_buy_resource = [0, 0, 0, 0, 0]
+        if sell_resources is None:
+            sell_resources = ['0', '0', '0', '0', '0']
+        if cost_sell_resource is None:
+            cost_sell_resource = [0, 0, 0, 0, 0]
+        if position_of_hexes is None:
+            position_of_hexes = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
+                               [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
+        
+        planet = self.create(name=name, colour=colour, number_of_hexes=number_of_hexes, current_position=current_position,
             buy_resources=buy_resources,
             cost_buy_resource=cost_buy_resource,
             sell_resources=sell_resources,
-            cost_sell_resource=cost_sell_resource)
+            cost_sell_resource=cost_sell_resource,
+            position_of_hexes=position_of_hexes)
         return planet
 
 
 class Planet(models.Model):
     """
         - name (string)
+        - colour (string)
         - number_of_hexes (int)
         - current_position (int)
         - buy_resources[5] (enum)
@@ -44,7 +59,15 @@ class Planet(models.Model):
         - cost_sell_resource[5] (int)
     """
     name = models.CharField(max_length=50)
+    colour = models.CharField(max_length=50, default="#000000")
     number_of_hexes = models.IntegerField()
+    position_of_hexes = ArrayField(
+        ArrayField(
+            models.IntegerField(default=0),
+            2
+        ),
+        20
+    )
     current_position = models.IntegerField()
     buy_resources = ArrayField(
         models.CharField(
@@ -238,17 +261,25 @@ def create_game(name, number_of_players, user):
 
     player = Player.objects.create_player(user=user)
     game.players.add(player)
-    planets = [["alpha", 3], ["beta", 5], ["gamma", 7], ["delta", 11], ["epsilon", 13]]
+    planets = [
+        ["alpha", 3, "#FF0000", [[5, -2], [-3, 4], [-3, -1]]],
+        ["beta", 5, "#FF8000", [[7, -3], [1, 3], [-6, 5], [-5, 0], [3, -5]]],
+        ["gamma", 7, "#FFFF00", [[8, -2], [2, 4], [-5, 7], [-9, 5], [-6, -1], [2, -6], [7, -6]]],
+        ["delta", 11, "#008000", [[9, -1], [4, 4], [-2, 7], [-7, 8], [-10, 7], [-10, 3], [-7, -1], [-1, -6], [5, -8], [9, -8], [11, -5]]],
+        ["epsilon", 13, "#1E90FF", [[8, 1], [3, 5], [-2, 8], [-8, 9], [-11, 8], [-12, 5], [-11, 2], [-6, -3], [0, -7], [5, -9], [10, -9], [12, -7], [12, -4]]]
+    ]
     starting_position = random.randint(0, 5)
     for index, pl in enumerate(planets):
         planet = Planet.objects.create_planet(
             name=pl[0],
+            colour=pl[2],
             number_of_hexes=pl[1],
             current_position=random.randint(0, pl[1] - 1),
             buy_resources=[b_resources[index], '0', '0', '0', '0'],
             cost_buy_resource=[random.randint(min_buy_price, max_buy_price), 0, 0, 0, 0],
             sell_resources=[s_resources[index], '0', '0', '0', '0'],
-            cost_sell_resource=[random.randint(min_sell_price, max_sell_price), 0, 0, 0, 0]
+            cost_sell_resource=[random.randint(min_sell_price, max_sell_price), 0, 0, 0, 0],
+            position_of_hexes=pl[3]
         )
         game.planets.add(planet)
         if index is starting_position:

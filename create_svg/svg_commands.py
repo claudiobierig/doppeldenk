@@ -99,8 +99,6 @@ class Svg(object):
             stroke_colour='#FFFFFF',
             stroke_width="1",
             onclick="clickHex(this)",
-            onmouseover="mouseOverHex(this)",
-            onmouseout="mouseOutHex(this)",
             stroke_opacity="1"):
         """
         Create a hex in root and return it
@@ -136,8 +134,6 @@ class Svg(object):
             'coord_q': str(coord_q),
             'coord_r': str(coord_r),
             'onclick': onclick,
-            'onmouseover': onmouseover,
-            'onmouseout': onmouseout,
             'class': class_name
         }
 

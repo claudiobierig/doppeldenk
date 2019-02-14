@@ -76,7 +76,7 @@ def axial_to_oddq(axial_coordinates):
     """
     cube_z = axial_coordinates[0] + axial_coordinates[1]
     col = axial_coordinates[0]
-    row = cube_z + (axial_coordinates[0] - (axial_coordinates[0] & 1)) / 2
+    row = int(cube_z + (axial_coordinates[0] - (axial_coordinates[0] & 1)) / 2)
     return [col, row]
 
 
@@ -85,8 +85,8 @@ def oddq_to_axial(oddq_coordinates):
     convert column row coordinates to axial coordinates
     """
     x_coord = oddq_coordinates[1]
-    z_coord = oddq_coordinates[0] - \
-        (oddq_coordinates[1] - (oddq_coordinates[1] & 1)) / 2
+    z_coord = int(oddq_coordinates[0] - \
+        (oddq_coordinates[1] - (oddq_coordinates[1] & 1)) / 2)
     y_coord = -x_coord - z_coord
     return [x_coord, y_coord]
 
@@ -138,11 +138,6 @@ def draw_hex_grid(parent, center):
     """
     draw the hex grid
     """
-    #TODO: Compute list of hexes which need to be colored
-    #for each planet return:
-    #planet: [color, [row,column], position, planetname]
-    #add all to one list
-    # compute degree where the hexes should be
     (center_x, center_y) = center
     colored_hexes = []
     for planet in PLANETS:
@@ -150,39 +145,27 @@ def draw_hex_grid(parent, center):
         degrees[:] = [planet.offset + x * 2 * math.pi / planet.number_of_hexes for x in degrees]
         positions = [
             (planet.radius_x *
-            math.cos(x) +
-            center_x,
-            planet.radius_y *
-            math.sin(x) +
-            center_y) for x in degrees]
+             math.cos(x) +
+             center_x,
+             planet.radius_y *
+             math.sin(x) +
+             center_y) for x in degrees]
+        print("--------------------")
+        print(planet.name)
         for index, position in enumerate(positions):
             hex_coordinates = get_hex_coordinates(position, HEX_SIZE)
+            print(hex_coordinates)
             colored_hexes.append([hex_coordinates, planet, index])
 
     layer = parent.create_subgroup('hex_grid', class_name='hex_grid')
     for row in range(-7, 8):
         for column in range(-13, 14):
             coords = oddq_to_axial([row, column])
-            name_hex = "background_hex" + "_" + str(row) + "_" + str(column)
-            colour = "white"
-            fill_opacity = "0"
-            for h in colored_hexes:
-                if coords == h[0]:
-                    name_hex = h[1].name + "_" + str(h[2])
-                    colour = h[1].colour
-                    #for planet:
-                    #if planet.name == h[1].name ( if planet.current_position == h[2] "1" else "0.3")
-                    str_fill_opacity = ("{% for planet in game.planets.all %} {% if planet.name == '" + h[1].name +"' %}"
-                        "{% if planet.current_position == " + str(h[2]) + " %}"
-                        " 1 "
-                        "{% else %}"
-                        " 0.2 "
-                        "{% endif %}"
-                        "{% endif %} {% endfor %}")
-                    #print(str_fill_opacity)
-                    fill_opacity = str_fill_opacity
-                    break
-            
+            if abs(coords[0]) < 2 and abs(coords[1]) < 2 and abs(coords[0] + coords[1]) < 2:
+                continue
+            name_hex = "hex" + "_" + str(coords[0]) + "_" + str(coords[1])
+            colour = "{% get_colour planets " + str(coords[0]) + " " + str(coords[1]) + " %}"
+            fill_opacity = "{% get_opacity planets " + str(coords[0]) + " " + str(coords[1]) + " %}"
             hex_center = get_hex_center(coords, HEX_SIZE)
             layer.create_hex(
                 name_hex,
@@ -190,12 +173,38 @@ def draw_hex_grid(parent, center):
                 coords,
                 HEX_SIZE,
                 colour,
-                name_hex,
+                "hex",
                 fill_opacity=fill_opacity,
                 stroke_colour="white",
                 stroke_opacity="0.5",
                 stroke_width="0.5"
             )
+            #content = str(int(coords[0])) + "," + str(int(
+            #    coords[1])) + "," + str(int(- coords[0] - coords[1]))
+            #position_x = hex_center[0]
+            #position_y = hex_center[1] - HEX_SIZE / 2 - FONT_SIZE - FONT_PADDING
+            #sub.root.text = "{% if print_coordinates planets " + str(coords[0]) + " " + str(coords[1]) + " %}"
+            #layer.create_text(
+            #        "coordinates_" +
+            #        content,
+            #        [position_x, position_y],
+            #        content,
+            #        font_size=FONT_SIZE,
+            #        font_colour="#FFFFFF")
+            #text.root.tail = "{% endif %}"
+    
+    coordinate_group = parent.create_subgroup('coordinates')
+    coordinate_group.root.text = ("{% for planet in planets %} {% for coordinates in planet.position_of_hexes %}")
+    content = "{{coordinates|at:0}},{{coordinates|at:1}},{% z_coord coordinates %}"
+    text = coordinate_group.create_text(
+        "coordinates_" + content,
+        ["{% get_x_position_text coordinates " + "{} {} {}".format(HEX_SIZE, WIDTH, HEIGHT) +" %}",
+        "{% get_y_position_text coordinates " + "{} {} {} {}".format(HEX_SIZE, WIDTH, HEIGHT, FONT_PADDING + FONT_SIZE) +" %}"],
+        content,
+        font_size = FONT_SIZE,
+        font_colour="#FFFFFF"
+    )
+    text.root.tail = "{% endfor %}{% endfor %}"
 
 
 def draw_timebox(position, size, name, time, parent):
