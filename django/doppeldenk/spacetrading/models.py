@@ -113,20 +113,24 @@ class Planet(models.Model):
 class PlayerManager(models.Manager):
     def create_player(
             self,
-            user=None,
-            resources=None,
-            money=10,
-            last_move=-1,
-            time_spent=0
+            user = None,
+            resources = None,
+            money = 10,
+            last_move = -1,
+            time_spent = 0,
+            ship_position = None
     ):
+        if ship_position is None:
+            ship_position = [2, 2]
         if resources is None:
             resources = ['0', '0', '0', '0', '0', '0', '0', '0', '0']
         player = self.create(
-            user=user,
-            resources=resources,
-            money=money,
-            last_move=last_move,
-            time_spent=time_spent
+            user = user,
+            resources = resources,
+            money = money,
+            last_move = last_move,
+            time_spent = time_spent,
+            ship_position = ship_position
         )
         return player
 
@@ -135,7 +139,7 @@ class Player(models.Model):
         - user (user)
         - resources[9] (enum)
         - money (int)
-        - ship_position (planet)
+        - ship_position (int, int)
         - last move (int)
         -
     """
@@ -151,7 +155,10 @@ class Player(models.Model):
         9
     )
     money = models.IntegerField()
-    ship_position = models.ForeignKey(Planet, on_delete=models.SET_NULL, null=True, blank=True)
+    ship_position = ArrayField(
+        models.IntegerField(),
+        2
+    )
     last_move = models.IntegerField()
     time_spent = models.IntegerField()
 
@@ -259,6 +266,7 @@ def create_game(name, number_of_players, user):
     min_sell_price = 3
     max_sell_price = 5
 
+    #TODO: player starting conditions
     player = Player.objects.create_player(user=user)
     game.players.add(player)
     planets = [
@@ -268,7 +276,7 @@ def create_game(name, number_of_players, user):
         ["delta", 11, "#008000", [[9, -1], [4, 4], [-2, 7], [-7, 8], [-10, 7], [-10, 3], [-7, -1], [-1, -6], [5, -8], [9, -8], [11, -5]]],
         ["epsilon", 13, "#1E90FF", [[8, 1], [3, 5], [-2, 8], [-8, 9], [-11, 8], [-12, 5], [-11, 2], [-6, -3], [0, -7], [5, -9], [10, -9], [12, -7], [12, -4]]]
     ]
-    starting_position = random.randint(0, 5)
+    
     for index, pl in enumerate(planets):
         planet = Planet.objects.create_planet(
             name=pl[0],
@@ -282,8 +290,6 @@ def create_game(name, number_of_players, user):
             position_of_hexes=pl[3]
         )
         game.planets.add(planet)
-        if index is starting_position:
-            player.ship_position_id = planet.id
     
     if number_of_players == 1:
         game.game_state = 'r'
@@ -292,6 +298,7 @@ def create_game(name, number_of_players, user):
 
 def join_game(primary_key_game, user):
     game = Game.objects.get(pk=primary_key_game)
+    #TODO: player starting position
     player = Player.objects.create_player(user=user)
     game.players.add(player)
     number_of_joined_players = game.players.count()
