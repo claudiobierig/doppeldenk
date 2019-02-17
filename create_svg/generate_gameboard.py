@@ -15,7 +15,7 @@ PADDING = 100
 FONT_PADDING = 5
 
 SHIP_WIDTH = 10
-SHIP_HEIGHT = 20
+SHIP_HEIGHT = 15
 
 SIZE_TIMEBOX = 30
 NUMBER_TIMEBOXES_WIDTH = 31
@@ -95,9 +95,6 @@ def draw_planet_ellipse(svg, planet, center):
     """
     0. generate subgroup
     1. draw ellipse
-    2. compute length of elipse
-    3. compute where hexes should be
-    4. draw hexes and coordinates
     """
     (center_x, center_y) = center
     layer = svg.create_subgroup(planet.name, class_name='planet')
@@ -150,11 +147,8 @@ def draw_hex_grid(parent, center):
              planet.radius_y *
              math.sin(x) +
              center_y) for x in degrees]
-        print("--------------------")
-        print(planet.name)
         for index, position in enumerate(positions):
             hex_coordinates = get_hex_coordinates(position, HEX_SIZE)
-            print(hex_coordinates)
             colored_hexes.append([hex_coordinates, planet, index])
 
     layer = parent.create_subgroup('hex_grid', class_name='hex_grid')
@@ -179,19 +173,6 @@ def draw_hex_grid(parent, center):
                 stroke_opacity="0.5",
                 stroke_width="0.5"
             )
-            #content = str(int(coords[0])) + "," + str(int(
-            #    coords[1])) + "," + str(int(- coords[0] - coords[1]))
-            #position_x = hex_center[0]
-            #position_y = hex_center[1] - HEX_SIZE / 2 - FONT_SIZE - FONT_PADDING
-            #sub.root.text = "{% if print_coordinates planets " + str(coords[0]) + " " + str(coords[1]) + " %}"
-            #layer.create_text(
-            #        "coordinates_" +
-            #        content,
-            #        [position_x, position_y],
-            #        content,
-            #        font_size=FONT_SIZE,
-            #        font_colour="#FFFFFF")
-            #text.root.tail = "{% endif %}"
     
     coordinate_group = parent.create_subgroup('coordinates')
     coordinate_group.root.text = ("{% for planet in planets %} {% for coordinates in planet.position_of_hexes %}")
@@ -323,26 +304,20 @@ def draw_sun(svg, size, radius):
                       'sun', fill_colour='yellow')
 
 
-def draw_players(svg):
+def draw_player_ships(svg):
     """
-    draw ships and timemarkers of all players
+    draw ships of all players
     """
-    players_group = svg.create_subgroup('players')
-    for index, player in enumerate(PLAYERS):
-        player_group = players_group.create_subgroup(player.name)
-        additional_arguments_disc = {
-            'time': '0',
-            'class': 'timemarker'
-        }
-        player_group.use_symbol("disc_3d", "timemarker_" + player.name,
-                                (0, 15 - index * 4), fill_colour=player.colour,
-                                additional_arguments=additional_arguments_disc)
-        player_group.create_rectangle((index * (SHIP_WIDTH + 10) + 50, 50),
-                                      (SHIP_WIDTH, SHIP_HEIGHT),
-                                      "ship_" + player.name,
-                                      fill_colour=player.colour,
-                                      stroke_colour="black",
-                                      additional_arguments={'class': 'ship'})
+    players_group = svg.create_subgroup('player_ships')
+    players_group.root.text = "{% for player in players %}"
+    rect = players_group.create_rectangle(("{% get_x_position_ship player " + "{} {} {}".format(HEX_SIZE, WIDTH, HEIGHT) + " %}",
+                                           "{% get_y_position_ship player " + "{} {} {}".format(HEX_SIZE, WIDTH, HEIGHT) + " %}"),
+                                           (SHIP_WIDTH, SHIP_HEIGHT),
+                                           "ship_{{ player.user.get_username }}",
+                                           fill_colour="{{ player.colour }}",
+                                           stroke_colour="black",
+                                           additional_arguments={'class': 'ship'})
+    rect.root.tail = "{% endfor %}"
 
 
 def main():
@@ -358,7 +333,7 @@ def main():
         draw_planet_ellipse(svg, planet, (WIDTH / 2, HEIGHT / 2))
 
     draw_sun(svg, (WIDTH, HEIGHT), HEX_SIZE)
-    #draw_players(svg)
+    draw_player_ships(svg)
     svg_string = svg.get_string()
     #print("gameboard")
     with open("gameboard.svg", "w") as out_file:

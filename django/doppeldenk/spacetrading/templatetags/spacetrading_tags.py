@@ -26,7 +26,7 @@ def get_opacity(planets, coord_q, coord_r):
             if index is planet.current_position:
                 return "1"
             else:
-                return "0.3"
+                return "0.2"
     
     return "0"
 
@@ -62,6 +62,17 @@ def get_x_position_text(coordinates, hex_size, width, height):
 def get_y_position_text(coordinates, hex_size, width, height, y_offset):
     hex_center = get_hex_center(coordinates, hex_size, width, height)
     return hex_center[1] - hex_size / 2 - y_offset
+
+
+@register.simple_tag
+def get_x_position_ship(player, hex_size, width, height):
+    hex_center = get_hex_center(player.ship_position, hex_size, width, height)
+    return hex_center[0] + player.ship_offset[0]
+
+@register.simple_tag
+def get_y_position_ship(player, hex_size, width, height):
+    hex_center = get_hex_center(player.ship_position, hex_size, width, height)
+    return hex_center[1] + player.ship_offset[1]
 
 @register.filter
 def at(l, i):

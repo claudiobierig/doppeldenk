@@ -113,24 +113,30 @@ class Planet(models.Model):
 class PlayerManager(models.Manager):
     def create_player(
             self,
-            user = None,
-            resources = None,
-            money = 10,
-            last_move = -1,
-            time_spent = 0,
-            ship_position = None
+            user=None,
+            resources=None,
+            money=10,
+            last_move=-1,
+            time_spent=0,
+            ship_position=None,
+            colour="white",
+            ship_offset=None
     ):
         if ship_position is None:
             ship_position = [2, 2]
         if resources is None:
             resources = ['0', '0', '0', '0', '0', '0', '0', '0', '0']
+        if ship_offset is None:
+            ship_offset = [0, 0]
         player = self.create(
-            user = user,
-            resources = resources,
-            money = money,
-            last_move = last_move,
-            time_spent = time_spent,
-            ship_position = ship_position
+            user=user,
+            resources=resources,
+            money=money,
+            last_move=last_move,
+            time_spent=time_spent,
+            ship_position=ship_position,
+            colour=colour,
+            ship_offset=ship_offset
         )
         return player
 
@@ -161,6 +167,11 @@ class Player(models.Model):
     )
     last_move = models.IntegerField()
     time_spent = models.IntegerField()
+    colour = models.CharField(max_length=100)
+    ship_offset = ArrayField(
+        models.IntegerField(),
+        2
+    )
 
     objects = PlayerManager()
 
@@ -267,7 +278,7 @@ def create_game(name, number_of_players, user):
     max_sell_price = 5
 
     #TODO: player starting conditions
-    player = Player.objects.create_player(user=user)
+    player = Player.objects.create_player(user=user, colour="#FF0000", ship_offset=[0, 0])
     game.players.add(player)
     planets = [
         ["alpha", 3, "#FF0000", [[5, -2], [-3, 4], [-3, -1]]],
@@ -298,10 +309,20 @@ def create_game(name, number_of_players, user):
 
 def join_game(primary_key_game, user):
     game = Game.objects.get(pk=primary_key_game)
-    #TODO: player starting position
-    player = Player.objects.create_player(user=user)
-    game.players.add(player)
     number_of_joined_players = game.players.count()
+    if number_of_joined_players >= game.number_of_players or number_of_joined_players > 3:
+        return
+
+    colours = ["#FF0000", "#0000FF", "#FFFFFF", "#00FF00"]
+    offsets = [[0, 0], [-10, 0], [-10, -15], [0, -15]]
+    #TODO: player starting position
+    player = Player.objects.create_player(
+        user=user,
+        colour=colours[number_of_joined_players],
+        ship_offset=offsets[number_of_joined_players]
+    )
+    game.players.add(player)
+
     if number_of_joined_players >= game.number_of_players:
         #TODO: error handling for > case
         game.game_state = 'r'

@@ -4,6 +4,7 @@
 {% load static %}
 {% load spacetrading_tags %}
 {% with planets=game.planets.all %}
+{% with players=game.players.all %}
 
 <svg height="630" id="gameboard" width="930">
   <symbol id="disc_3d" view_box="0 0 30 15">
@@ -633,9 +634,10 @@
     <ellipse cx="465.0" cy="315.0" id="epsilon_ellipse" rx="370" ry="240" style="stroke:#1E90FF;stroke-width:2;stroke-opacity:0.5;fill:none;opacity:1;"/>
   </g>
   <circle cx="465.0" cy="315.0" id="sun" r="20" style="fill:yellow"/>
+  <g id="player_ships">{% for player in players %}<rect class="ship" height="15" id="ship_{{ player.user.get_username }}" style="fill:{{ player.colour }};stroke:black;" width="10" x="{% get_x_position_ship player 20 930 630 %}" y="{% get_y_position_ship player 20 930 630 %}"/>{% endfor %}</g>
 </svg>
 {% endwith %}
-
+{% endwith %}
 
 </body>
 </html>
