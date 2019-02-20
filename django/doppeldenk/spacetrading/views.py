@@ -11,6 +11,7 @@ import re
 from spacetrading import models
 #from create_svg import generate_player_board
 from spacetrading import forms
+from spacetrading.create_svg import generate_gameboard
 
 @login_required
 def index(request):
@@ -99,3 +100,11 @@ class OpenGameListView(LoginRequiredMixin, generic.ListView):
 
 class GameDetailView(generic.DetailView):
     model = models.Game
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        game_instance = super().get_object()
+        # Add in a QuerySet of all the books
+        context['gameboard'] = generate_gameboard.draw_gameboard(game_instance)
+        return context

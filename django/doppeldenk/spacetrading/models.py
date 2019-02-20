@@ -19,12 +19,19 @@ RESOURCES = (
 
 class PlanetManager(models.Manager):
     def create_planet(
-            self, colour = "#000000", name = "", number_of_hexes = 1, current_position = 0,
-            buy_resources = None,
-            cost_buy_resource = None,
-            sell_resources = None,
-            cost_sell_resource = None,
-            position_of_hexes = None
+            self,
+            colour="#000000",
+            name="",
+            number_of_hexes=1,
+            current_position=0,
+            radius_x=100,
+            radius_y=100,
+            offset=0,
+            buy_resources=None,
+            cost_buy_resource=None,
+            sell_resources=None,
+            cost_sell_resource=None,
+            position_of_hexes=None,
     ):
         if buy_resources is None:
             buy_resources = ['0', '0', '0', '0', '0']
@@ -38,12 +45,20 @@ class PlanetManager(models.Manager):
             position_of_hexes = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
                                [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
         
-        planet = self.create(name=name, colour=colour, number_of_hexes=number_of_hexes, current_position=current_position,
+        planet = self.create(
+            name=name,
+            colour=colour,
+            number_of_hexes=number_of_hexes,
+            current_position=current_position,
             buy_resources=buy_resources,
             cost_buy_resource=cost_buy_resource,
             sell_resources=sell_resources,
             cost_sell_resource=cost_sell_resource,
-            position_of_hexes=position_of_hexes)
+            position_of_hexes=position_of_hexes,
+            radius_x=radius_x,
+            radius_y=radius_y,
+            offset=offset
+        )
         return planet
 
 
@@ -97,6 +112,10 @@ class Planet(models.Model):
         models.IntegerField(),
         5
     )
+
+    radius_x = models.IntegerField()
+    radius_y = models.IntegerField()
+    offset = models.FloatField()
 
     objects = PlanetManager()
 
@@ -281,11 +300,46 @@ def create_game(name, number_of_players, user):
     player = Player.objects.create_player(user=user, colour="#FF0000", ship_offset=[0, 0])
     game.players.add(player)
     planets = [
-        ["alpha", 3, "#FF0000", [[5, -2], [-3, 4], [-3, -1]]],
-        ["beta", 5, "#FF8000", [[7, -3], [1, 3], [-6, 5], [-5, 0], [3, -5]]],
-        ["gamma", 7, "#FFFF00", [[8, -2], [2, 4], [-5, 7], [-9, 5], [-6, -1], [2, -6], [7, -6]]],
-        ["delta", 11, "#008000", [[9, -1], [4, 4], [-2, 7], [-7, 8], [-10, 7], [-10, 3], [-7, -1], [-1, -6], [5, -8], [9, -8], [11, -5]]],
-        ["epsilon", 13, "#1E90FF", [[8, 1], [3, 5], [-2, 8], [-8, 9], [-11, 8], [-12, 5], [-11, 2], [-6, -3], [0, -7], [5, -9], [10, -9], [12, -7], [12, -4]]]
+        [
+            "alpha",
+            3,
+            "#FF0000", 
+            [[5, -2], [-3, 4], [-3, -1]],
+            [150, 100],
+            0
+        ],
+        [
+            "beta",
+            5,
+            "#FF8000",
+            [[7, -3], [1, 3], [-6, 5], [-5, 0], [3, -5]],
+            [210, 130],
+            0.2
+        ],
+        [
+            "gamma",
+            7,
+            "#FFFF00",
+            [[8, -2], [2, 4], [-5, 7], [-9, 5], [-6, -1], [2, -6], [7, -6]],
+            [260, 180],
+            0.4
+        ],
+        [
+            "delta",
+            11,
+            "#008000",
+            [[9, -1], [4, 4], [-2, 7], [-7, 8], [-10, 7], [-10, 3], [-7, -1], [-1, -6], [5, -8], [9, -8], [11, -5]],
+            [320, 210],
+            0.6
+        ],
+        [
+            "epsilon",
+            13,
+            "#1E90FF",
+            [[8, 1], [3, 5], [-2, 8], [-8, 9], [-11, 8], [-12, 5], [-11, 2], [-6, -3], [0, -7], [5, -9], [10, -9], [12, -7], [12, -4]],
+            [370, 240],
+            0.8
+        ]
     ]
     
     for index, pl in enumerate(planets):
@@ -298,7 +352,10 @@ def create_game(name, number_of_players, user):
             cost_buy_resource=[random.randint(min_buy_price, max_buy_price), 0, 0, 0, 0],
             sell_resources=[s_resources[index], '0', '0', '0', '0'],
             cost_sell_resource=[random.randint(min_sell_price, max_sell_price), 0, 0, 0, 0],
-            position_of_hexes=pl[3]
+            position_of_hexes=pl[3],
+            radius_x=pl[4][0],
+            radius_y=pl[4][1],
+            offset=pl[5]
         )
         game.planets.add(planet)
     
