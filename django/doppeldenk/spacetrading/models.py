@@ -380,7 +380,7 @@ def join_game(primary_key_game, user):
     )
     game.players.add(player)
 
-    if number_of_joined_players >= game.number_of_players:
+    if number_of_joined_players >= game.number_of_players - 1:
         #TODO: error handling for > case
         game.game_state = 'r'
 
