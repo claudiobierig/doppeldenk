@@ -3,14 +3,11 @@
 <body>
 {% load static %}
 {% load spacetrading_tags %}
-{% with planets=game.planets.all %}
-{% with players=game.players.all %}
-
+{{ player_boards |safe }}
 {{ gameboard |safe }}
 {{ planet_market |safe }}
 
-{% endwith %}
-{% endwith %}
+
 
 </body>
 </html>

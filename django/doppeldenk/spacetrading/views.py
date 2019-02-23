@@ -11,8 +11,7 @@ import re
 from spacetrading import models
 #from create_svg import generate_player_board
 from spacetrading import forms
-from spacetrading.create_svg import generate_gameboard
-from spacetrading.create_svg import generate_planet_market
+from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_player_boards
 
 @login_required
 def index(request):
@@ -106,7 +105,10 @@ class GameDetailView(LoginRequiredMixin, generic.DetailView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         game_instance = super().get_object()
+        planets = game_instance.planets.all()
+        players = game_instance.players.all()
         # Add in a QuerySet of all the books
         context['gameboard'] = generate_gameboard.draw_gameboard(game_instance)
-        context['planet_market'] = generate_planet_market.draw_planet_market(game_instance)
+        context['planet_market'] = generate_planet_market.draw_planet_market(planets)
+        context['player_boards'] = generate_player_boards.draw_player_boards(players)
         return context

@@ -19,7 +19,7 @@ def get_symbol_name(resource):
         return 'water'
     elif resource is '5':
         return 'building_resource'
-    
+
 def get_rel_buy_position(price):
     x_pos = 20 * price
     y_pos = 57
@@ -31,8 +31,7 @@ def get_rel_sell_position(price):
     return [x_pos, y_pos]
 
 
-def draw_planet_market(game):
-    planets = game.planets.all()
+def draw_planet_market(planets):
     svg = Svg(width=5*160, height=100, id_name="all_planet_markets")
     generate_svg_symbols.add_posibility_for_planet_market(svg)
     generate_svg_symbols.add_posibility_for_empty_res(svg)
