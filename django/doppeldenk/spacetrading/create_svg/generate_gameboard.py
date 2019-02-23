@@ -3,6 +3,7 @@
 generate the main gameboard
 """
 import math
+import operator
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg import generate_svg_symbols
 
@@ -266,6 +267,53 @@ def draw_player_ships(svg, players):
             stroke_colour="black"
         )
 
+def get_timemarker_position(time_spent, stack_position):
+    """
+    given the time_spent and the number of timemarkers below in the stack
+    return the position where to print the timemarker
+    """
+    time_space = time_spent % 100
+    if 0 <= time_space <= 30:
+        x_pos = time_space * SIZE_TIMEBOX
+        y_pos = 15
+    elif 30 < time_space <= 50:
+        x_pos = 30 * SIZE_TIMEBOX
+        y_pos = 15 + (time_space - 30) * SIZE_TIMEBOX
+    elif 50 < time_space <= 80:
+        x_pos = (80 - time_space) * SIZE_TIMEBOX
+        y_pos = 15 + 20*SIZE_TIMEBOX
+    elif 81 < time_space < 100:
+        x_pos = 0
+        y_pos = 15 + (100 - time_space) * SIZE_TIMEBOX
+    y_pos = y_pos - stack_position*4
+    return [x_pos, y_pos]
+
+def draw_timemarkers(svg, players):
+    """
+    draw timemarkers of all players
+    """
+    timemarkers = []
+    for player in players:
+        timemarkers.append(
+            [player.time_spent, player.last_move, player.colour, player.user.get_username()]
+        )
+
+    timemarkers.sort(key=operator.itemgetter(0, 1), reverse=True)
+    timemarkers_svg = svg.create_subgroup('timemarkers')
+    stack_position = 0
+    last_timemarker = None
+    for timemarker in timemarkers:
+        if last_timemarker is timemarker[0]:
+            stack_position = stack_position + 1
+        else:
+            stack_position = 0
+        last_timemarker = timemarker[0]
+        timemarkers_svg.use_symbol(
+            'disc_3d',
+            'timemarker_{}'.format(timemarker[3]),
+            position=get_timemarker_position(timemarker[0], stack_position),
+            fill_colour=timemarker[2]
+        )
 
 def draw_gameboard(game):
     """
@@ -278,14 +326,13 @@ def draw_gameboard(game):
     svg.create_image("/static/auth/bg.jpeg", width="1200", height="876", x_pos="0", y_pos="0")
     draw_timeline(svg)
     draw_hex_grid(svg, (WIDTH / 2, HEIGHT / 2), planets)
-    
+
     for planet in planets:
         draw_planet_ellipse(svg, planet, (WIDTH / 2, HEIGHT / 2))
 
-    
-
     draw_sun(svg, (WIDTH, HEIGHT), HEX_SIZE)
     draw_player_ships(svg, players)
+    draw_timemarkers(svg, players)
     svg_string = svg.get_string()
 
     return svg_string

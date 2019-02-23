@@ -51,6 +51,49 @@ def add_posibility_for_disc_3d(svg):
                      })
     return symbol
 
+def add_posibility_for_planet_market(svg):
+    """
+    add a symbol for the planet market
+    """
+    symbol = Svg(etree.SubElement(svg.root,
+                                  'symbol',
+                                  {'id': 'planet_market',
+                                   'view_box': '0 0 160 100'
+                                  }))
+    symbol.create_rectangle([0, 0], [160, 20], "top_of_planet_market")
+    symbol.create_rectangle([0, 80], [160, 20], "bottom_of_planet_market")
+    symbol.create_rectangle([19, 20], [2, 60], "0_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([39, 20], [2, 60], "1st_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([59, 20], [2, 60], "2nd_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([79, 20], [2, 60], "3rd_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([99, 20], [2, 60], "4th_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([119, 20], [2, 60], "5th_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([139, 20], [2, 60], "7th_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([0, 0], [20, 100], "left_of_planet_market")
+    symbol.create_rectangle([140, 0], [20, 100], "right_of_planet_market")
+    symbol.create_rectangle([0, 45], [160, 10], "middle_of_planet_market")
+
+    buy_values = [1, 2, 3, 4, 5, 6]
+    sell_values = [7, 6, 5, 4, 3, 2]
+    font_size = 12
+    for index, value in enumerate(sell_values):
+        symbol.create_text(
+            'sell_value_{}'.format(value),
+            [(index + 1.5) * 20, 16],
+            str(value),
+            font_size=font_size,
+            font_colour="black"
+        )
+    
+    for index, value in enumerate(buy_values):
+        symbol.create_text(
+            'buy_value_{}'.format(value),
+            [(index + 1.5) * 20, 96],
+            str(value),
+            font_size=font_size,
+            font_colour="black"
+        )
+
 
 def add_posibility_for_wheel(
         svg,
