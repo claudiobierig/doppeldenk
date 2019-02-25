@@ -204,15 +204,33 @@ class GameManager(models.Manager):
             game_name="",
             number_of_players=1,
             next_move_number=-1,
-            next_move_type='f',
-            game_state='w'
+            next_move_type='s',
+            game_state='w',
+            planet_rotation_event_time=10,
+            planet_rotation_event_move=0,
+            offer_demand_time_event_time=20,
+            offer_demand_time_event_move=0,
+            planet_influence_track=None
     ):
+        if planet_influence_track is None:
+            planet_influence_track = [
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0]
+            ]
         game = self.create(
             game_name=game_name,
             number_of_players=number_of_players,
             next_move_number=next_move_number,
             next_move_type=next_move_type,
-            game_state=game_state
+            game_state=game_state,
+            planet_rotation_event_time=planet_rotation_event_time,
+            planet_rotation_event_move=planet_rotation_event_move,
+            offer_demand_time_event_time=offer_demand_time_event_time,
+            offer_demand_time_event_move=offer_demand_time_event_move,
+            planet_influence_track=planet_influence_track
         )
         return game
 
@@ -227,6 +245,7 @@ class Game(models.Model):
     planets = models.ManyToManyField(Planet)
 
     MOVE_TYPE = (
+        ('s', 'Choose starting position'),
         ('m', 'Market action'),
         ('f', 'Fly to another planet')
     )
@@ -235,7 +254,7 @@ class Game(models.Model):
         max_length=1,
         choices=MOVE_TYPE,
         blank=True,
-        default='f',
+        default='s',
         help_text='What is the next move type',
     )
 
@@ -243,6 +262,20 @@ class Game(models.Model):
         ('w', 'waiting'),
         ('r', 'running'),
         ('f', 'finished')
+    )
+
+    planet_rotation_event_time = models.IntegerField()
+    planet_rotation_event_move = models.IntegerField()
+
+    offer_demand_time_event_time = models.IntegerField()
+    offer_demand_time_event_move = models.IntegerField()
+
+    planet_influence_track = ArrayField(
+        ArrayField(
+            models.IntegerField(),
+            4
+        ),
+        5
     )
 
     game_state = models.CharField(
