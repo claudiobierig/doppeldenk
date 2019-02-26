@@ -39,10 +39,8 @@ def create_game(request):
                 form.cleaned_data['number_of_players'],
                 request.user
             )
-            if form.cleaned_data['number_of_players'] == 1:
-                return HttpResponseRedirect(reverse('active_games'))
 
-            return HttpResponseRedirect(reverse('open_games'))
+            return HttpResponseRedirect(reverse('create_game'))
     else:
         form = forms.NewGame(initial={'name': '', 'number_of_players': 1})
 
@@ -105,8 +103,8 @@ class GameDetailView(LoginRequiredMixin, generic.DetailView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         game_instance = super().get_object()
-        planets = game_instance.planets.all()
-        players = game_instance.players.all()
+        planets = game_instance.planets.all().order_by('number_of_hexes')
+        players = game_instance.players.all().order_by('player_number')
         # Add in a QuerySet of all the books
         context['gameboard'] = generate_gameboard.draw_gameboard(game_instance)
         context['planet_market'] = generate_planet_market.draw_planet_market(planets)
