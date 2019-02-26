@@ -139,7 +139,8 @@ class PlayerManager(models.Manager):
             time_spent=0,
             ship_position=None,
             colour="white",
-            ship_offset=None
+            ship_offset=None,
+            player_number=0
     ):
         if ship_position is None:
             ship_position = [2, 2]
@@ -155,7 +156,8 @@ class PlayerManager(models.Manager):
             time_spent=time_spent,
             ship_position=ship_position,
             colour=colour,
-            ship_offset=ship_offset
+            ship_offset=ship_offset,
+            player_number=player_number
         )
         return player
 
@@ -191,6 +193,7 @@ class Player(models.Model):
         models.IntegerField(),
         2
     )
+    player_number = models.IntegerField()
 
     objects = PlayerManager()
 
@@ -316,9 +319,12 @@ class Game(models.Model):
 
 def create_game(name, number_of_players, user):
     #TODO: make this error safe and in doubt clean up afterwards
-    game = Game.objects.create_game()
-    game.game_name = name
-    game.number_of_players = number_of_players
+    offer_demand_time_event_times = [40, 30, 25, 20]
+    game = Game.objects.create_game(
+        game_name=name,
+        number_of_players=number_of_players,
+        offer_demand_time_event_time=offer_demand_time_event_times[number_of_players-1]
+    )
     b_resources = ['1', '2', '3', '4', '5']
     s_resources = ['1', '2', '3', '4', '5']
     random.shuffle(b_resources)
@@ -329,8 +335,12 @@ def create_game(name, number_of_players, user):
     min_sell_price = 3
     max_sell_price = 5
 
-    #TODO: player starting conditions
-    player = Player.objects.create_player(user=user, colour="#FF0000", ship_offset=[0, 0])
+    player = Player.objects.create_player(
+        user=user,
+        colour="#FF0000",
+        ship_offset=[0, 0],
+        player_number=0
+    )
     game.players.add(player)
     planets = [
         [
@@ -405,16 +415,23 @@ def join_game(primary_key_game, user):
 
     colours = ["#FF0000", "#0000FF", "#FFFFFF", "#00FF00"]
     offsets = [[0, 0], [-10, 0], [-10, -15], [0, -15]]
-    #TODO: player starting position
     player = Player.objects.create_player(
         user=user,
         colour=colours[number_of_joined_players],
-        ship_offset=offsets[number_of_joined_players]
+        ship_offset=offsets[number_of_joined_players],
+        player_number=number_of_joined_players
     )
     game.players.add(player)
 
     if number_of_joined_players >= game.number_of_players - 1:
         #TODO: error handling for > case
+        players = game.players.all()
+        player_numbers = list(range(len(players)))
+        random.shuffle(player_numbers)
+        for index, current_player in enumerate(players):
+            current_player.player_number = player_numbers[index] + 1
+            current_player.last_move = -player_numbers[index]
+            current_player.save()
         game.game_state = 'r'
 
     game.save()
