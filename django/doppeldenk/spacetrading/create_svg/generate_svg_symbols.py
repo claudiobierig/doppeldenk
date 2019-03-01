@@ -25,7 +25,7 @@ def add_posibility_for_square_3d(svg):
     )
     width = 21
     height = 5
-    depthx = 4
+    depthx = 5
     depthy = 4
     left = 3
     top = 7

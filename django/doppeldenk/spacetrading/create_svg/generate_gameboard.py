@@ -288,16 +288,34 @@ def get_timemarker_position(time_spent, stack_position):
     y_pos = y_pos - stack_position*4
     return [x_pos, y_pos]
 
-def draw_timemarkers(svg, players):
+def draw_timemarkers(svg, game, players):
     """
     draw timemarkers of all players
     """
     timemarkers = []
     for player in players:
         timemarkers.append(
-            [player.time_spent, player.last_move, player.colour, player.user.get_username()]
+            [player.time_spent, player.last_move, player.colour, player.user.get_username(), 'disc_3d']
         )
-
+    timemarkers.append(
+        [
+            game.planet_rotation_event_time,
+            game.planet_rotation_event_move,
+            "yellow",
+            "planet_rotation",
+            "square_3d"
+        ]
+    )
+    timemarkers.append(
+        [
+            game.offer_demand_time_event_time,
+            game.offer_demand_time_event_move,
+            "orange",
+            "offer_demand",
+            "square_3d"
+        ]
+    )
+    
     timemarkers.sort(key=operator.itemgetter(0, 1), reverse=True)
     timemarkers_svg = svg.create_subgroup('timemarkers')
     stack_position = 0
@@ -309,11 +327,56 @@ def draw_timemarkers(svg, players):
             stack_position = 0
         last_timemarker = timemarker[0]
         timemarkers_svg.use_symbol(
-            'disc_3d',
+            timemarker[4],
             'timemarker_{}'.format(timemarker[3]),
             position=get_timemarker_position(timemarker[0], stack_position),
             fill_colour=timemarker[2]
         )
+
+def draw_playerhelp(svg, position):
+    """
+    draw playerhelp
+    """
+    svg.create_rectangle(
+        position,
+        [90, 20],
+        "playerhelp",
+        fill_colour="yellow",
+        stroke_colour="black",
+        additional_arguments={
+            "rx": "10",
+            "ry": "10"
+        }
+    )
+    svg.create_text(
+        "player_help_planet_rotation",
+        [position[0] + 45, position[1] + 10 + 4],
+        "Planet rotation",
+        font_size=8,
+        font_colour="#000000",
+        text_align="center",
+        text_anchor="middle"
+    )
+    svg.create_rectangle(
+        [position[0], position[1] + 25],
+        [90, 20],
+        "playerhelp",
+        fill_colour="orange",
+        stroke_colour="black",
+        additional_arguments={
+            "rx": "10",
+            "ry": "10"
+        }
+    )
+    svg.create_text(
+        "player_help_offer_demand",
+        [position[0] + 45, position[1] + 35 + 4],
+        "Offer Demand",
+        font_size=8,
+        font_colour="#000000",
+        text_align="center",
+        text_anchor="middle"
+    )
 
 def draw_gameboard(game):
     """
@@ -333,7 +396,8 @@ def draw_gameboard(game):
 
     draw_sun(svg, (WIDTH, HEIGHT), HEX_SIZE)
     draw_player_ships(svg, players)
-    draw_timemarkers(svg, players)
+    draw_timemarkers(svg, game, players)
+    draw_playerhelp(svg, [WIDTH - 130, 40])
     svg_string = svg.get_string()
 
     return svg_string
