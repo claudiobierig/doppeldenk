@@ -287,17 +287,21 @@ class Svg(object):
         path = etree.SubElement(self.root, 'path', arguments)
         return Svg(path)
 
-    def create_polygon(self, points, fill_colour):
+    def create_polygon(self, points, fill_colour=None, stroke_colour=None):
         """
         create a polygon in root and return it
         """
-        style = {
-            'fill': fill_colour
-        }
         arguments = {
-            'style': json_to_style(style),
             'points': points
         }
+        style = {}
+        if fill_colour is not None:
+            style['fill'] = fill_colour
+
+        if stroke_colour is not None:
+            style['stroke'] = stroke_colour
+
+        arguments['style'] = json_to_style(style)
         polygon = etree.SubElement(self.root, 'polygon', arguments)
         return Svg(polygon)
 

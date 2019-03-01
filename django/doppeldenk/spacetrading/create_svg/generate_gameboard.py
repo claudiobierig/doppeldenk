@@ -323,6 +323,7 @@ def draw_gameboard(game):
     players = game.players.all()
     svg = Svg(width=str(WIDTH), height=str(HEIGHT), id_name="gameboard")
     generate_svg_symbols.add_posibility_for_disc_3d(svg)
+    generate_svg_symbols.add_posibility_for_square_3d(svg)
     svg.create_image("/static/auth/bg.jpeg", width="1200", height="876", x_pos="0", y_pos="0")
     draw_timeline(svg)
     draw_hex_grid(svg, (WIDTH / 2, HEIGHT / 2), planets)

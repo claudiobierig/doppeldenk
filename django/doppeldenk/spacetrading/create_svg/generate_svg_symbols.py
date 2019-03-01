@@ -9,6 +9,45 @@ from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg.svg_commands import json_to_style
 
 
+def add_posibility_for_square_3d(svg):
+    """
+    Create a symbol, which represents a 3d square and return it
+    """
+    symbol = Svg(
+        etree.SubElement(
+            svg.root,
+            'symbol',
+            {
+                'id': 'square_3d',
+                'view_box': '0 0 30 15'
+            }
+        )
+    )
+    width = 21
+    height = 5
+    depthx = 4
+    depthy = 4
+    left = 3
+    top = 7
+    symbol.create_rectangle((left, top), (width, height), "front", stroke_colour="black")
+    symbol.create_polygon("{},{} {},{} {},{} {},{}".format(
+            left, top,
+            left + width, top,
+            left + width + depthx, top - depthy,
+            left + depthx, top - depthy
+        ),
+        stroke_colour="black"
+    )
+    symbol.create_polygon("{},{} {},{} {},{} {},{}".format(
+            left + width, top,
+            left + width + depthx, top - depthy,
+            left + width + depthx, top - depthy + height,
+            left + width, top + height
+        ),
+        stroke_colour="black"
+    )
+    return symbol
+
 def add_posibility_for_disc_3d(svg):
     """
     Create a symbol, which represents a 3d disc in root and return it
