@@ -258,14 +258,15 @@ def draw_player_ships(svg, players):
     """
     players_group = svg.create_subgroup('player_ships')
     for player in players:
-        hex_center = get_hex_center(player.ship_position, HEX_SIZE)
-        players_group.create_rectangle(
-            [hex_center[0]+player.ship_offset[0], hex_center[1]+player.ship_offset[1]],
-            (SHIP_WIDTH, SHIP_HEIGHT),
-            "ship_{}".format(player.user.get_username()),
-            fill_colour=player.colour,
-            stroke_colour="black"
-        )
+        if player.last_move >= 0:
+            hex_center = get_hex_center(player.ship_position, HEX_SIZE)
+            players_group.create_rectangle(
+                [hex_center[0]+player.ship_offset[0], hex_center[1]+player.ship_offset[1]],
+                (SHIP_WIDTH, SHIP_HEIGHT),
+                "ship_{}".format(player.user.get_username()),
+                fill_colour=player.colour,
+                stroke_colour="black"
+            )
 
 def get_timemarker_position(time_spent, stack_position):
     """
@@ -408,8 +409,6 @@ def draw_influence_tracks(svg, game, planets, players):
                 str(field),
                 font_size=8
             )
-
-    pass
 
 def draw_gameboard(game):
     """
