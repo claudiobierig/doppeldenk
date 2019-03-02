@@ -274,11 +274,8 @@ class Game(models.Model):
     offer_demand_time_event_move = models.IntegerField()
 
     planet_influence_track = ArrayField(
-        ArrayField(
-            models.IntegerField(),
-            4
-        ),
-        5
+        models.IntegerField(),
+        20
     )
 
     game_state = models.CharField(
@@ -430,7 +427,7 @@ def join_game(primary_key_game, user):
         random.shuffle(player_numbers)
         for index, current_player in enumerate(players):
             current_player.player_number = player_numbers[index] + 1
-            current_player.last_move = -player_numbers[index]
+            current_player.last_move = -current_player.player_number
             current_player.save()
         game.game_state = 'r'
 
