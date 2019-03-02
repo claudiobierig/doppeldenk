@@ -378,13 +378,46 @@ def draw_playerhelp(svg, position):
         text_anchor="middle"
     )
 
+def draw_influence_tracks(svg, game, planets, players):
+    """
+    draw the influence tracks including the markers of the players
+    """
+    planet_tracks = svg.create_subgroup('planet_influence_tracks')
+    for planet_number, planet in enumerate(planets):
+        for field in range(0, 21):
+            x_pos = WIDTH + planet_number*SIZE_TIMEBOX
+            y_pos = HEIGHT - (field + 1)*SIZE_TIMEBOX
+            planet_tracks.create_rectangle(
+                [x_pos, y_pos],
+                [SIZE_TIMEBOX, SIZE_TIMEBOX],
+                "{}_influence_{}".format(planet.name, field),
+                fill_colour=planet.colour,
+                stroke_colour="black"
+            )
+            if field % 10 == 0:
+                planet_tracks.create_rectangle(
+                    [x_pos, y_pos],
+                    [SIZE_TIMEBOX, SIZE_TIMEBOX],
+                    "{}_influence_{}_transperent".format(planet.name, field),
+                    fill_colour="black",
+                    fill_opacity="0.4"
+                )
+            planet_tracks.create_text(
+                "{}_influence_{}_text".format(planet.name, field),
+                (x_pos + SIZE_TIMEBOX / 2, y_pos + SIZE_TIMEBOX / 2 + 4),
+                str(field),
+                font_size=8
+            )
+
+    pass
+
 def draw_gameboard(game):
     """
     draw the main board
     """
     planets = game.planets.all()
     players = game.players.all()
-    svg = Svg(width=str(WIDTH), height=str(HEIGHT), id_name="gameboard")
+    svg = Svg(width=str(WIDTH + len(planets)*SIZE_TIMEBOX), height=str(HEIGHT), id_name="gameboard")
     generate_svg_symbols.add_posibility_for_disc_3d(svg)
     generate_svg_symbols.add_posibility_for_square_3d(svg)
     svg.create_image("/static/auth/bg.jpeg", width="1200", height="876", x_pos="0", y_pos="0")
@@ -398,6 +431,7 @@ def draw_gameboard(game):
     draw_player_ships(svg, players)
     draw_timemarkers(svg, game, players)
     draw_playerhelp(svg, [WIDTH - 130, 40])
+    draw_influence_tracks(svg, game, planets, players)
     svg_string = svg.get_string()
 
     return svg_string
