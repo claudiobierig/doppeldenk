@@ -25,8 +25,8 @@ def add_posibility_for_square_3d(svg):
     )
     width = 21
     height = 5
-    depthx = 5
-    depthy = 4
+    depthx = 4
+    depthy = 6
     left = 3
     top = 7
     symbol.create_rectangle((left, top), (width, height), "front", stroke_colour="black")
