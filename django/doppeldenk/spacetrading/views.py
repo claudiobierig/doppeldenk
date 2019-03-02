@@ -106,7 +106,7 @@ class GameDetailView(LoginRequiredMixin, generic.DetailView):
         planets = game_instance.planets.all().order_by('number_of_hexes')
         players = game_instance.players.all().order_by('player_number')
         # Add in a QuerySet of all the books
-        context['gameboard'] = generate_gameboard.draw_gameboard(game_instance)
+        context['gameboard'] = generate_gameboard.draw_gameboard(game_instance, planets, players)
         context['planet_market'] = generate_planet_market.draw_planet_market(planets)
         context['player_boards'] = generate_player_boards.draw_player_boards(players)
         return context

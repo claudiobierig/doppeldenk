@@ -424,12 +424,10 @@ def draw_influence_tracks(svg, game, planets, players):
             )
 
 
-def draw_gameboard(game):
+def draw_gameboard(game, planets, players):
     """
     draw the main board
     """
-    planets = game.planets.all()
-    players = game.players.all()
     svg = Svg(width=str(WIDTH + len(planets)*SIZE_TIMEBOX), height=str(HEIGHT), id_name="gameboard")
     generate_svg_symbols.add_posibility_for_disc_3d(svg)
     generate_svg_symbols.add_posibility_for_square_3d(svg)
