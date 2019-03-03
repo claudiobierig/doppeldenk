@@ -1,0 +1,8 @@
+<br><br>
+<div>
+{% with widget.inner_array_size as columns %}
+{% for widget in widget.subwidgets %}
+{% include widget.template_name %} {% if forloop.counter|divisibleby:columns %}<br>{% endif %}
+{% endfor %}
+{% endwith %}
+</div>
