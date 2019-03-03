@@ -124,25 +124,14 @@ def print_hexes(positions, colour, parent, parentname):
             font_colour="#FFFFFF")
 
 
-def draw_hex_grid(parent, center, planets):
+def draw_hex_grid(parent, planets):
     """
     draw the hex grid
     """
-    (center_x, center_y) = center
     colored_hexes = []
     for planet in planets:
-        degrees = list(range(0, planet.number_of_hexes))
-        degrees[:] = [planet.offset + x * 2 * math.pi / planet.number_of_hexes for x in degrees]
-        positions = [
-            (planet.radius_x *
-             math.cos(x) +
-             center_x,
-             planet.radius_y *
-             math.sin(x) +
-             center_y) for x in degrees]
-        for index, position in enumerate(positions):
-            hex_coordinates = get_hex_coordinates(position, HEX_SIZE)
-            colored_hexes.append([hex_coordinates, planet, index])
+        for index, coordinates in enumerate(planet.position_of_hexes):
+            colored_hexes.append([coordinates, planet, index])
 
     layer = parent.create_subgroup('hex_grid', class_name='hex_grid')
     for row in range(-7, 8):
@@ -433,7 +422,7 @@ def draw_gameboard(game, planets, players):
     generate_svg_symbols.add_posibility_for_square_3d(svg)
     svg.create_image("/static/auth/bg.jpeg", width="1200", height="876", x_pos="0", y_pos="0")
     draw_timeline(svg)
-    draw_hex_grid(svg, (WIDTH / 2, HEIGHT / 2), planets)
+    draw_hex_grid(svg, planets)
 
     for planet in planets:
         draw_planet_ellipse(svg, planet, (WIDTH / 2, HEIGHT / 2))
