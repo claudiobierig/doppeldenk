@@ -1,6 +1,4 @@
 from django.contrib import admin
-#from django.contrib.postgres.forms import SplitArrayField, SimpleArrayField
-from django.utils.safestring import mark_safe
 from django.forms import MultiWidget
 from django.forms import widgets
 from django import forms
