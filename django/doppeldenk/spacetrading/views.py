@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views import generic
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import FormMixin
 
 import re
 
@@ -40,7 +40,7 @@ def create_game(request):
                 request.user
             )
 
-            return HttpResponseRedirect(reverse('create_game'))
+            return HttpResponseRedirect(request.path_info)
     else:
         form = forms.NewGame(initial={'name': '', 'number_of_players': 1})
 
@@ -94,10 +94,11 @@ class OpenGameListView(LoginRequiredMixin, generic.ListView):
                 print("Want to join game " + primary_key_game)
                 models.join_game(primary_key_game, request.user)
 
-        return HttpResponseRedirect(reverse('open_games'))
+        return HttpResponseRedirect(self.request.path_info)
 
-class GameDetailView(LoginRequiredMixin, generic.DetailView):
+class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
     model = models.Game
+    form_class = forms.Move
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -110,3 +111,13 @@ class GameDetailView(LoginRequiredMixin, generic.DetailView):
         context['planet_market'] = generate_planet_market.draw_planet_market(planets)
         context['player_boards'] = generate_player_boards.draw_player_boards(players)
         return context
+    
+    def post(self, request, *args, **kwargs):
+        form = forms.Move(request.POST)
+        print("----------------------")
+        print(request.POST)
+        print("----------------------")
+        if form.is_valid():
+            print("valid")
+
+        return HttpResponseRedirect(self.request.path_info)
