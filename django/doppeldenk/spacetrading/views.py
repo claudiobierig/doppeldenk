@@ -118,6 +118,15 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         print(request.POST)
         print("----------------------")
         if form.is_valid():
+            game_instance = super().get_object()
+            players = game_instance.players.all().order_by('player_number')
+            active_player = models.get_active_player(players)
+            active_player.time_spent = 0
+            active_player.last_move = game_instance.next_move_number
+            active_player.ship_position = [form.cleaned_data['coord_q'], form.cleaned_data['coord_r']]
+            game_instance.next_move_number = game_instance.next_move_number + 1
+            game_instance.save()
+            active_player.save()
             print("valid")
 
         return HttpResponseRedirect(self.request.path_info)

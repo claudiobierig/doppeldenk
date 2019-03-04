@@ -136,7 +136,7 @@ class PlayerManager(models.Manager):
             resources=None,
             money=10,
             last_move=-1,
-            time_spent=0,
+            time_spent=-1,
             ship_position=None,
             colour="white",
             ship_offset=None,
@@ -306,6 +306,9 @@ class Game(models.Model):
 
         return user_group_set
 
+    def get_active_player(self):
+        return get_active_player(self.players.all())
+
     def __str__(self):
         """String for representing the Model object."""
         return str(
@@ -435,3 +438,15 @@ def join_game(primary_key_game, user):
         game.game_state = 'r'
 
     game.save()
+
+def get_active_player(players):
+    active_player = None
+    print(active_player)
+    for player in players:
+        print(player)
+        if active_player is None:
+            active_player = player
+            continue
+        if player.time_spent < active_player.time_spent or (player.time_spent == active_player.time_spent and player.last_move > active_player.last_move):
+            active_player = player
+    return active_player

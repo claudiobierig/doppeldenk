@@ -284,9 +284,10 @@ def draw_timemarkers(svg, game, players):
     """
     timemarkers = []
     for player in players:
-        timemarkers.append(
-            [player.time_spent, player.last_move, player.colour, player.user.get_username(), 'disc_3d']
-        )
+        if player.time_spent >= 0:
+            timemarkers.append(
+                [player.time_spent, player.last_move, player.colour, player.user.get_username(), 'disc_3d']
+            )
     timemarkers.append(
         [
             game.planet_rotation_event_time,
@@ -306,7 +307,7 @@ def draw_timemarkers(svg, game, players):
         ]
     )
     
-    timemarkers.sort(key=operator.itemgetter(0, 1), reverse=True)
+    timemarkers.sort(key=operator.itemgetter(0, 1))
     timemarkers_svg = svg.create_subgroup('timemarkers')
     stack_position = 0
     last_timemarker = None
