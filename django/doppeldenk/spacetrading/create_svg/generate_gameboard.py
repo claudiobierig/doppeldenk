@@ -284,7 +284,7 @@ def draw_timemarkers(svg, game, players):
     """
     timemarkers = []
     for player in players:
-        if player.time_spent >= 0:
+        if player.last_move >= 0:
             timemarkers.append(
                 [player.time_spent, player.last_move, player.colour, player.user.get_username(), 'disc_3d']
             )

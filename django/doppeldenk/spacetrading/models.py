@@ -3,6 +3,8 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.urls import reverse
 
+from spacetrading.logic import move
+
 import random
 
 # Create your models here.
@@ -247,20 +249,6 @@ class Game(models.Model):
     players = models.ManyToManyField(Player)
     planets = models.ManyToManyField(Planet)
 
-    MOVE_TYPE = (
-        ('s', 'Choose starting position'),
-        ('m', 'Market action'),
-        ('f', 'Fly to another planet')
-    )
-
-    next_move_type = models.CharField(
-        max_length=1,
-        choices=MOVE_TYPE,
-        blank=True,
-        default='s',
-        help_text='What is the next move type',
-    )
-
     GAME_STATE = (
         ('w', 'waiting'),
         ('r', 'running'),
@@ -307,7 +295,7 @@ class Game(models.Model):
         return user_group_set
 
     def get_active_player(self):
-        return get_active_player(self.players.all())
+        return move.get_active_player(self.players.all())
 
     def __str__(self):
         """String for representing the Model object."""
@@ -316,7 +304,6 @@ class Game(models.Model):
             "game_name={game.game_name}, "
             "number_of_players={game.number_of_players}, "
             "next_move_number={game.next_move_number}, "
-            "next_move_type={game.next_move_type}, "
             "game_state={game.game_state}".format(game=self)
         )
 
@@ -438,15 +425,3 @@ def join_game(primary_key_game, user):
         game.game_state = 'r'
 
     game.save()
-
-def get_active_player(players):
-    active_player = None
-    print(active_player)
-    for player in players:
-        print(player)
-        if active_player is None:
-            active_player = player
-            continue
-        if player.time_spent < active_player.time_spent or (player.time_spent == active_player.time_spent and player.last_move > active_player.last_move):
-            active_player = player
-    return active_player
