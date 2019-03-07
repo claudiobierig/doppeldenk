@@ -6,7 +6,7 @@ from spacetrading.logic import move
 
 # Create your tests here.
 
-class YourTestClass(TestCase):
+class MoveTest(TestCase):
     
     def setUp(self):
         print("every test")
@@ -69,9 +69,20 @@ class YourTestClass(TestCase):
         game = Game.objects.get(game_name="test")
         players = game.players.all()
         self.assertEqual(None, move.get_next_event(game, players))
-        #TODO: more tests
-        self.assertTrue(False)
-    
+        player1 = players.get(player_number=1)
+        player2 = players.get(player_number=2)
+        player1.time_spent = 21
+        player2.time_spent = 22
+        player1.save()
+        player2.save()
+        players = game.players.all()
+        self.assertEqual(move.EVENT_TYPE.PLANET_ROTATION, move.get_next_event(game, players))
+        game.planet_rotation_event_time = 20
+        game.planet_rotation_event_move = 1
+        self.assertEqual(move.EVENT_TYPE.PLANET_ROTATION, move.get_next_event(game, players))
+        game.planet_rotation_event_time = 30
+        self.assertEqual(move.EVENT_TYPE.OFFER_DEMAND, move.get_next_event(game, players))
+        
     def test_get_active_player(self):
         self.assertTrue(False)
 

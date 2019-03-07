@@ -69,9 +69,7 @@ def offer_demand(game, planets):
 
 def get_active_player(players):
     active_player = None
-    print(active_player)
     for player in players:
-        print(player)
         if active_player is None:
             active_player = player
             continue
