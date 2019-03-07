@@ -38,7 +38,7 @@ def compute_distance(coordinates1, coordinates2):
 
 def get_next_event(game, players):
     planet_rotation_event = [game.planet_rotation_event_time, game.planet_rotation_event_move]
-    offer_demand_event = [game.offer_demand_time_event_time, game.offer_demand_event_move]
+    offer_demand_event = [game.offer_demand_event_time, game.offer_demand_event_move]
     active_player = get_active_player(players)
     if is_before(planet_rotation_event, offer_demand_event):
         if is_before(planet_rotation_event, [active_player.time_spent, active_player.last_move]):

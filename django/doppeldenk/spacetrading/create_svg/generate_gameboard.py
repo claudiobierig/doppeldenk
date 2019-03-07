@@ -299,8 +299,8 @@ def draw_timemarkers(svg, game, players):
     )
     timemarkers.append(
         [
-            game.offer_demand_time_event_time,
-            game.offer_demand_time_event_move,
+            game.offer_demand_event_time,
+            game.offer_demand_event_move,
             "orange",
             "offer_demand",
             "square_3d"

@@ -212,8 +212,8 @@ class GameManager(models.Manager):
             game_state='w',
             planet_rotation_event_time=10,
             planet_rotation_event_move=0,
-            offer_demand_time_event_time=20,
-            offer_demand_time_event_move=0,
+            offer_demand_event_time=20,
+            offer_demand_event_move=0,
             planet_influence_track=None
     ):
         if planet_influence_track is None:
@@ -231,8 +231,8 @@ class GameManager(models.Manager):
             game_state=game_state,
             planet_rotation_event_time=planet_rotation_event_time,
             planet_rotation_event_move=planet_rotation_event_move,
-            offer_demand_time_event_time=offer_demand_time_event_time,
-            offer_demand_time_event_move=offer_demand_time_event_move,
+            offer_demand_event_time=offer_demand_event_time,
+            offer_demand_event_move=offer_demand_event_move,
             planet_influence_track=planet_influence_track
         )
         return game
@@ -256,8 +256,8 @@ class Game(models.Model):
     planet_rotation_event_time = models.IntegerField()
     planet_rotation_event_move = models.IntegerField()
 
-    offer_demand_time_event_time = models.IntegerField()
-    offer_demand_time_event_move = models.IntegerField()
+    offer_demand_event_time = models.IntegerField()
+    offer_demand_event_move = models.IntegerField()
 
     planet_influence_track = ArrayField(
         ArrayField(
@@ -307,11 +307,11 @@ class Game(models.Model):
 
 def create_game(name, number_of_players, user):
     #TODO: make this error safe and in doubt clean up afterwards
-    offer_demand_time_event_times = [40, 30, 25, 20]
+    offer_demand_event_times = [40, 30, 25, 20]
     game = Game.objects.create_game(
         game_name=name,
         number_of_players=number_of_players,
-        offer_demand_time_event_time=offer_demand_time_event_times[number_of_players-1]
+        offer_demand_event_time=offer_demand_event_times[number_of_players-1]
     )
     b_resources = ['1', '2', '3', '4', '5']
     s_resources = ['1', '2', '3', '4', '5']
