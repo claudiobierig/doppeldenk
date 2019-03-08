@@ -272,7 +272,7 @@ def get_timemarker_position(time_spent, stack_position):
     elif 50 < time_space <= 80:
         x_pos = (80 - time_space) * SIZE_TIMEBOX
         y_pos = 15 + 20*SIZE_TIMEBOX
-    elif 81 < time_space < 100:
+    elif 80 < time_space < 100:
         x_pos = 0
         y_pos = 15 + (100 - time_space) * SIZE_TIMEBOX
     y_pos = y_pos - stack_position*4
