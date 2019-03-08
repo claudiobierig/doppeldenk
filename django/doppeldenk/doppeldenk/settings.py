@@ -130,11 +130,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-print(STATICFILES_DIRS)
-
 LOGIN_REDIRECT_URL = '/'
 
 GRAPH_MODELS = {
     'all_applications': True,
     'group_models': True,
 }
+
+TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
