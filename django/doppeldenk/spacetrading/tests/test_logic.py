@@ -12,7 +12,8 @@ class MoveTest(TestCase):
         self.game = Game.objects.create_game(
             game_name="test",
             number_of_players=2,
-            game_state="r"
+            game_state="r",
+            offer_demand_event_time=30
         )
 
         player1 = Player.objects.create_player(
@@ -30,6 +31,7 @@ class MoveTest(TestCase):
         planet1 = Planet.objects.create_planet(
             name="a",
             number_of_hexes=3,
+            current_position=0,
             buy_resources=['1', '0', '0', '0', '0'],
             cost_buy_resource=[3, 0, 0, 0, 0],
             sell_resources=['2', '0', '0', '0', '0'],
@@ -41,9 +43,9 @@ class MoveTest(TestCase):
             number_of_hexes=5,
             current_position=3,
             buy_resources=['1', '0', '0', '0', '0'],
-            cost_buy_resource=[3, 0, 0, 0, 0],
+            cost_buy_resource=[1, 0, 0, 0, 0],
             sell_resources=['2', '0', '0', '0', '0'],
-            cost_sell_resource=[5, 0, 0, 0, 0],
+            cost_sell_resource=[7, 0, 0, 0, 0],
             position_of_hexes=[[-2, 2], [-3, -3], [4, 4], [5, -5], [-6, 6]]
         )
         self.game.planets.add(planet1)
@@ -68,16 +70,16 @@ class MoveTest(TestCase):
         self.assertEqual(None, move.get_next_event(self.game, self.players))
         player1 = self.players.get(player_number=1)
         player2 = self.players.get(player_number=2)
-        player1.time_spent = 21
-        player2.time_spent = 22
+        player1.time_spent = 31
+        player2.time_spent = 32
         player1.save()
         player2.save()
         self.players = self.game.players.all()
         self.assertEqual(move.EVENT_TYPE.PLANET_ROTATION, move.get_next_event(self.game, self.players))
-        self.game.planet_rotation_event_time = 20
+        self.game.planet_rotation_event_time = 30
         self.game.planet_rotation_event_move = 1
         self.assertEqual(move.EVENT_TYPE.PLANET_ROTATION, move.get_next_event(self.game, self.players))
-        self.game.planet_rotation_event_time = 30
+        self.game.planet_rotation_event_time = 40
         self.assertEqual(move.EVENT_TYPE.OFFER_DEMAND, move.get_next_event(self.game, self.players))
         
     def test_get_active_player(self):
@@ -97,3 +99,46 @@ class MoveTest(TestCase):
         player1.time_spent = 10
         self.assertTrue(move.player_is_before(player2, player1))
         self.assertFalse(move.player_is_before(player1, player2))
+
+    def test_planet_rotation(self):
+        move.planet_rotation(self.game, self.players, self.planets)
+        position = self.get_current_planet_positions()
+        self.assertTrue(position == [1, 4])
+        self.assertEqual(1, self.game.next_move_number)
+        self.assertEqual(0, self.game.planet_rotation_event_move)
+        self.assertEqual(20, self.game.planet_rotation_event_time)
+        move.planet_rotation(self.game, self.players, self.planets)
+        position = self.get_current_planet_positions()
+        self.assertTrue(position == [2, 0])
+        player1 = self.players.get(player_number=1)
+        player2 = self.players.get(player_number=2)
+        planet1 = self.planets.get(name="a")
+        planet2 = self.planets.get(name="b")
+        player1.ship_position = planet1.position_of_hexes[planet1.current_position]
+        player2.ship_position = planet2.position_of_hexes[planet2.current_position]
+        player1.save()
+        player2.save()
+        self.players = self.game.players.all()
+        move.planet_rotation(self.game, self.players, self.planets)
+        player1 = self.players.get(player_number=1)
+        player2 = self.players.get(player_number=2)
+        self.assertTrue(player1.ship_position == planet1.position_of_hexes[0])
+        self.assertTrue(player2.ship_position == planet2.position_of_hexes[1])
+
+
+    def get_current_planet_positions(self):
+        planet1 = self.planets.get(name="a")
+        planet2 = self.planets.get(name="b")
+        return [planet1.current_position, planet2.current_position]
+    
+    def test_offer_demand(self):
+        move.offer_demand(self.game, self.planets)
+        self.assertEqual(1, self.game.next_move_number)
+        self.assertEqual(0, self.game.offer_demand_event_move)
+        self.assertEqual(60, self.game.offer_demand_event_time)
+        planet1 = self.planets.get(name="a")
+        planet2 = self.planets.get(name="b")
+        self.assertEqual(2, planet1.cost_buy_resource[0])
+        self.assertEqual(6,planet1.cost_sell_resource[0])
+        self.assertEqual(1, planet2.cost_buy_resource[0])
+        self.assertEqual(7, planet2.cost_sell_resource[0])

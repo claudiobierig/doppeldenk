@@ -56,7 +56,19 @@ def planet_rotation(game, players, planets):
     set event move
     increase turn counter
     """
-    pass
+    game.planet_rotation_event_time = game.planet_rotation_event_time + 10
+    game.planet_rotation_event_move = game.next_move_number
+    game.next_move_number = game.next_move_number + 1
+    game.save()
+    for planet in planets:
+        current_hex_position = planet.position_of_hexes[planet.current_position]
+        planet.current_position = (planet.current_position + 1) % planet.number_of_hexes
+        next_hex_position = planet.position_of_hexes[planet.current_position]
+        planet.save()
+        for player in players:
+            if player.ship_position == current_hex_position:
+                player.ship_position = next_hex_position
+                player.save()
 
 def offer_demand(game, planets):
     """
@@ -65,7 +77,17 @@ def offer_demand(game, planets):
     set event move
     increase turn counter
     """
-    pass
+    time_increase = [40, 30, 25, 20]
+    game.offer_demand_event_time = game.offer_demand_event_time + time_increase[game.number_of_players - 1]
+    game.offer_demand_event_move = game.next_move_number
+    game.next_move_number = game.next_move_number + 1
+    game.save()
+    for planet in planets:
+        for index, price in enumerate(planet.cost_buy_resource):
+            planet.cost_buy_resource[index] = max(1, price - 1)
+        for index, price in enumerate(planet.cost_sell_resource):
+            planet.cost_sell_resource[index] = min(7, price + 1)
+        planet.save()
 
 def get_active_player(players):
     active_player = None
