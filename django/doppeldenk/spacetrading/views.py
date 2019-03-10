@@ -11,7 +11,7 @@ import re
 from spacetrading import models
 #from create_svg import generate_player_board
 from spacetrading import forms
-from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_player_boards
+from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_player_boards, generate_trade_modal
 from spacetrading.logic import move
 
 @login_required
@@ -111,6 +111,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         context['gameboard'] = generate_gameboard.draw_gameboard(game_instance, planets, players)
         context['planet_market'] = generate_planet_market.draw_planet_market(planets)
         context['player_boards'] = generate_player_boards.draw_player_boards(players)
+        context['trade_modal'] = generate_trade_modal.draw_trade_modal(players, planets)
         return context
     
     def post(self, request, *args, **kwargs):

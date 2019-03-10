@@ -16,10 +16,9 @@ function clickHex(hex_element)
     }
     
     lastClickedHex = hex_element
-    clearMarketActions()
 }
 
-function clearMarketActions()
+function test()
 {
-    console.log("clear Market Actions")
+    console.log("test")
 }
