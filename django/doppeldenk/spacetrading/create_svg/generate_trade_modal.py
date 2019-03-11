@@ -38,12 +38,29 @@ def add_symbols(svg):
 
 
 def draw_resource(svg, resource, index, planet, player):
-    x_pos = 10 + index*40
+    x_pos = 10 + index*60
     y_pos = 10
     svg.use_symbol(
         get_symbol_name(resource),
         'trade_modal_{}'.format(get_symbol_name(resource)),
-        position=[x_pos, y_pos]
+        position=[2*x_pos/3, 2*y_pos/3],
+        additional_arguments={"transform": "scale(1.5 1.5)"}
+    )
+    svg.create_polygon(
+        "{},{} {},{} {},{}".format(
+            x_pos + 35, y_pos + 12,
+            x_pos + 45, y_pos + 12,
+            x_pos + 40, y_pos +5
+        ),
+        fill_colour="black"
+    )
+    svg.create_polygon(
+        "{},{} {},{} {},{}".format(
+            x_pos + 35, y_pos + 18,
+            x_pos + 45, y_pos + 18,
+            x_pos + 40, y_pos + 25
+        ),
+        fill_colour="black"
     )
 
 def draw_trade_modal(players, planets):
@@ -66,12 +83,14 @@ def draw_trade_modal(players, planets):
     for index, resource in enumerate(['1', '2', '3', '4', '5']):
         draw_resource(svg, resource, index, current_planet, active_player)
 
-    svg.create_rectangle(
-        [10, 60],
-        [380, 380],
-        "test",
-        fill_colour=current_planet.colour
-    )
+    for i in range(5):
+        svg.create_rectangle(
+            [10 + i*60, 60],
+            [30, 30],
+            "test",
+            fill_colour=current_planet.colour,
+            stroke_colour="black"
+        )
 
     svg_string = svg.get_string()
 
