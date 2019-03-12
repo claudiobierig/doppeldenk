@@ -21,18 +21,18 @@ def get_symbol_name(resource):
         return 'building_resource'
 
 def get_rel_buy_position(price):
-    x_pos = 20 * price
-    y_pos = 57
+    x_pos = 30 * price - 10
+    y_pos = 77
     return [x_pos, y_pos]
 
 def get_rel_sell_position(price):
-    x_pos = 160 - (20*price)
-    y_pos = 22
+    x_pos = 230 - (30*price)
+    y_pos = 32
     return [x_pos, y_pos]
 
 
 def draw_planet_market(planets):
-    svg = Svg(width=5*160, height=100, id_name="all_planet_markets")
+    svg = Svg(width=5*220, height=140, id_name="all_planet_markets")
     generate_svg_symbols.add_posibility_for_planet_market(svg)
     generate_svg_symbols.add_posibility_for_empty_res(svg)
     generate_svg_symbols.add_posibility_for_red_cross(svg)
@@ -41,7 +41,7 @@ def draw_planet_market(planets):
     generate_svg_symbols.add_posibility_for_water(svg)
     generate_svg_symbols.add_posibility_for_building_res(svg)
     for index, planet in enumerate(planets):
-        x_offset = index*160
+        x_offset = index*220
         svg.use_symbol(
             'planet_market',
             'planet_market_{}'.format(planet.name),
@@ -56,7 +56,8 @@ def draw_planet_market(planets):
                 svg.use_symbol(
                     symbol_name,
                     'planet_{}_buy_resource'.format(planet.name),
-                    position=[x_pos, y_pos]
+                    position=[x_pos*2/3, y_pos*2/3],
+                    additional_arguments={"transform": "scale(1.5)"}
                 )
 
         for price, resource in zip(planet.cost_sell_resource, planet.sell_resources):
@@ -67,7 +68,8 @@ def draw_planet_market(planets):
                 svg.use_symbol(
                     symbol_name,
                     'planet_{}_buy_resource'.format(planet.name),
-                    position=[x_pos, y_pos]
+                    position=[x_pos*2/3, y_pos*2/3],
+                    additional_arguments={"transform": "scale(1.5)"}
                 )
 
 
