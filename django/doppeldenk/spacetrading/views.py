@@ -110,7 +110,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         # Add in a QuerySet of all the books
         context['gameboard'] = generate_gameboard.draw_gameboard(game_instance, planets, players)
         context['planet_market'] = generate_planet_market.draw_planet_market(planets)
-        context['player_boards'] = generate_player_boards.draw_player_boards(players)
+        context['player_boards'] = generate_player_boards.draw_player_boards(players, game_instance)
         context['trade_modal'] = generate_trade_modal.draw_trade_modal(players, planets)
         return context
     

@@ -106,3 +106,6 @@ def is_before(one, two):
     if one[0] < two[0] or (one[0] == two[0] and one[1] > two[1]):
         return True
     return False
+
+def compute_points(game, player_number):
+    return 0
