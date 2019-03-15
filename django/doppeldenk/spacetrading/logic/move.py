@@ -114,14 +114,8 @@ def compute_points(game, player_number):
         current_player_influence = planet_influence[player_number - 1]
         if current_player_influence == 0:
             continue
-        rated_higher = 0
-        rated_same = 0
-        for player_influence in planet_influence:
-            if player_influence > current_player_influence:
-                rated_higher = rated_higher + 1
-            elif player_influence == current_player_influence:
-                rated_same = rated_same + 1
-        
+        rated_higher = sum(i > current_player_influence for i in planet_influence)
+        rated_same = sum(i == current_player_influence for i in planet_influence)       
         result = result + int(sum(planet_points[rated_higher : rated_higher + rated_same])/rated_same)
 
     return result
