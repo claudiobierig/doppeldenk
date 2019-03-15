@@ -139,6 +139,19 @@ class MoveTest(TestCase):
         planet1 = self.planets.get(name="a")
         planet2 = self.planets.get(name="b")
         self.assertEqual(2, planet1.cost_buy_resource[0])
-        self.assertEqual(6,planet1.cost_sell_resource[0])
+        self.assertEqual(6, planet1.cost_sell_resource[0])
         self.assertEqual(1, planet2.cost_buy_resource[0])
         self.assertEqual(7, planet2.cost_sell_resource[0])
+
+    def test_compute_points(self):
+        self.game.planet_influence_track = [
+            [0, 1, 2, 3],
+            [1, 1, 2, 2],
+            [0, 0, 0, 0],
+            [2, 1, 1, 1],
+            [1, 1, 0, 0]
+        ]
+        self.assertEqual(10, move.compute_points(self.game, 1))
+        self.assertEqual(9, move.compute_points(self.game, 2))
+        self.assertEqual(9, move.compute_points(self.game, 3))
+        self.assertEqual(11, move.compute_points(self.game, 4))

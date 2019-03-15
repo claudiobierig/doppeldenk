@@ -108,4 +108,20 @@ def is_before(one, two):
     return False
 
 def compute_points(game, player_number):
-    return 0
+    result = 0
+    planet_points = [5, 3, 2, 1]
+    for planet_influence in game.planet_influence_track:
+        current_player_influence = planet_influence[player_number - 1]
+        if current_player_influence == 0:
+            continue
+        rated_higher = 0
+        rated_same = 0
+        for player_influence in planet_influence:
+            if player_influence > current_player_influence:
+                rated_higher = rated_higher + 1
+            elif player_influence == current_player_influence:
+                rated_same = rated_same + 1
+        
+        result = result + int(sum(planet_points[rated_higher : rated_higher + rated_same])/rated_same)
+
+    return result
