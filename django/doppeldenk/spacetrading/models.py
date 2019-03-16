@@ -314,14 +314,28 @@ def create_game(name, number_of_players, user):
         offer_demand_event_time=offer_demand_event_times[number_of_players-1]
     )
     b_resources = ['1', '2', '3', '4', '5']
-    s_resources = ['1', '2', '3', '4', '5']
+    remaining_s_resources = ['1', '2', '3', '4', '5']
+    s_resources = []
     random.shuffle(b_resources)
-    #TODO: make sure not the same resource at the planet
-    random.shuffle(s_resources)
+    
+    for i in range(3):
+        shuffle_resources = remaining_s_resources.copy()
+        if b_resources[i] in shuffle_resources:
+            shuffle_resources.remove(b_resources[i])
+        random.shuffle(shuffle_resources)
+        s_resources.append(shuffle_resources[0])
+        remaining_s_resources.remove(shuffle_resources[0])
+    if b_resources[3] == remaining_s_resources[0] or b_resources[4] == remaining_s_resources[1]:
+        s_resources.append(remaining_s_resources[1])
+        s_resources.append(remaining_s_resources[0])
+    else:
+        s_resources.append(remaining_s_resources[0])
+        s_resources.append(remaining_s_resources[1])
+
     min_buy_price = 2
     max_buy_price = 4
-    min_sell_price = 3
-    max_sell_price = 5
+    min_sell_price = 4
+    max_sell_price = 6
 
     player = Player.objects.create_player(
         user=user,
@@ -334,7 +348,7 @@ def create_game(name, number_of_players, user):
         [
             "alpha",
             3,
-            "#FF0000", 
+            "#FF0000",
             [[5, -2], [-3, 4], [-3, -1]],
             [150, 100],
             0
@@ -411,15 +425,18 @@ def join_game(primary_key_game, user):
     )
     game.players.add(player)
 
-    if number_of_joined_players >= game.number_of_players - 1:
-        #TODO: error handling for > case
+    if number_of_joined_players == game.number_of_players - 1:
         players = game.players.all()
         player_numbers = list(range(len(players)))
         random.shuffle(player_numbers)
         for index, current_player in enumerate(players):
             current_player.player_number = player_numbers[index] + 1
             current_player.last_move = -current_player.player_number
+            current_player.money = 10 + game.number_of_players - current_player.player_number
             current_player.save()
         game.game_state = 'r'
+    elif number_of_joined_players > game.number_of_players - 1:
+        game.players.remove(player)
+        player.delete()
 
     game.save()
