@@ -107,17 +107,21 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         game_instance = super().get_object()
         planets = game_instance.planets.all().order_by('number_of_hexes')
         players = game_instance.players.all().order_by('player_number')
-        # Add in a QuerySet of all the books
-        context['gameboard'] = generate_gameboard.draw_gameboard(game_instance, planets, players)
+        user_active = move.get_active_player(players).user == self.request.user
+
+        context['gameboard'] = generate_gameboard.draw_gameboard(game_instance, planets, players, user_active)
         context['planet_market'] = generate_planet_market.draw_planet_market(planets)
         context['player_boards'] = generate_player_boards.draw_player_boards(players, game_instance)
         context['trade_modal'] = generate_trade_modal.draw_trade_modal(players, planets)
+        context['user_active'] = user_active
         return context
     
     def post(self, request, *args, **kwargs):
         form = forms.Move(request.POST)
         if form.is_valid():
             game_instance = super().get_object()
-            move.move(game_instance, form.cleaned_data)            
+            active_player = game_instance.get_active_player()
+            if request.user == active_player.user:
+                move.move(game_instance, form.cleaned_data)
 
         return HttpResponseRedirect(self.request.path_info)

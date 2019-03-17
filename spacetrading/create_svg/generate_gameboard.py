@@ -124,7 +124,7 @@ def print_hexes(positions, colour, parent, parentname):
             font_colour="#FFFFFF")
 
 
-def draw_hex_grid(parent, planets):
+def draw_hex_grid(parent, planets, user_active):
     """
     draw the hex grid
     """
@@ -162,7 +162,8 @@ def draw_hex_grid(parent, planets):
                 fill_opacity=fill_opacity,
                 stroke_colour="white",
                 stroke_opacity="0.5",
-                stroke_width="0.5"
+                stroke_width="0.5",
+                enableOnClick=user_active
             )
     
     coordinate_group = parent.create_subgroup('coordinates')
@@ -415,7 +416,7 @@ def draw_influence_tracks(svg, game, planets, players):
             )
 
 
-def draw_gameboard(game, planets, players):
+def draw_gameboard(game, planets, players, user_active):
     """
     draw the main board
     """
@@ -424,7 +425,7 @@ def draw_gameboard(game, planets, players):
     generate_svg_symbols.add_posibility_for_square_3d(svg)
     svg.create_image("/static/auth/bg.jpeg", width="1200", height="876", x_pos="0", y_pos="0")
     draw_timeline(svg)
-    draw_hex_grid(svg, planets)
+    draw_hex_grid(svg, planets, user_active)
 
     for planet in planets:
         draw_planet_ellipse(svg, planet, (WIDTH / 2, HEIGHT / 2))

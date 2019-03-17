@@ -98,6 +98,7 @@ class Svg(object):
             fill_opacity="0.5",
             stroke_colour='#FFFFFF',
             stroke_width="1",
+            enableOnClick=False,
             onclick="clickHex(this)",
             stroke_opacity="1"):
         """
@@ -133,9 +134,10 @@ class Svg(object):
             'id': str(id_name),
             'coord_q': str(coord_q),
             'coord_r': str(coord_r),
-            'onclick': onclick,
             'class': class_name
         }
+        if enableOnClick:
+            ell_attribs['onclick'] = onclick
 
         hex_element = etree.SubElement(self.root, 'polygon', ell_attribs)
         return Svg(hex_element)
