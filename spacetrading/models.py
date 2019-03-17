@@ -146,7 +146,7 @@ class PlayerManager(models.Manager):
             has_passed=False
     ):
         if ship_position is None:
-            ship_position = [2, 2]
+            ship_position = [0, 0]
         if resources is None:
             resources = ['0', '0', '0', '0', '0', '0', '0', '0', '0']
         if ship_offset is None:

@@ -24,13 +24,16 @@ def pass_game(game):
 
 def move(game, data):
     players = game.players.all()
-    planets = game.planets.all()
     active_player = get_active_player(players)
     if active_player is None:
         finish_game(game)
         return
+    
+    planets = game.planets.all()
 
-    if active_player.last_move < 0:
+    if active_player.ship_position == [data['coord_q'], data['coord_r']] or [data['coord_q'], data['coord_r']] == [0, 0]:
+        return
+    elif active_player.last_move < 0:
         active_player.time_spent = 0
     else:
         active_player.time_spent = active_player.time_spent + compute_distance(active_player.ship_position, [data['coord_q'], data['coord_r']])
