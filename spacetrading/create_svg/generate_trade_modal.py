@@ -68,9 +68,12 @@ def draw_trade_modal(players, planets):
     draw the trading board
     """
 
+    active_player = move.get_active_player(players)
+    if active_player is None:
+        return ""
+
     svg = Svg(width=400, height=400, id_name="trade_svg")
     add_symbols(svg)
-    active_player = move.get_active_player(players)
     current_planet = None
     for planet in planets:
         if active_player.ship_position == planet.position_of_hexes[planet.current_position]:

@@ -6,15 +6,35 @@ class EVENT_TYPE(Enum):
     PLANET_ROTATION = 1
     OFFER_DEMAND = 2
 
+def pass_game(game):
+    players = game.players.all()
+    active_player = get_active_player(players)
+    if active_player is None:
+        finish_game(game)
+        return
+
+    active_player.has_passed = True
+    active_player.save()
+
+    players = game.players.all()
+    active_player = get_active_player(players)
+    if active_player is None:
+        finish_game(game)
+        return
+
 def move(game, data):
     players = game.players.all()
     planets = game.planets.all()
     active_player = get_active_player(players)
+    if active_player is None:
+        finish_game(game)
+        return
+
     if active_player.last_move < 0:
         active_player.time_spent = 0
     else:
         active_player.time_spent = active_player.time_spent + compute_distance(active_player.ship_position, [data['coord_q'], data['coord_r']])
-    
+
     active_player.last_move = game.next_move_number
     game.next_move_number = game.next_move_number + 1
     active_player.ship_position = [data['coord_q'], data['coord_r']]
@@ -28,6 +48,16 @@ def move(game, data):
     game.save()
     active_player.save()
 
+    players = game.players.all()
+    active_player = get_active_player(players)
+    if active_player is None:
+        finish_game(game)
+        return
+
+def finish_game(game):
+    game.game_state = 'f'
+    game.save()
+
 def compute_distance(coordinates1, coordinates2):
     absolute_distance = max(
         abs(coordinates1[0]-coordinates2[0]),
@@ -40,6 +70,8 @@ def get_next_event(game, players):
     planet_rotation_event = [game.planet_rotation_event_time, game.planet_rotation_event_move]
     offer_demand_event = [game.offer_demand_event_time, game.offer_demand_event_move]
     active_player = get_active_player(players)
+    if active_player is None:
+        return None
     if is_before(planet_rotation_event, offer_demand_event):
         if is_before(planet_rotation_event, [active_player.time_spent, active_player.last_move]):
             return EVENT_TYPE.PLANET_ROTATION
@@ -92,6 +124,8 @@ def offer_demand(game, planets):
 def get_active_player(players):
     active_player = None
     for player in players:
+        if player.has_passed or player.time_spent > 100:
+            continue
         if active_player is None:
             active_player = player
             continue
@@ -100,6 +134,10 @@ def get_active_player(players):
     return active_player
 
 def player_is_before(player1, player2):
+    if player1.has_passed:
+        return False
+    if player2.has_passed:
+        return True
     return is_before([player1.time_spent, player1.last_move], [player2.time_spent, player2.last_move])
 
 def is_before(one, two):

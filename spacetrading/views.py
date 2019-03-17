@@ -107,7 +107,8 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         game_instance = super().get_object()
         planets = game_instance.planets.all().order_by('number_of_hexes')
         players = game_instance.players.all().order_by('player_number')
-        user_active = move.get_active_player(players).user == self.request.user
+        active_player = move.get_active_player(players)
+        user_active = active_player is not None and active_player.user == self.request.user
 
         context['gameboard'] = generate_gameboard.draw_gameboard(game_instance, planets, players, user_active)
         context['planet_market'] = generate_planet_market.draw_planet_market(planets)
@@ -122,6 +123,9 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
             game_instance = super().get_object()
             active_player = game_instance.get_active_player()
             if request.user == active_player.user:
-                move.move(game_instance, form.cleaned_data)
+                if 'Regular' in form.data:
+                    move.move(game_instance, form.cleaned_data)
+                elif 'Pass' in form.data:
+                    move.pass_game(game_instance)
 
         return HttpResponseRedirect(self.request.path_info)

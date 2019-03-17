@@ -133,7 +133,7 @@ def draw_player_boards(players, game):
     active_player = move.get_active_player(players)
     for index, player in enumerate(players):
         active = False
-        if active_player.player_number == player.player_number:
+        if active_player is not None and active_player.player_number == player.player_number:
             active = True
         create_playerboard(svg, player, game, [10 + 240*index, 5], active)
 

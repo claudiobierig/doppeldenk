@@ -142,7 +142,8 @@ class PlayerManager(models.Manager):
             ship_position=None,
             colour="white",
             ship_offset=None,
-            player_number=0
+            player_number=0,
+            has_passed=False
     ):
         if ship_position is None:
             ship_position = [2, 2]
@@ -159,7 +160,8 @@ class PlayerManager(models.Manager):
             ship_position=ship_position,
             colour=colour,
             ship_offset=ship_offset,
-            player_number=player_number
+            player_number=player_number,
+            has_passed=has_passed
         )
         return player
 
@@ -196,6 +198,7 @@ class Player(models.Model):
         2
     )
     player_number = models.IntegerField()
+    has_passed = models.BooleanField(default=False)
 
     objects = PlayerManager()
 
