@@ -25,7 +25,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'zfe50shay=qbd6e5(d0-ia%tozbm&u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'whispering-hollows-23926.herokuapp.com',
+    '127.0.0.1'
+]
 
 
 # Application definition
