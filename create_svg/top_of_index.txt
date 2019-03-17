@@ -1,8 +1,0 @@
-<!DOCTYPE html>
-<html>
-<body>
-{% load static %}
-{% load spacetrading_tags %}
-{% with planets=game.planets.all %}
-{% with players=game.players.all %}
-
