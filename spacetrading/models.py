@@ -148,7 +148,7 @@ class PlayerManager(models.Manager):
         if ship_position is None:
             ship_position = [0, 0]
         if resources is None:
-            resources = ['0', '0', '0', '0', '0', '0', '0', '0', '0']
+            resources = [0, 0, 0, 0, 0]
         if ship_offset is None:
             ship_offset = [0, 0]
         player = self.create(
@@ -176,14 +176,8 @@ class Player(models.Model):
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     resources = ArrayField(
-        models.CharField(
-            max_length=1,
-            choices=RESOURCES,
-            blank=True,
-            default='0',
-            help_text='Cargo of the player',
-        ),
-        9
+        models.IntegerField(),
+        5
     )
     money = models.IntegerField()
     ship_position = ArrayField(
