@@ -94,7 +94,7 @@ def create_playerboard(svg, player, game, position, active):
         text_anchor="start",
         font_size=font_size
     )
-
+"""
     for index, resource in enumerate(player.resources):
         row = index % 3
         column = (index - row)/3
@@ -107,6 +107,7 @@ def create_playerboard(svg, player, game, position, active):
             ],
             additional_arguments={"transform": "scale(1.5 1.5)"}
         )
+"""
 
 def add_symbols(svg):
     """add symbols to the svg
