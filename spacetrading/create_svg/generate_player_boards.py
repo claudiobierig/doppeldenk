@@ -94,20 +94,29 @@ def create_playerboard(svg, player, game, position, active):
         text_anchor="start",
         font_size=font_size
     )
-"""
-    for index, resource in enumerate(player.resources):
-        row = index % 3
-        column = (index - row)/3
+
+    for index, resource in enumerate(['1', '2', '3', '4', '5']):
+        column = index % 3
+        row = (index - column)/3
         subgroup.use_symbol(
             get_symbol_name(resource),
-            "resource_{}_{}".format(playername, row + column*2),
+            "resource_{}_{}".format(resource, playername),
             [
                 (position[0] + 120 + column*30)*2/3,
-                (position[1] + 10 + row*30)*2/3
+                (position[1] + 10 + row*50)*2/3
             ],
             additional_arguments={"transform": "scale(1.5 1.5)"}
         )
-"""
+        subgroup.create_text(
+            "resource_amount_{}_{}".format(resource, playername),
+            [
+                (position[0] + 135 + column*30),
+                (position[1] + 42 + row*50 + font_size)
+            ],
+            str(player.resources[index]),
+            font_size=font_size
+        )
+
 
 def add_symbols(svg):
     """add symbols to the svg
