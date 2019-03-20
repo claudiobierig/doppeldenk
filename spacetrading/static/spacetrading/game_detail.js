@@ -1,6 +1,29 @@
 
 lastClickedHex = null
 
+function getActivePlayer()
+{
+    subgroup = document.getElementById("playerboards")
+    for(i=0; i<subgroup.childNodes.length; i++){
+        try{
+            if(subgroup.childNodes[i].getAttribute("active") == "True"){
+                return subgroup.childNodes[i]
+            }
+        }
+        catch(error) {
+        }
+    }
+    return null
+}
+
+function getAttributeFromPlayerboard(playerboard, attribute)
+{
+    if(playerboard == null){
+        return 0
+    }
+    return playerboard.getAttribute(attribute)
+}
+
 function clickHex(hex_element)
 {
     document.getElementById("id_coord_q").value = hex_element.getAttribute("coord_q")
@@ -18,7 +41,15 @@ function clickHex(hex_element)
     lastClickedHex = hex_element
 }
 
-function test()
-{
-    console.log("test")
-}
+
+const active_player = getActivePlayer()
+const starting_money = getAttributeFromPlayerboard(active_player, "money")
+const resources = [
+    getAttributeFromPlayerboard(active_player, "resource_0"),
+    getAttributeFromPlayerboard(active_player, "resource_1"),
+    getAttributeFromPlayerboard(active_player, "resource_2"),
+    getAttributeFromPlayerboard(active_player, "resource_3"),
+    getAttributeFromPlayerboard(active_player, "resource_4")
+]
+
+console.log(resources)

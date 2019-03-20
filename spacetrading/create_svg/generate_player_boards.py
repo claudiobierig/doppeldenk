@@ -34,7 +34,19 @@ def create_playerboard(svg, player, game, position, active):
     """
     playername = player.user.get_username()
     points = move.compute_points(game, player.player_number)
-    subgroup = svg.create_subgroup("playerboard_" + playername)
+    additional_arguments = {
+        "active": str(active),
+        "money": str(player.money),
+        "resource_0": str(player.resources[0]),
+        "resource_1": str(player.resources[1]),
+        "resource_2": str(player.resources[2]),
+        "resource_3": str(player.resources[3]),
+        "resource_4": str(player.resources[4])
+    }
+    subgroup = svg.create_subgroup(
+        "playerboard_" + playername,
+        additional_arguments=additional_arguments
+    )
     font_colour = "black"
     if active:
         font_colour = "red"

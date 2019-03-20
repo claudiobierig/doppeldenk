@@ -83,6 +83,27 @@ def draw_trade_modal(players, planets):
     if current_planet is None:
         return "Can't trade in middle of space."
     
+    svg.create_text(
+        "modal_sell",
+        [10, 14],
+        "Sell:",
+        text_anchor="start",
+        font_size=14
+    )
+
+    for index, resource in enumerate(current_planet.sell_resources):
+        if resource != '0':
+            x_pos = 10 + index*80
+            y_pos = 50
+            svg.use_symbol(
+                get_symbol_name(resource),
+                'trade_modal_sell_{}'.format(get_symbol_name(resource)),
+                position=[2*x_pos/3, 2*y_pos/3],
+                additional_arguments={"transform": "scale(1.5 1.5)"}
+            )
+            x_pos = 50 + index*80
+            
+    """
     for index, resource in enumerate(['1', '2', '3', '4', '5']):
         draw_resource(svg, resource, index, current_planet, active_player)
 
@@ -94,7 +115,7 @@ def draw_trade_modal(players, planets):
             fill_colour=current_planet.colour,
             stroke_colour="black"
         )
-
+    """
     svg_string = svg.get_string()
 
     return svg_string
