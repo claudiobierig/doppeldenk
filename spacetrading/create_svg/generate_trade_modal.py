@@ -37,30 +37,44 @@ def add_symbols(svg):
     generate_svg_symbols.add_posibility_for_coin(svg)
 
 
-def draw_resource(svg, resource, index, planet, player):
-    x_pos = 10 + index*60
-    y_pos = 10
+def draw_resource(svg, position, resource, direction):
+    x_pos = position[0]
+    y_pos = position[1]
     svg.use_symbol(
         get_symbol_name(resource),
-        'trade_modal_{}'.format(get_symbol_name(resource)),
+        'trade_modal_{}_{}_symbol'.format(direction, get_symbol_name(resource)),
         position=[2*x_pos/3, 2*y_pos/3],
         additional_arguments={"transform": "scale(1.5 1.5)"}
     )
-    svg.create_polygon(
-        "{},{} {},{} {},{}".format(
-            x_pos + 35, y_pos + 12,
-            x_pos + 45, y_pos + 12,
-            x_pos + 40, y_pos +5
-        ),
-        fill_colour="black"
+    svg.create_text(
+        'trade_modal_{}_{}_amount'.format(direction, resource),
+        [x_pos + 15, y_pos + 40 + 14],
+        "0",
+        font_size=14
     )
-    svg.create_polygon(
-        "{},{} {},{} {},{}".format(
-            x_pos + 35, y_pos + 18,
-            x_pos + 45, y_pos + 18,
-            x_pos + 40, y_pos + 25
-        ),
-        fill_colour="black"
+    svg.create_circle(
+        [x_pos - 10, y_pos + 40 + 7],
+        8,
+        'trade_modal_{}_{}_plus_circle'.format(direction, resource),
+        fill_colour="#AAA"
+    )
+    svg.create_text(
+        'trade_modal_{}_{}_plus'.format(direction, resource),
+        [x_pos - 10, y_pos + 40 + 14],
+        "+",
+        font_size=14
+    )
+    svg.create_circle(
+        [x_pos + 40, y_pos + 40 + 7],
+        8,
+        'trade_modal_{}_{}_minus_circle'.format(direction, resource),
+        fill_colour="#AAA"
+    )
+    svg.create_text(
+        'trade_modal_{}_{}_plus'.format(direction, resource),
+        [x_pos + 40, y_pos + 40 + 14],
+        "-",
+        font_size=14
     )
 
 def draw_trade_modal(players, planets):
@@ -90,32 +104,26 @@ def draw_trade_modal(players, planets):
         text_anchor="start",
         font_size=14
     )
-
     for index, resource in enumerate(current_planet.sell_resources):
         if resource != '0':
-            x_pos = 10 + index*80
-            y_pos = 50
-            svg.use_symbol(
-                get_symbol_name(resource),
-                'trade_modal_sell_{}'.format(get_symbol_name(resource)),
-                position=[2*x_pos/3, 2*y_pos/3],
-                additional_arguments={"transform": "scale(1.5 1.5)"}
-            )
-            x_pos = 50 + index*80
+            x_pos = 20 + index*90
+            y_pos = 30
+            draw_resource(svg, [x_pos, y_pos], resource, "sell")
+    
+    svg.create_text(
+        "modal_buy",
+        [10, 14 + 100],
+        "Buy:",
+        text_anchor="start",
+        font_size=14
+    )
+    for index, resource in enumerate(current_planet.buy_resources):
+        if resource != '0':
+            x_pos = 20 + index*90
+            y_pos = 130
+            draw_resource(svg, [x_pos, y_pos], resource, "buy")
             
-    """
-    for index, resource in enumerate(['1', '2', '3', '4', '5']):
-        draw_resource(svg, resource, index, current_planet, active_player)
 
-    for i in range(5):
-        svg.create_rectangle(
-            [10 + i*60, 60],
-            [30, 30],
-            "test",
-            fill_colour=current_planet.colour,
-            stroke_colour="black"
-        )
-    """
     svg_string = svg.get_string()
 
     return svg_string
