@@ -71,7 +71,7 @@ def draw_resource(svg, position, resource, direction):
         fill_colour="#AAA"
     )
     svg.create_text(
-        'trade_modal_{}_{}_plus'.format(direction, resource),
+        'trade_modal_{}_{}_minus'.format(direction, resource),
         [x_pos + 40, y_pos + 40 + 14],
         "-",
         font_size=14
@@ -99,7 +99,7 @@ def draw_trade_modal(players, planets):
     
     svg.create_text(
         "modal_sell",
-        [10, 14],
+        [0, 14],
         "Sell:",
         text_anchor="start",
         font_size=14
@@ -112,7 +112,7 @@ def draw_trade_modal(players, planets):
     
     svg.create_text(
         "modal_buy",
-        [10, 14 + 100],
+        [0, 14 + 100],
         "Buy:",
         text_anchor="start",
         font_size=14
@@ -122,7 +122,53 @@ def draw_trade_modal(players, planets):
             x_pos = 20 + index*90
             y_pos = 130
             draw_resource(svg, [x_pos, y_pos], resource, "buy")
-            
+    
+    svg.create_text(
+        "modal_influence",
+        [0, 14 + 200],
+        "Buy Influence:",
+        text_anchor="start",
+        font_size=14
+    )
+
+    x_pos = 20
+    y_pos = 230
+    svg.create_text(
+        'trade_modal_influence_amount',
+        [x_pos + 15, y_pos + 40 + 14],
+        "0",
+        font_size=14
+    )
+    svg.create_circle(
+        [x_pos - 10, y_pos + 40 + 7],
+        8,
+        'trade_modal_influence_plus_circle',
+        fill_colour="#AAA",
+        additional_arguments={
+            "onclick": "changeInfluence(1)"
+        }
+    )
+    svg.create_text(
+        'trade_modal_influence_plus',
+        [x_pos - 10, y_pos + 40 + 14],
+        "+",
+        font_size=14
+    )
+    svg.create_circle(
+        [x_pos + 40, y_pos + 40 + 7],
+        8,
+        'trade_modal_influence_minus_circle',
+        fill_colour="#AAA",
+        additional_arguments={
+            "onclick": "changeInfluence(-1)"
+        }
+    )
+    svg.create_text(
+        'trade_modal_influence_minus',
+        [x_pos + 40, y_pos + 40 + 14],
+        "-",
+        font_size=14
+    )
 
     svg_string = svg.get_string()
 

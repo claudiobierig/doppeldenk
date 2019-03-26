@@ -41,6 +41,15 @@ function clickHex(hex_element)
     lastClickedHex = hex_element
 }
 
+function changeInfluence(amount)
+{
+    console.log(0 + amount)
+}
+
+function changeResource(resource, amount)
+{
+    console.log("changeResource " + resource + " " + amount)
+}
 
 const active_player = getActivePlayer()
 const starting_money = getAttributeFromPlayerboard(active_player, "money")
