@@ -56,7 +56,10 @@ def draw_resource(svg, position, resource, direction):
         [x_pos - 10, y_pos + 40 + 7],
         8,
         'trade_modal_{}_{}_plus_circle'.format(direction, resource),
-        fill_colour="#AAA"
+        fill_colour="#AAA",
+        additional_arguments={
+            "onclick": "change_{}_resource({}, 1)".format(direction, resource)
+        }
     )
     svg.create_text(
         'trade_modal_{}_{}_plus'.format(direction, resource),
@@ -68,7 +71,10 @@ def draw_resource(svg, position, resource, direction):
         [x_pos + 40, y_pos + 40 + 7],
         8,
         'trade_modal_{}_{}_minus_circle'.format(direction, resource),
-        fill_colour="#AAA"
+        fill_colour="#AAA",
+        additional_arguments={
+            "onclick": "change_{}_resource({}, -1)".format(direction, resource)
+        }
     )
     svg.create_text(
         'trade_modal_{}_{}_minus'.format(direction, resource),

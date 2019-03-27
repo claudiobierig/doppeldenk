@@ -46,9 +46,14 @@ function changeInfluence(amount)
     console.log(0 + amount)
 }
 
-function changeResource(resource, amount)
+function change_buy_resource(resource, amount)
 {
-    console.log("changeResource " + resource + " " + amount)
+    console.log("change_buy_resource " + resource + " " + amount)
+}
+
+function change_sell_resource(resource, amount)
+{
+    console.log("change_sell_resource " + resource + " " + amount)
 }
 
 const active_player = getActivePlayer()
