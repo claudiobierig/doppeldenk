@@ -61,12 +61,6 @@ def draw_resource(svg, position, resource, direction):
             "onclick": "change_{}_resource({}, 1)".format(direction, resource)
         }
     )
-    svg.create_text(
-        'trade_modal_{}_{}_plus'.format(direction, resource),
-        [x_pos - 10, y_pos + 40 + 14],
-        "+",
-        font_size=14
-    )
     svg.create_circle(
         [x_pos + 40, y_pos + 40 + 7],
         8,
@@ -75,12 +69,6 @@ def draw_resource(svg, position, resource, direction):
         additional_arguments={
             "onclick": "change_{}_resource({}, -1)".format(direction, resource)
         }
-    )
-    svg.create_text(
-        'trade_modal_{}_{}_minus'.format(direction, resource),
-        [x_pos + 40, y_pos + 40 + 14],
-        "-",
-        font_size=14
     )
 
 def draw_trade_modal(players, planets):
@@ -154,12 +142,6 @@ def draw_trade_modal(players, planets):
             "onclick": "changeInfluence(1)"
         }
     )
-    svg.create_text(
-        'trade_modal_influence_plus',
-        [x_pos - 10, y_pos + 40 + 14],
-        "+",
-        font_size=14
-    )
     svg.create_circle(
         [x_pos + 40, y_pos + 40 + 7],
         8,
@@ -168,12 +150,6 @@ def draw_trade_modal(players, planets):
         additional_arguments={
             "onclick": "changeInfluence(-1)"
         }
-    )
-    svg.create_text(
-        'trade_modal_influence_minus',
-        [x_pos + 40, y_pos + 40 + 14],
-        "-",
-        font_size=14
     )
 
     svg_string = svg.get_string()
