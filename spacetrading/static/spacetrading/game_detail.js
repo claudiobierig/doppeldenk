@@ -48,12 +48,20 @@ function changeInfluence(amount)
 
 function change_buy_resource(resource, amount)
 {
-    console.log("change_buy_resource " + resource + " " + amount)
+    amount_element_name = "trade_modal_buy_" + resource + "_amount"
+    amount_element = document.getElementById(amount_element_name)
+    old_amount = parseInt(amount_element.innerHTML)
+    new_amount = Math.max(Math.min(old_amount + amount, 9), 0)
+    amount_element.innerHTML = new_amount
 }
 
 function change_sell_resource(resource, amount)
 {
-    console.log("change_sell_resource " + resource + " " + amount)
+    amount_element_name = "trade_modal_sell_" + resource + "_amount"
+    amount_element = document.getElementById(amount_element_name)
+    old_amount = parseInt(amount_element.innerHTML)
+    new_amount = Math.max(Math.min(old_amount + amount, 9), 0)
+    amount_element.innerHTML = new_amount
 }
 
 const active_player = getActivePlayer()
