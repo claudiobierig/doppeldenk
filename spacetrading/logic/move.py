@@ -23,6 +23,7 @@ def pass_game(game):
         return
 
 def move(game, data):
+    print(data)
     players = game.players.all()
     active_player = get_active_player(players)
     if active_player is None:
