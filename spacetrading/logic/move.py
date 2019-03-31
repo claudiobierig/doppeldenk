@@ -26,11 +26,13 @@ def move(game, data):
     print(data)
     players = game.players.all()
     active_player = get_active_player(players)
-    planets = game.planets.all()
-    active_planet = get_active_planet(active_player.ship_position, planets)
-    move_valid = is_move_valid(active_player, active_planet, game, data)
-    if move_valid:
-        change_active_player(active_player, active_planet, game, data)
+    planets = game.planets.all().order_by('number_of_hexes')
+    active_planet_with_number = get_active_planet(active_player.ship_position, planets)
+    active_planet = active_planet_with_number[0]
+    planet_number = active_planet_with_number[1]
+    trade_balance = is_move_valid(active_player, active_planet, planet_number, game, data)
+    if trade_balance +  active_player.money >= 0:
+        change_active_player(active_player, game.next_move_number, data, trade_balance)
         change_active_planet(active_planet, data)
         change_game(game, players, planets, data)
         players = game.players.all()
@@ -38,36 +40,90 @@ def move(game, data):
         if active_player is None:
             finish_game(game)
 
-def is_move_valid(active_player, active_planet, game, data):
+def is_move_valid(active_player, active_planet, planet_number, game, data):
+    """
+    returns value smaller than -active_player.money if move is not valid
+    trading balance otherwise
+    """
     if active_player is None:
         finish_game(game)
-        return False
+        return -1 - active_player.money
     if active_player.ship_position == [data['coord_q'], data['coord_r']] or [data['coord_q'], data['coord_r']] == [0, 0]:
-        return False
-    #TODO: check data + active_planet market
-    return True
+        return -1 - active_player.money
+
+    buy_mapping = [
+        ["buy_resource_1", '1'],
+        ["buy_resource_2", '2'],
+        ["buy_resource_3", '3'],
+        ["buy_resource_4", '4'],
+        ["buy_resource_5", '5']
+    ]
+    sell_mapping = [
+        ["sell_resource_1", '1'],
+        ["sell_resource_2", '2'],
+        ["sell_resource_3", '3'],
+        ["sell_resource_4", '4'],
+        ["sell_resource_5", '5']
+    ]
+
+    trade_balance = 0
+    traded = False
+
+    number_of_resources = 0
+    for resource in active_player.resources:
+        number_of_resources = number_of_resources + resource
+
+    for key, value in buy_mapping:
+        if data[key] != 0:
+            if active_planet is None:
+                return -1 - active_player.money
+            if value not in active_planet.buy_resources:
+                return -1 - active_player.money
+            trade_balance = trade_balance - data[key]*active_planet.cost_buy_resource[active_planet.buy_resources.index(value)]
+            number_of_resources = number_of_resources + data[key]
+            traded = True
+
+    for key, value in sell_mapping:
+        if data[key] != 0:
+            if active_planet is None:
+                return -1 - active_player.money
+            if value not in active_planet.sell_resources:
+                return -1 - active_player.money
+            trade_balance = trade_balance + data[key]*active_planet.cost_sell_resource[active_planet.sell_resources.index(value)]
+            number_of_resources = number_of_resources - data[key]
+            traded = True
+    if active_planet is None and data["buy_influence"] != 0:
+        return -1 - active_player.money
+    if number_of_resources > 9:
+        return -1 - active_player.money
+
+    trade_balance = trade_balance + get_cost_influence(traded, data["buy_influence"], game.planet_influence_track[planet_number][active_player.player_number])    
+    return trade_balance
 
 def get_active_planet(ship_position, planets):
-    for planet in planets:
+    for index, planet in enumerate(planets):
         if ship_position == planet.position_of_hexes[planet.current_position]:
-            return planet
-    return None
+            return [planet, index]
+    return [None, 0]
 
-def compute_trade_balance(data, planet):
-    if planet is None:
+def get_cost_influence(did_we_trade, amount_influence, current_influence):
+    if amount_influence == 0:
         return 0
-    #TODO
-    return 0
+    cost = 0
+    if did_we_trade:
+        cost = cost + 1
+        amount_influence = amount_influence - 1
+        current_influence = current_influence + 1
+    
+    return cost + (2*current_influence + amount_influence + 1)*amount_influence/2
 
-
-def change_active_player(active_player, active_planet, game, data):
+def change_active_player(active_player, next_move_number, data, trade_balance):
     if active_player.last_move < 0:
         active_player.time_spent = 0
     else:
         active_player.time_spent = active_player.time_spent + compute_distance(active_player.ship_position, [data['coord_q'], data['coord_r']])
-    active_player.last_move = game.next_move_number
+    active_player.last_move = next_move_number
     active_player.ship_position = [data['coord_q'], data['coord_r']]
-    trade_balance = compute_trade_balance(data, active_planet)
     active_player.money = active_player.money + trade_balance
     active_player.resources[0] = active_player.resources[0] + data["buy_resource_1"] - data["sell_resource_1"]
     active_player.resources[1] = active_player.resources[1] + data["buy_resource_2"] - data["sell_resource_2"]
@@ -77,8 +133,20 @@ def change_active_player(active_player, active_planet, game, data):
     active_player.save()
 
 def change_active_planet(active_planet, data):
-    #TODO
-    pass
+    if active_planet is None:
+        return
+    for resource in active_planet.buy_resources:
+        key = "buy_resource_{}".format(resource)
+        if resource != '0' and data[key] != 0:
+            index = active_planet.buy_resources.index(resource)
+            active_planet.cost_buy_resource[index] = min(active_planet.cost_buy_resource[index] + 1, 8)
+    for resource in active_planet.sell_resources:
+        key = "sell_resource_{}".format(resource)
+        if resource != '0' and data[key] != 0:
+            index = active_planet.sell_resources.index(resource)
+            active_planet.cost_sell_resource[index] = max(active_planet.cost_sell_resource[index] - 1, 2)
+    active_planet.save()
+    
 
 def change_game(game, players, planets, data):
     #TODO: Influence
