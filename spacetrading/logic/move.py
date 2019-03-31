@@ -78,6 +78,8 @@ def is_move_valid(active_player, active_planet, planet_number, game, data):
                 return -1 - active_player.money
             if value not in active_planet.buy_resources:
                 return -1 - active_player.money
+            if data[key] + active_player.resources[int(value) - 1] > 9:
+                return -1 - active_player.money
             trade_balance = trade_balance - data[key]*active_planet.cost_buy_resource[active_planet.buy_resources.index(value)]
             number_of_resources = number_of_resources + data[key]
             traded = True
@@ -87,6 +89,8 @@ def is_move_valid(active_player, active_planet, planet_number, game, data):
             if active_planet is None:
                 return -1 - active_player.money
             if value not in active_planet.sell_resources:
+                return -1 - active_player.money
+            if data[key] > active_player.resources[int(value) - 1]:
                 return -1 - active_player.money
             trade_balance = trade_balance + data[key]*active_planet.cost_sell_resource[active_planet.sell_resources.index(value)]
             number_of_resources = number_of_resources - data[key]
