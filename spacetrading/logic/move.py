@@ -96,7 +96,7 @@ def is_move_valid(active_player, active_planet, planet_number, game, data):
     if number_of_resources > 9:
         return -1 - active_player.money
 
-    trade_balance = trade_balance + get_cost_influence(traded, data["buy_influence"], game.planet_influence_track[planet_number][active_player.player_number])
+    trade_balance = trade_balance - get_cost_influence(traded, data["buy_influence"], game.planet_influence_track[planet_number][active_player.player_number])
     return trade_balance
 
 def get_active_planet(ship_position, planets):
