@@ -26,22 +26,63 @@ def move(game, data):
     print(data)
     players = game.players.all()
     active_player = get_active_player(players)
+    planets = game.planets.all()
+    active_planet = get_active_planet(active_player.ship_position, planets)
+    move_valid = is_move_valid(active_player, active_planet, game, data)
+    if move_valid:
+        change_active_player(active_player, active_planet, game, data)
+        change_active_planet(active_planet, data)
+        change_game(game, players, planets, data)
+        players = game.players.all()
+        active_player = get_active_player(players)
+        if active_player is None:
+            finish_game(game)
+
+def is_move_valid(active_player, active_planet, game, data):
     if active_player is None:
         finish_game(game)
-        return
-    
-    planets = game.planets.all()
-
+        return False
     if active_player.ship_position == [data['coord_q'], data['coord_r']] or [data['coord_q'], data['coord_r']] == [0, 0]:
-        return
-    elif active_player.last_move < 0:
+        return False
+    #TODO: check data + active_planet market
+    return True
+
+def get_active_planet(ship_position, planets):
+    for planet in planets:
+        if ship_position == planet.position_of_hexes[planet.current_position]:
+            return planet
+    return None
+
+def compute_trade_balance(data, planet):
+    if planet is None:
+        return 0
+    #TODO
+    return 0
+
+
+def change_active_player(active_player, active_planet, game, data):
+    if active_player.last_move < 0:
         active_player.time_spent = 0
     else:
         active_player.time_spent = active_player.time_spent + compute_distance(active_player.ship_position, [data['coord_q'], data['coord_r']])
-
     active_player.last_move = game.next_move_number
-    game.next_move_number = game.next_move_number + 1
     active_player.ship_position = [data['coord_q'], data['coord_r']]
+    trade_balance = compute_trade_balance(data, active_planet)
+    active_player.money = active_player.money + trade_balance
+    active_player.resources[0] = active_player.resources[0] + data["buy_resource_1"] - data["sell_resource_1"]
+    active_player.resources[1] = active_player.resources[1] + data["buy_resource_2"] - data["sell_resource_2"]
+    active_player.resources[2] = active_player.resources[2] + data["buy_resource_3"] - data["sell_resource_3"]
+    active_player.resources[3] = active_player.resources[3] + data["buy_resource_4"] - data["sell_resource_4"]
+    active_player.resources[4] = active_player.resources[4] + data["buy_resource_5"] - data["sell_resource_5"]
+    active_player.save()
+
+def change_active_planet(active_planet, data):
+    #TODO
+    pass
+
+def change_game(game, players, planets, data):
+    #TODO: Influence
+    game.next_move_number = game.next_move_number + 1
     next_event = get_next_event(game, players)
     while next_event is not None:
         if next_event == EVENT_TYPE.PLANET_ROTATION:
@@ -50,13 +91,6 @@ def move(game, data):
             offer_demand(game, planets)
         next_event = get_next_event(game, players)
     game.save()
-    active_player.save()
-
-    players = game.players.all()
-    active_player = get_active_player(players)
-    if active_player is None:
-        finish_game(game)
-        return
 
 def finish_game(game):
     game.game_state = 'f'

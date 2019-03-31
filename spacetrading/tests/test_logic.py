@@ -155,3 +155,21 @@ class MoveTest(TestCase):
         self.assertEqual(9, move.compute_points(self.game, 2))
         self.assertEqual(9, move.compute_points(self.game, 3))
         self.assertEqual(11, move.compute_points(self.game, 4))
+
+    def test_get_current_planet(self):
+        self.assertFalse(True)
+
+    def test_is_move_valid(self):
+        self.assertFalse(True)
+
+    def test_compute_trade_balance(self):
+        self.assertFalse(True)
+
+    def test_change_active_player(self):
+        self.assertFalse(True)
+
+    def test_change_active_planet(self):
+        self.assertFalse(True)
+
+    def test_change_game(self):
+        self.assertFalse(True)
