@@ -23,7 +23,6 @@ def pass_game(game):
         return
 
 def move(game, data):
-    print(data)
     players = game.players.all()
     active_player = get_active_player(players)
     planets = game.planets.all().order_by('number_of_hexes')
@@ -34,7 +33,7 @@ def move(game, data):
     if trade_balance +  active_player.money >= 0:
         change_active_player(active_player, game.next_move_number, data, trade_balance)
         change_active_planet(active_planet, data)
-        change_game(game, players, planets, data)
+        change_game(game, players, planets, planet_number, active_player.player_number, data)
         players = game.players.all()
         active_player = get_active_player(players)
         if active_player is None:
@@ -97,7 +96,7 @@ def is_move_valid(active_player, active_planet, planet_number, game, data):
     if number_of_resources > 9:
         return -1 - active_player.money
 
-    trade_balance = trade_balance + get_cost_influence(traded, data["buy_influence"], game.planet_influence_track[planet_number][active_player.player_number])    
+    trade_balance = trade_balance + get_cost_influence(traded, data["buy_influence"], game.planet_influence_track[planet_number][active_player.player_number])
     return trade_balance
 
 def get_active_planet(ship_position, planets):
@@ -148,8 +147,7 @@ def change_active_planet(active_planet, data):
     active_planet.save()
     
 
-def change_game(game, players, planets, data):
-    #TODO: Influence
+def change_game(game, players, planets, active_planet_number, active_player_number, data):
     game.next_move_number = game.next_move_number + 1
     next_event = get_next_event(game, players)
     while next_event is not None:
@@ -158,6 +156,7 @@ def change_game(game, players, planets, data):
         elif next_event == EVENT_TYPE.OFFER_DEMAND:
             offer_demand(game, planets)
         next_event = get_next_event(game, players)
+    game.planet_influence_track[active_planet_number][active_player_number] = game.planet_influence_track[active_planet_number][active_player_number] + data["buy_influence"]
     game.save()
 
 def finish_game(game):
