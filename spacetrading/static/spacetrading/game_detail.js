@@ -116,11 +116,11 @@ function on_trade()
 const active_player = getActivePlayer()
 const starting_money = getAttributeFromPlayerboard(active_player, "money")
 const resources = [
-    getAttributeFromPlayerboard(active_player, "resource_0"),
     getAttributeFromPlayerboard(active_player, "resource_1"),
     getAttributeFromPlayerboard(active_player, "resource_2"),
     getAttributeFromPlayerboard(active_player, "resource_3"),
-    getAttributeFromPlayerboard(active_player, "resource_4")
+    getAttributeFromPlayerboard(active_player, "resource_4"),
+    getAttributeFromPlayerboard(active_player, "resource_5")
 ]
 
 console.log(resources)
