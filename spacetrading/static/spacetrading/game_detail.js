@@ -120,7 +120,7 @@ function resource_selct_change(direction, resource, select_object)
 
     while (firstList.options.length) {
         firstList.remove(0);
-      }
+    }
 
     if(select_object.value == 0)
     {
