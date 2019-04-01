@@ -113,23 +113,14 @@ function on_trade()
     document.getElementById("id_buy_influence").value = parseInt(element_influence.innerHTML)
 }
 
-function resource_selct_change(direction, resource, select_object)
+function refreshChoices()
 {
-    console.log(select_object)
-    var firstList = document.getElementById("one")
+    console.log(refreshChoices)
+    var firstList = document.getElementById("sell_1")
 
     while (firstList.options.length) {
         firstList.remove(0);
     }
-
-    if(select_object.value == 0)
-    {
-        firstList.options.add(new Option("hello0", "hello0"))
-    }
-    else if(select_object.value == 1)
-    {
-        firstList.options.add(new Option("hello1", "hello1"))
-    } 
 }
 
 const active_player = getActivePlayer()
@@ -141,5 +132,3 @@ const resources = [
     getAttributeFromPlayerboard(active_player, "resource_4"),
     getAttributeFromPlayerboard(active_player, "resource_5")
 ]
-
-console.log(resources)

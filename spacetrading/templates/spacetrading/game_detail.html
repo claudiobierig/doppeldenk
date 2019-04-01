@@ -34,80 +34,25 @@
                     <th>{{ food |safe}}</th>
                     <th>{{ water |safe}}</th>
                     <th>{{ building_resource |safe}}</th>
-                    <th>
-                        Influence
-                    </th>
+                    <th>Influence</th>
                 </tr>
                 <tr>
-                    <th>
-                        Sell:
-                    </th>
-                    <td>
-                        <select>
-                            <option value='0'>0</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value='0'>0</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value='0'>0</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value='0'>0</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value='0'>0</option>
-                        </select>
-                    </td>
-                    <td>
-
-                    </td>
+                    <th>Sell:</th>
+                    <td><select id="sell_1" onchange="refreshChoices()"></select></td>
+                    <td><select id="sell_2" onchange="refreshChoices()"></select></td>
+                    <td><select id="sell_3" onchange="refreshChoices()"></select></td>
+                    <td><select id="sell_4" onchange="refreshChoices()"></select></td>
+                    <td><select id="sell_5" onchange="refreshChoices()"></select></td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <th>
-                        Buy:
-                    </th>
-                    <td>
-                        <select id="one">
-                            <option value='0'>0</option>
-                            <option value='1'>1</option>
-                            <option value='2' disabled>2</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select id="two" onchange="resource_selct_change('buy', 2, this)">
-                            <option value='0'>0</option>
-                            <option value='1'>1</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value='0'>0</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value='0'>0</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value='0'>0</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value='0'>0</option>
-                        </select>
-                    </td>
+                    <th>Buy:</th>
+                    <td><select id="buy_1" onchange="refreshChoices()"></select></td>
+                    <td><select id="buy_2" onchange="refreshChoices()"></select></td>
+                    <td><select id="buy_3" onchange="refreshChoices()"></select></td>
+                    <td><select id="buy_4" onchange="refreshChoices()"></select></td>
+                    <td><select id="buy_5" onchange="refreshChoices()"></select></td>
+                    <td><select id="buy_i" onchange="refreshChoices()"></select></td>
                 </tr>
             </table>
             <hr>
