@@ -113,6 +113,25 @@ function on_trade()
     document.getElementById("id_buy_influence").value = parseInt(element_influence.innerHTML)
 }
 
+function resource_selct_change(direction, resource, select_object)
+{
+    console.log(select_object)
+    var firstList = document.getElementById("one")
+
+    while (firstList.options.length) {
+        firstList.remove(0);
+      }
+
+    if(select_object.value == 0)
+    {
+        firstList.options.add(new Option("hello0", "hello0"))
+    }
+    else if(select_object.value == 1)
+    {
+        firstList.options.add(new Option("hello1", "hello1"))
+    } 
+}
+
 const active_player = getActivePlayer()
 const starting_money = getAttributeFromPlayerboard(active_player, "money")
 const resources = [

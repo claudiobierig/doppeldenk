@@ -142,14 +142,16 @@
                         Buy:
                     </th>
                     <td>
-                        <select>
+                        <select id="one">
                             <option value='0'>0</option>
                             <option value='1'>1</option>
+                            <option value='2' disabled>2</option>
                         </select>
                     </td>
                     <td>
-                        <select>
+                        <select id="two" onchange="resource_selct_change('buy', 2, this)">
                             <option value='0'>0</option>
+                            <option value='1'>1</option>
                         </select>
                     </td>
                     <td>
