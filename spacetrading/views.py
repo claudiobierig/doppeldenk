@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import FormMixin
-
+from django.contrib import messages
 import re
 
 from spacetrading import models
@@ -137,7 +137,9 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
             active_player = game_instance.get_active_player()
             if request.user == active_player.user:
                 if 'Regular' in form.data:
-                    move.move(game_instance, form.cleaned_data)
+                    result = move.move(game_instance, form.cleaned_data)
+                    if not result:
+                        messages.error(request, 'Error: Not a legal move.')
                 elif 'Pass' in form.data:
                     move.pass_game(game_instance)
 

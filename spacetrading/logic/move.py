@@ -38,6 +38,9 @@ def move(game, data):
         active_player = get_active_player(players)
         if active_player is None:
             finish_game(game)
+        return True
+    else:
+        return False
 
 def is_move_valid(active_player, active_planet, planet_number, game, data):
     """

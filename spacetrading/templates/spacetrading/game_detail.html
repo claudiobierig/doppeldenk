@@ -297,7 +297,12 @@
     <table>
     {{ form.as_table }}
     </table>
-        
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger">{{ message|safe }}</div>
+        {% endfor %}
+    {% endif %}
+
     <input class="btn btn-primary" type="submit" value="Finish Move" name="Regular">
     <input class="btn btn-primary" type="submit" value="Pass" name="Pass">
     </form><br><br>
