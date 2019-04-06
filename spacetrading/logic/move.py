@@ -258,7 +258,7 @@ def compute_points(game, player_number):
     result = 0
     planet_points = [5, 3, 2, 1]
     for planet_influence in game.planet_influence_track:
-        current_player_influence = planet_influence[player_number - 1]
+        current_player_influence = planet_influence[player_number]
         if current_player_influence == 0:
             continue
         rated_higher = sum(i > current_player_influence for i in planet_influence)

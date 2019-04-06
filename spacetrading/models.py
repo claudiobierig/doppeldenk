@@ -427,9 +427,9 @@ def join_game(primary_key_game, user):
         player_numbers = list(range(len(players)))
         random.shuffle(player_numbers)
         for index, current_player in enumerate(players):
-            current_player.player_number = player_numbers[index] + 1
-            current_player.last_move = -current_player.player_number
-            current_player.money = 10 + game.number_of_players - current_player.player_number
+            current_player.player_number = player_numbers[index]
+            current_player.last_move = -current_player.player_number - 1
+            current_player.money = 10 + game.number_of_players - current_player.player_number - 1
             current_player.save()
         game.game_state = 'r'
     elif number_of_joined_players > game.number_of_players - 1:

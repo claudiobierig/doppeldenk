@@ -17,12 +17,12 @@ class MoveTest(TestCase):
         )
 
         player1 = Player.objects.create_player(
-            player_number=1,
+            player_number=0,
             last_move=-1,
             time_spent=0
         )
         player2 = Player.objects.create_player(
-            player_number=2,
+            player_number=1,
             last_move=-2,
             time_spent=0
         )
@@ -68,8 +68,8 @@ class MoveTest(TestCase):
 
     def test_get_next_event(self):
         self.assertEqual(None, move.get_next_event(self.game, self.players))
-        player1 = self.players.get(player_number=1)
-        player2 = self.players.get(player_number=2)
+        player1 = self.players.get(player_number=0)
+        player2 = self.players.get(player_number=1)
         player1.time_spent = 31
         player2.time_spent = 32
         player1.save()
@@ -83,7 +83,7 @@ class MoveTest(TestCase):
         self.assertEqual(move.EVENT_TYPE.OFFER_DEMAND, move.get_next_event(self.game, self.players))
         
     def test_get_active_player(self):
-        self.assertEqual(1, move.get_active_player(self.players).player_number)
+        self.assertEqual(0, move.get_active_player(self.players).player_number)
 
     def test_is_before(self):
         self.assertTrue(move.is_before([0, 2], [10, 3]))
@@ -92,8 +92,8 @@ class MoveTest(TestCase):
         self.assertFalse(move.is_before([10, 3], [10, 4]))
 
     def test_player_is_before(self):
-        player1 = self.players.get(player_number=1)
-        player2 = self.players.get(player_number=2)
+        player1 = self.players.get(player_number=0)
+        player2 = self.players.get(player_number=1)
         self.assertTrue(move.player_is_before(player1, player2))
         self.assertFalse(move.player_is_before(player2, player1))
         player1.time_spent = 10
@@ -110,8 +110,8 @@ class MoveTest(TestCase):
         move.planet_rotation(self.game, self.players, self.planets)
         position = self.get_current_planet_positions()
         self.assertTrue(position == [2, 0])
-        player1 = self.players.get(player_number=1)
-        player2 = self.players.get(player_number=2)
+        player1 = self.players.get(player_number=0)
+        player2 = self.players.get(player_number=1)
         planet1 = self.planets.get(name="a")
         planet2 = self.planets.get(name="b")
         player1.ship_position = planet1.position_of_hexes[planet1.current_position]
@@ -120,8 +120,8 @@ class MoveTest(TestCase):
         player2.save()
         self.players = self.game.players.all()
         move.planet_rotation(self.game, self.players, self.planets)
-        player1 = self.players.get(player_number=1)
-        player2 = self.players.get(player_number=2)
+        player1 = self.players.get(player_number=0)
+        player2 = self.players.get(player_number=1)
         self.assertTrue(player1.ship_position == planet1.position_of_hexes[0])
         self.assertTrue(player2.ship_position == planet2.position_of_hexes[1])
 

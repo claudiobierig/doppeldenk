@@ -401,8 +401,8 @@ def draw_influence_tracks(svg, game, planets, players):
                 font_size=8
             )
         planet_points = []
-        for player_number, player in enumerate(players):
-            points = game.planet_influence_track[planet_number][player_number]
+        for player in players:
+            points = game.planet_influence_track[planet_number][player.player_number]
             #TODO: points larger than 20
             stack_position = planet_points.count(points)
             planet_points.append(points)
