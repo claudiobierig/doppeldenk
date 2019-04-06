@@ -26,6 +26,7 @@
             </button>
         </div>
         <div class="modal-body">
+            {% if can_trade %}
             <table>
                 <tr>
                     <th></th>
@@ -38,21 +39,212 @@
                 </tr>
                 <tr>
                     <th>Sell:</th>
-                    <td><select id="sell_1" onchange="refreshChoices()"></select></td>
-                    <td><select id="sell_2" onchange="refreshChoices()"></select></td>
-                    <td><select id="sell_3" onchange="refreshChoices()"></select></td>
-                    <td><select id="sell_4" onchange="refreshChoices()"></select></td>
-                    <td><select id="sell_5" onchange="refreshChoices()"></select></td>
+                    {% can_trade_resource '1' sell_resources as can_sell_1 %}
+                    {% can_trade_resource '2' sell_resources as can_sell_2 %}
+                    {% can_trade_resource '3' sell_resources as can_sell_3 %}
+                    {% can_trade_resource '4' sell_resources as can_sell_4 %}
+                    {% can_trade_resource '5' sell_resources as can_sell_5 %}
+                    <td>
+                        {% if can_sell_1 %}
+                        <select id="sell_1" onchange="refreshChoices()">
+                                <option value=0>0</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if can_sell_2 %}
+                        <select id="sell_2" onchange="refreshChoices()">
+                                <option value=0>0</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if can_sell_3 %}
+                        <select id="sell_3" onchange="refreshChoices()">
+                                <option value=0>0</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if can_sell_4 %}
+                        <select id="sell_4" onchange="refreshChoices()">
+                                <option value=0>0</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if can_sell_5 %}
+                        <select id="sell_5" onchange="refreshChoices()">
+                                <option value=0>0</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>{% get_cost_resource '1' sell_resources cost_sell_resources %}</td>
+                    <td>{% get_cost_resource '2' sell_resources cost_sell_resources %}</td>
+                    <td>{% get_cost_resource '3' sell_resources cost_sell_resources %}</td>
+                    <td>{% get_cost_resource '4' sell_resources cost_sell_resources %}</td>
+                    <td>{% get_cost_resource '5' sell_resources cost_sell_resources %}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>Buy:</th>
-                    <td><select id="buy_1" onchange="refreshChoices()"></select></td>
-                    <td><select id="buy_2" onchange="refreshChoices()"></select></td>
-                    <td><select id="buy_3" onchange="refreshChoices()"></select></td>
-                    <td><select id="buy_4" onchange="refreshChoices()"></select></td>
-                    <td><select id="buy_5" onchange="refreshChoices()"></select></td>
-                    <td><select id="buy_i" onchange="refreshChoices()"></select></td>
+                    {% can_trade_resource '1' buy_resources as can_buy_1 %}
+                    {% can_trade_resource '2' buy_resources as can_buy_2 %}
+                    {% can_trade_resource '3' buy_resources as can_buy_3 %}
+                    {% can_trade_resource '4' buy_resources as can_buy_4 %}
+                    {% can_trade_resource '5' buy_resources as can_buy_5 %}
+                    <td>
+                        {% if can_buy_1 %}
+                        <select id="buy_1" onchange="refreshChoices()">
+                                <option value=0>0</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if can_buy_2 %}
+                        <select id="buy_2" onchange="refreshChoices()">
+                                <option value=0>0</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if can_buy_3 %}
+                        <select id="buy_3" onchange="refreshChoices()">
+                                <option value=0>0</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if can_buy_4 %}
+                        <select id="buy_4" onchange="refreshChoices()">
+                                <option value=0>0</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if can_buy_5 %}
+                        <select id="buy_5" onchange="refreshChoices()">
+                                <option value=0>0</option>
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=7>7</option>
+                                <option value=8>8</option>
+                                <option value=9>9</option>
+                        </select>
+                        {% endif %}
+                    </td>
+                    <td><select id="buy_i" onchange="refreshChoices()">
+                            <option value=0>0</option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                            <option value=6>6</option>
+                            <option value=7>7</option>
+                            <option value=8>8</option>
+                            <option value=9>9</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>{% get_cost_resource '1' buy_resources cost_buy_resources %}</td>
+                    <td>{% get_cost_resource '2' buy_resources cost_buy_resources %}</td>
+                    <td>{% get_cost_resource '3' buy_resources cost_buy_resources %}</td>
+                    <td>{% get_cost_resource '4' buy_resources cost_buy_resources %}</td>
+                    <td>{% get_cost_resource '5' buy_resources cost_buy_resources %}</td>
+                    <td>
+                        Influence so far: {{ influence_so_far }}
+                    </td>
                 </tr>
             </table>
             <hr>
@@ -86,6 +278,7 @@
                         </td>
                     </tr>
                 </table>
+                {% endif %}
             <!-- {{ trade_modal |safe }} -->
         </div>
         <div class="modal-footer">

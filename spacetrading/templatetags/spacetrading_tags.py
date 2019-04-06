@@ -11,6 +11,21 @@ def is_active(player, players):
 
     return True
 
+@register.simple_tag
+def can_trade_resource(resource, resources):
+    if resource in resources:
+        return True
+    return False
+
+
+@register.simple_tag
+def get_cost_resource(resource, resources, cost_resources):
+    for res, cost in zip(resources, cost_resources):
+        if res == resource:
+            return str(cost)
+    return ""
+
+
 @register.filter
 def at(l, i):
     try:

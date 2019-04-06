@@ -96,31 +96,39 @@ function on_trade()
     console.log("on_trade")
     for(resource = 1; resource <= 5; resource++)
     {
-        name_buy = "trade_modal_buy_" + resource + "_amount"
-        element_buy = document.getElementById(name_buy)
-        if(element_buy != null){
-            document.getElementById("id_buy_resource_" + resource).value = parseInt(element_buy.innerHTML)
+        name_buy = "buy_" + resource
+        try{
+            element_buy = document.getElementById(name_buy)
+            if(element_buy != null){
+                document.getElementById("id_buy_resource_" + resource).value = parseInt(element_buy.options[element_buy.selectedIndex].value)
+            }
         }
-        name_sell = "trade_modal_sell_" + resource + "_amount"
-        element_sell = document.getElementById(name_sell)
-        if(element_sell != null){
-            document.getElementById("id_sell_resource_" + resource).value = parseInt(element_sell.innerHTML)
+        catch(error) {}
+        name_sell = "sell_" + resource
+        try{
+            element_sell = document.getElementById(name_sell)
+            if(element_sell != null){
+                document.getElementById("id_sell_resource_" + resource).value = parseInt(element_sell.options[element_sell.selectedIndex].value)
+            }
         }
+        catch(error) {}
     }
     
-    name_influence = "trade_modal_influence_amount"
+    name_influence = "buy_i"
     element_influence = document.getElementById(name_influence)
-    document.getElementById("id_buy_influence").value = parseInt(element_influence.innerHTML)
+    document.getElementById("id_buy_influence").value = parseInt(element_influence.options[element_influence.selectedIndex].value)
 }
 
 function refreshChoices()
 {
     console.log(refreshChoices)
+    /*
     var firstList = document.getElementById("sell_1")
 
     while (firstList.options.length) {
         firstList.remove(0);
     }
+    */
 }
 
 const active_player = getActivePlayer()
