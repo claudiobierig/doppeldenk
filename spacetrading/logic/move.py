@@ -29,29 +29,28 @@ def move(game, data):
     active_planet_with_number = get_active_planet(active_player.ship_position, planets)
     active_planet = active_planet_with_number[0]
     planet_number = active_planet_with_number[1]
-    trade_balance = is_move_valid(active_player, active_planet, planet_number, game, data)
-    if trade_balance +  active_player.money >= 0:
-        change_active_player(active_player, game.next_move_number, data, trade_balance)
-        change_active_planet(active_planet, data)
-        change_game(game, players, planets, planet_number, active_player.player_number, data)
-        players = game.players.all()
-        active_player = get_active_player(players)
-        if active_player is None:
-            finish_game(game)
-        return True
-    else:
-        return False
+    trade_balance = get_trade_balance_or_raise(active_player, active_planet, planet_number, game, data)
+    change_active_player(active_player, game.next_move_number, data, trade_balance)
+    change_active_planet(active_planet, data)
+    change_game(game, players, planets, planet_number, active_player.player_number, data)
+    players = game.players.all()
+    active_player = get_active_player(players)
+    if active_player is None:
+        finish_game(game)
 
-def is_move_valid(active_player, active_planet, planet_number, game, data):
+class MoveError(Exception):
+    pass
+
+def get_trade_balance_or_raise(active_player, active_planet, planet_number, game, data):
     """
     returns value smaller than -active_player.money if move is not valid
     trading balance otherwise
     """
     if active_player is None:
         finish_game(game)
-        return -1 - active_player.money
+        raise MoveError("no active player") 
     if active_player.ship_position == [data['coord_q'], data['coord_r']] or [data['coord_q'], data['coord_r']] == [0, 0]:
-        return -1 - active_player.money
+        raise MoveError("You need to fly to another place")
 
     buy_mapping = [
         ["buy_resource_1", '1'],
@@ -78,11 +77,11 @@ def is_move_valid(active_player, active_planet, planet_number, game, data):
     for key, value in buy_mapping:
         if data[key] != 0:
             if active_planet is None:
-                return -1 - active_player.money
+                raise MoveError("You cannot trade, if you are not at a planet")
             if value not in active_planet.buy_resources:
-                return -1 - active_player.money
+                raise MoveError("You cannot trade the resources you selected at the planet you are")
             if data[key] + active_player.resources[int(value) - 1] > 9:
-                return -1 - active_player.money
+                raise MoveError("You cannot hold more than 9 resources")
             trade_balance = trade_balance - data[key]*active_planet.cost_buy_resource[active_planet.buy_resources.index(value)]
             number_of_resources = number_of_resources + data[key]
             traded = True
@@ -90,20 +89,22 @@ def is_move_valid(active_player, active_planet, planet_number, game, data):
     for key, value in sell_mapping:
         if data[key] != 0:
             if active_planet is None:
-                return -1 - active_player.money
+                raise MoveError("You cannot trade, if you are not at a planet")
             if value not in active_planet.sell_resources:
-                return -1 - active_player.money
+                raise MoveError("You cannot trade the resources you selected at the planet you are")
             if data[key] > active_player.resources[int(value) - 1]:
-                return -1 - active_player.money
+                raise MoveError("You tried to sell more resources than you have")
             trade_balance = trade_balance + data[key]*active_planet.cost_sell_resource[active_planet.sell_resources.index(value)]
             number_of_resources = number_of_resources - data[key]
             traded = True
     if active_planet is None and data["buy_influence"] != 0:
-        return -1 - active_player.money
+        raise MoveError("You cannot trade, if you are not at a planet")
     if number_of_resources > 9:
-        return -1 - active_player.money
+        raise MoveError("You cannot hold more than 9 resources")
 
     trade_balance = trade_balance - get_cost_influence(traded, data["buy_influence"], game.planet_influence_track[planet_number][active_player.player_number])
+    if trade_balance + active_player.money < 0:
+        raise MoveError("You have not enough money")
     return trade_balance
 
 def get_active_planet(ship_position, planets):

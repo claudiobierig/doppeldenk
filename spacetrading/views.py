@@ -137,9 +137,10 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
             active_player = game_instance.get_active_player()
             if request.user == active_player.user:
                 if 'Regular' in form.data:
-                    result = move.move(game_instance, form.cleaned_data)
-                    if not result:
-                        messages.error(request, 'Error: Not a legal move.')
+                    try:
+                        move.move(game_instance, form.cleaned_data)
+                    except move.MoveError as exception:
+                        messages.error(request, 'Error: {}.'.format(exception))
                 elif 'Pass' in form.data:
                     move.pass_game(game_instance)
 
