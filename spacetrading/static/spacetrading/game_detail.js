@@ -117,18 +117,74 @@ function on_trade()
     name_influence = "buy_i"
     element_influence = document.getElementById(name_influence)
     document.getElementById("id_buy_influence").value = parseInt(element_influence.options[element_influence.selectedIndex].value)
+    //TODO: set text in player panel
 }
 
 function refreshChoices()
 {
-    console.log(refreshChoices)
+    console.log("refreshChoices")
     /*
+    TODO:
+    getCurrentState();
+    setTradeModalPlayerState();
+    for i=1:5:
+        max_sell = resources[i-1]
+        min_sell = get_min_sell(current_money, current_resources)
+        set_options(min_sell, max_sell, element)
+    for i=1:5:
+        min_buy = get_min_buy(current_money, current_resources)
+        max_buy = get_max_buy(current_money, current_resources)
+        set_options(min_buy, max_buy, element)
+
     var firstList = document.getElementById("sell_1")
 
     while (firstList.options.length) {
         firstList.remove(0);
     }
     */
+}
+
+function getCurrentState()
+{
+    current_money = starting_money
+    current_resources = resources
+    traded = false
+    for(resource = 1; resource <= 5; resource++)
+    {
+        name_buy = "buy_" + resource
+        try{
+            element_buy = document.getElementById(name_buy)
+            if(element_buy != null){
+                buying_amount = parseInt(element_buy.options[element_buy.selectedIndex].value)
+                current_resources[resource - 1] = resources[resource - 1] + buying_amount
+                if(buying_amount != 0){
+                    traded = true
+                    buying_cost = 1//TODO
+                    current_money = current_money - buying_amount*buying_cost
+                }
+            }
+        }
+        catch(error) {}
+        name_sell = "sell_" + resource
+        try{
+            element_sell = document.getElementById(name_sell)
+            if(element_sell != null){
+                selling_amount = parseInt(element_sell.options[element_sell.selectedIndex].value)
+                current_resources[resource - 1] = resources[resource - 1] - selling_amount
+                if(selling_amount != 0){
+                    traded = true
+                    selling_cost = 1//TODO
+                    current_money = current_money + selling_amount*selling_cost
+                }
+            }
+        }
+        catch(error) {}
+    }
+}
+
+function setTradeModalPlayerState()
+{
+    //set current_money and current_resources in trade modal 
 }
 
 const active_player = getActivePlayer()
@@ -140,3 +196,6 @@ const resources = [
     getAttributeFromPlayerboard(active_player, "resource_4"),
     getAttributeFromPlayerboard(active_player, "resource_5")
 ]
+
+current_money = starting_money
+current_resources = resources
