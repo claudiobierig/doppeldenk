@@ -163,6 +163,8 @@ def get_cost_trade_resources(direction, planet):
         return planet.cost_buy_resource
 
 def get_active_planet(player, planets):
+    if player is None:
+        return None
     for planet in planets:
         if player.ship_position == planet.position_of_hexes[planet.current_position]:
             return planet
