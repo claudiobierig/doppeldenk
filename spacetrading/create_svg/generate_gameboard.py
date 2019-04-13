@@ -141,14 +141,20 @@ def draw_hex_grid(parent, planets, user_active):
                 continue
             name_hex = "hex" + "_" + str(coords[0]) + "_" + str(coords[1])
             colour = "white"
+            stroke_colour = "white"
             fill_opacity = "0"
+            stroke_width = "0.5"
+            stroke_opacity = "0.5"
             for hex_field in colored_hexes:
                 if coords == hex_field[0]:
                     colour = hex_field[1].colour
+                    stroke_colour = hex_field[1].colour
+                    stroke_width = "1.5"
+                    stroke_opacity = "1"
                     if hex_field[1].current_position == hex_field[2]:
                         fill_opacity = "1"
                     else:
-                        fill_opacity = "0.2"
+                        fill_opacity = "0.25"
                     break
 
             hex_center = get_hex_center(coords, HEX_SIZE)
@@ -160,9 +166,9 @@ def draw_hex_grid(parent, planets, user_active):
                 colour,
                 "hex",
                 fill_opacity=fill_opacity,
-                stroke_colour="white",
-                stroke_opacity="0.5",
-                stroke_width="0.5",
+                stroke_colour=stroke_colour,
+                stroke_opacity=stroke_opacity,
+                stroke_width=stroke_width,
                 enableOnClick=user_active
             )
     

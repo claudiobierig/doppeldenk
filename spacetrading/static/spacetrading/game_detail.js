@@ -1,5 +1,8 @@
 
 lastClickedHex = null
+lastClickedHexStrokeColour = "white"
+lastClickedHexStrokeWidth = 0.5
+lastClickedHexStrokeOpacity = 0.5
 
 function getActivePlayer()
 {
@@ -26,17 +29,21 @@ function getAttributeFromPlayerboard(playerboard, attribute)
 
 function clickHex(hex_element)
 {
+    if (lastClickedHex != null){
+        lastClickedHex.style.stroke = lastClickedHexStrokeColour
+        lastClickedHex.style['stroke-width'] = lastClickedHexStrokeWidth
+        lastClickedHex.style['stroke-opacity'] = lastClickedHexStrokeOpacity
+    }
+
+    lastClickedHexStrokeColour = hex_element.style.stroke
+    lastClickedHexStrokeWidth = hex_element.style['stroke-width']
+    lastClickedHexStrokeOpacity = hex_element.style['stroke-opacity']
+
     document.getElementById("id_coord_q").value = hex_element.getAttribute("coord_q")
     document.getElementById("id_coord_r").value = hex_element.getAttribute("coord_r")
-
-    hex_element.style['stroke-width'] = 1.5
+    hex_element.style['stroke-width'] = 5
     hex_element.style['stroke-opacity'] = 1
     hex_element.style.stroke = "red"
-    if (lastClickedHex != null){
-        lastClickedHex.style.stroke = "white"
-        lastClickedHex.style['stroke-width'] = 0.5
-        lastClickedHex.style['stroke-opacity'] = 0.5
-    }
     
     lastClickedHex = hex_element
 }
