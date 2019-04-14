@@ -53,21 +53,25 @@ function on_close_trade_modal()
     console.log("on_close")
     for(resource = 1; resource <= 5; resource++)
     {
-        name_buy = "trade_modal_buy_" + resource + "_amount"
+        document.getElementById("id_buy_resource_" + resource).value = 0
+        document.getElementById("id_sell_resource_" + resource).value = 0
+        name_buy = "buy_" + resource
         element_buy = document.getElementById(name_buy)
         if(element_buy != null){
-            element_buy.innerHTML = 0
+            //TODO: add only option 0 and select
         }
-        name_sell = "trade_modal_sell_" + resource + "_amount"
+        name_sell = "sell_" + resource
         element_sell = document.getElementById(name_sell)
         if(element_sell != null){
-            element_sell.innerHTML = 0
+            //TODO: add only option 0 and select
         }
     }
 
-    name_influence = "trade_modal_influence_amount"
+    name_influence = "buy_i"
     element_influence = document.getElementById(name_influence)
-    element_influence.innerHTML = 0
+    //TODO: select 0
+    
+    //TODO refresh choices
 
 }
 
