@@ -20,6 +20,8 @@ def draw_single_symbol(symbolname):
         generate_svg_symbols.add_posibility_for_water(svg)
     elif symbolname == "building_resource":
         generate_svg_symbols.add_posibility_for_building_res(svg)
+    elif symbolname == "influence":
+        generate_svg_symbols.add_posibility_for_influence(svg)
 
     svg.use_symbol(
         symbolname,
@@ -39,7 +41,8 @@ def draw_symbols():
         "radioactive": draw_single_symbol("radioactive"),
         "food": draw_single_symbol("food"),
         "water": draw_single_symbol("water"),
-        "building_resource": draw_single_symbol("building_resource")
+        "building_resource": draw_single_symbol("building_resource"),
+        "influence": draw_single_symbol("influence")
     }
 
     return svgs

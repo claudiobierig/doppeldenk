@@ -564,6 +564,62 @@ def add_posibility_for_building_res(svg):
         fill_colour="#AAA"
     )
 
+def add_posibility_for_influence(svg):
+    """
+    Create influence symbol
+
+    Arguments:
+        svg {Svg} -- root svg element
+    """
+    symbol = Svg(
+        etree.SubElement(
+            svg.root,
+            'symbol',
+            {
+                'id': 'influence',
+                'view_box': '0 0 20 20'
+            }
+        )
+    )
+    background_colour = "#000"
+    foreground_colour = "#AAA"
+    symbol.create_circle(
+        [10, 10],
+        9,
+        "influence_background_circle",
+        fill_colour=background_colour
+    )
+    symbol.create_circle(
+        [10, 10],
+        1,
+        "influence_middle",
+        fill_colour=foreground_colour
+    )
+    symbol.create_circle(
+        [10, 10],
+        4,
+        "influence_ring_inner",
+        additional_arguments={
+            "fill-opacity" : "1",
+            "stroke": foreground_colour,
+            "stroke-dasharray": "4 1",
+            "stroke-width": "1",
+            "fill": "none"
+        }
+    )
+    symbol.create_circle(
+        [10, 10],
+        7,
+        "influence_ring_outer",
+        additional_arguments={
+            "fill-opacity" : "1",
+            "stroke": foreground_colour,
+            "stroke-dasharray": "4 1",
+            "stroke-width": "1",
+            "fill": "none"
+        }
+    )
+
 def main():
     """
     no main implemented

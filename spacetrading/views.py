@@ -122,6 +122,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         context["food"] = symbols["food"]
         context["water"] = symbols["water"]
         context["building_resource"] = symbols["building_resource"]
+        context["influence"] = symbols["influence"]
         context["can_trade"] = active_planet is not None
         context["buy_resources"] = get_trade_resources("buy", active_planet)
         context["sell_resources"] = get_trade_resources("sell", active_planet)
