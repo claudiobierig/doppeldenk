@@ -48,33 +48,6 @@ function clickHex(hex_element)
     lastClickedHex = hex_element
 }
 
-function changeInfluence(amount)
-{
-    amount_influence_name = "trade_modal_influence_amount"
-    amount_influence_element = document.getElementById(amount_influence_name)
-    old_amount = parseInt(amount_influence_element.innerHTML)
-    new_amount = Math.max(old_amount + amount, 0)
-    amount_influence_element.innerHTML = new_amount
-}
-
-function change_buy_resource(resource, amount)
-{
-    amount_element_name = "trade_modal_buy_" + resource + "_amount"
-    amount_element = document.getElementById(amount_element_name)
-    old_amount = parseInt(amount_element.innerHTML)
-    new_amount = Math.max(Math.min(old_amount + amount, 9), 0)
-    amount_element.innerHTML = new_amount
-}
-
-function change_sell_resource(resource, amount)
-{
-    amount_element_name = "trade_modal_sell_" + resource + "_amount"
-    amount_element = document.getElementById(amount_element_name)
-    old_amount = parseInt(amount_element.innerHTML)
-    new_amount = Math.max(Math.min(old_amount + amount, 9), 0)
-    amount_element.innerHTML = new_amount
-}
-
 function on_close_trade_modal()
 {
     console.log("on_close")
@@ -129,13 +102,13 @@ function on_trade()
 
 function refreshChoices()
 {
-    console.log("refreshChoices")
+    getCurrentState()
+    setTradeModalPlayerState()
     /*
     TODO:
-    getCurrentState();
-    setTradeModalPlayerState();
+    
     for i=1:5:
-        max_sell = resources[i-1]
+        max_sell = starting_resources[i-1]
         min_sell = get_min_sell(current_money, current_resources)
         set_options(min_sell, max_sell, element)
     for i=1:5:
@@ -154,19 +127,20 @@ function refreshChoices()
 function getCurrentState()
 {
     current_money = starting_money
-    current_resources = resources
     traded = false
     for(resource = 1; resource <= 5; resource++)
     {
+        current_resources[resource-1] = starting_resources[resource-1]
         name_buy = "buy_" + resource
         try{
             element_buy = document.getElementById(name_buy)
             if(element_buy != null){
                 buying_amount = parseInt(element_buy.options[element_buy.selectedIndex].value)
-                current_resources[resource - 1] = resources[resource - 1] + buying_amount
+                current_resources[resource - 1] = starting_resources[resource - 1] + buying_amount
                 if(buying_amount != 0){
                     traded = true
-                    buying_cost = 1//TODO
+                    name_buy_price =  "price_buy_resource_" + resource
+                    buying_cost = parseInt(document.getElementById(name_buy_price).innerHTML)
                     current_money = current_money - buying_amount*buying_cost
                 }
             }
@@ -177,32 +151,53 @@ function getCurrentState()
             element_sell = document.getElementById(name_sell)
             if(element_sell != null){
                 selling_amount = parseInt(element_sell.options[element_sell.selectedIndex].value)
-                current_resources[resource - 1] = resources[resource - 1] - selling_amount
+                current_resources[resource - 1] = starting_resources[resource - 1] - selling_amount
                 if(selling_amount != 0){
                     traded = true
-                    selling_cost = 1//TODO
+                    name_sell_price =  "price_sell_resource_" + resource
+                    selling_cost = parseInt(document.getElementById(name_sell_price).innerHTML)
                     current_money = current_money + selling_amount*selling_cost
                 }
             }
         }
         catch(error) {}
     }
+    element_influence = document.getElementById("buy_i")
+    buy_influence_amount = parseInt(element_influence.options[element_influence.selectedIndex].value)
+    current_influence = starting_influence
+    if(buy_influence_amount > 0 && traded){
+        buy_influence_amount--
+        current_money--
+        current_influence++
+    }
+    current_money = current_money - (2*current_influence + buy_influence_amount + 1)*buy_influence_amount/2
+    current_influence = current_influence + buy_influence_amount
 }
 
 function setTradeModalPlayerState()
 {
-    //set current_money and current_resources in trade modal 
+    //set current_money and current_resources in trade modal
+    document.getElementById("trade_modal_money").innerHTML = current_money
+    document.getElementById("trade_modal_resource_1").innerHTML = current_resources[0]
+    document.getElementById("trade_modal_resource_2").innerHTML = current_resources[1]
+    document.getElementById("trade_modal_resource_3").innerHTML = current_resources[2]
+    document.getElementById("trade_modal_resource_4").innerHTML = current_resources[3]
+    document.getElementById("trade_modal_resource_5").innerHTML = current_resources[4]
+    document.getElementById("trade_modal_influence").innerHTML = current_influence
 }
 
 const active_player = getActivePlayer()
-const starting_money = getAttributeFromPlayerboard(active_player, "money")
-const resources = [
-    getAttributeFromPlayerboard(active_player, "resource_1"),
-    getAttributeFromPlayerboard(active_player, "resource_2"),
-    getAttributeFromPlayerboard(active_player, "resource_3"),
-    getAttributeFromPlayerboard(active_player, "resource_4"),
-    getAttributeFromPlayerboard(active_player, "resource_5")
+const starting_money = parseInt(getAttributeFromPlayerboard(active_player, "money"))
+const starting_resources = [
+    parseInt(getAttributeFromPlayerboard(active_player, "resource_1")),
+    parseInt(getAttributeFromPlayerboard(active_player, "resource_2")),
+    parseInt(getAttributeFromPlayerboard(active_player, "resource_3")),
+    parseInt(getAttributeFromPlayerboard(active_player, "resource_4")),
+    parseInt(getAttributeFromPlayerboard(active_player, "resource_5"))
 ]
+const starting_influence = parseInt(document.getElementById("trade_modal_influence").innerHTML)
 
 current_money = starting_money
-current_resources = resources
+current_resources = [starting_resources[0], starting_resources[1], starting_resources[2], starting_resources[3], starting_resources[4]]
+current_influence = starting_influence
+refreshChoices()

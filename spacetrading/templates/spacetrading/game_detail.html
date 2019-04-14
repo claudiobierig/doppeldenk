@@ -123,11 +123,11 @@
                     </tr>
                     <tr class="table-success">
                         <td style="text-align: center">Price:</td>
-                        <td style="text-align: center">{% get_cost_resource '1' sell_resources cost_sell_resources %}</td>
-                        <td style="text-align: center">{% get_cost_resource '2' sell_resources cost_sell_resources %}</td>
-                        <td style="text-align: center">{% get_cost_resource '3' sell_resources cost_sell_resources %}</td>
-                        <td style="text-align: center">{% get_cost_resource '4' sell_resources cost_sell_resources %}</td>
-                        <td style="text-align: center">{% get_cost_resource '5' sell_resources cost_sell_resources %}</td>
+                        <td style="text-align: center" id="price_sell_resource_1">{% get_cost_resource '1' sell_resources cost_sell_resources %}</td>
+                        <td style="text-align: center" id="price_sell_resource_2">{% get_cost_resource '2' sell_resources cost_sell_resources %}</td>
+                        <td style="text-align: center" id="price_sell_resource_3">{% get_cost_resource '3' sell_resources cost_sell_resources %}</td>
+                        <td style="text-align: center" id="price_sell_resource_4">{% get_cost_resource '4' sell_resources cost_sell_resources %}</td>
+                        <td style="text-align: center" id="price_sell_resource_5">{% get_cost_resource '5' sell_resources cost_sell_resources %}</td>
                         <td></td>
                     </tr>
                     <tr class="table-danger">
@@ -232,11 +232,11 @@
                     </tr>
                     <tr class="table-danger">
                         <td style="text-align: center">Price:</td>
-                        <td style="text-align: center">{% get_cost_resource '1' buy_resources cost_buy_resources %}</td>
-                        <td style="text-align: center">{% get_cost_resource '2' buy_resources cost_buy_resources %}</td>
-                        <td style="text-align: center">{% get_cost_resource '3' buy_resources cost_buy_resources %}</td>
-                        <td style="text-align: center">{% get_cost_resource '4' buy_resources cost_buy_resources %}</td>
-                        <td style="text-align: center">{% get_cost_resource '5' buy_resources cost_buy_resources %}</td>
+                        <td style="text-align: center" id="price_buy_resource_1">{% get_cost_resource '1' buy_resources cost_buy_resources %}</td>
+                        <td style="text-align: center" id="price_buy_resource_2">{% get_cost_resource '2' buy_resources cost_buy_resources %}</td>
+                        <td style="text-align: center" id="price_buy_resource_3">{% get_cost_resource '3' buy_resources cost_buy_resources %}</td>
+                        <td style="text-align: center" id="price_buy_resource_4">{% get_cost_resource '4' buy_resources cost_buy_resources %}</td>
+                        <td style="text-align: center" id="price_buy_resource_5">{% get_cost_resource '5' buy_resources cost_buy_resources %}</td>
                         <td></td>
                     </tr>
                 </tbody>
@@ -256,25 +256,25 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align: center">
+                            <td style="text-align: center" id="trade_modal_money">
                                 0
                             </td>
-                            <td style="text-align: center">
+                            <td style="text-align: center" id="trade_modal_resource_1">
                                 0
                             </td>
-                            <td style="text-align: center">
+                            <td style="text-align: center" id="trade_modal_resource_2">
                                 0
                             </td>
-                            <td style="text-align: center">
+                            <td style="text-align: center" id="trade_modal_resource_3">
                                 0
                             </td>
-                            <td style="text-align: center">
+                            <td style="text-align: center" id="trade_modal_resource_4">
                                 0
                             </td>
-                            <td style="text-align: center">
+                            <td style="text-align: center" id="trade_modal_resource_5">
                                 0
                             </td>
-                            <td style="text-align: center">
+                            <td style="text-align: center" id="trade_modal_influence">
                                 {{ influence_so_far }}
                             </td>
                         </tr>
