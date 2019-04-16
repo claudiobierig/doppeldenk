@@ -2,8 +2,16 @@ from django import forms
 from spacetrading import models
 
 class NewGame(forms.Form):
-    name = forms.CharField(label="Game Name")
-    number_of_players = forms.IntegerField(label="Number of Players", max_value=4, min_value=1)
+    name = forms.CharField(
+        label="Game Name",
+        widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Game Name'})
+    )
+    number_of_players = forms.IntegerField(
+        label="Number of Players",
+        max_value=4,
+        min_value=1,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
 
 class Move(forms.Form):
     coord_q = forms.IntegerField(

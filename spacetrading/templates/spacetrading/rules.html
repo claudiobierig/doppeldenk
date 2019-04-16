@@ -1,6 +1,7 @@
 {% extends "spacetrading/spacetrading_template.html" %}
 {% block rules %}<li class="nav-item active"><a class="nav-link" href="{% url 'rules'%}">Rules</a></li>{% endblock %}
 {% block content %}
+<div class="container mt-3">
 <h1>Rules Spacetrading</h1>
 <h2>1. Goal</h2>
 Every player plays a mergent in a solar system with multiple inhabited planets.<br>
@@ -89,4 +90,5 @@ Afterwards the marker is moved forward by 40, 30, 25, 20 (TODO) spot for 1, 2, 3
     <li>Prices are somehow managed by actually placing/taking resources from the market.</li>
     <li>No selling on planets. Instead one politician can be bribed represented by a card. The bribe costs money, resources, time and gives you VPs, money, resources or anything else that may come along.</li>
 </ul>
+</div>
 {% endblock %}
