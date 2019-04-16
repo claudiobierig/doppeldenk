@@ -1,5 +1,20 @@
 {% extends "spacetrading/spacetrading_template.html" %}
 {% load spacetrading_tags %}
+{% block active_games %}
+  {% if joinable %}
+    {{ block.super }}
+  {% else %}
+    <li class="nav-item"><a class="nav-link active" href="{% url 'active_games'%}">Active Games</a></li>
+  {% endif %}
+{% endblock %}
+  
+{% block open_games %}
+  {% if joinable %}
+    <li class="nav-item active"><a class="nav-link" href="{% url 'open_games'%}">Open Games</a></li>
+  {% else %}
+    {{ block.super }}
+  {% endif %}
+{% endblock %}
 
 {% block content %}
   <h1>{{ headline }}</h1>

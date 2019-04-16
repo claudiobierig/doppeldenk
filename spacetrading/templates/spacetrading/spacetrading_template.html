@@ -13,33 +13,43 @@
   <link rel="stylesheet" href="{% static 'spacetrading/styles.css' %}">
 </head>
 <body>
-{% if user.is_authenticated %}
-{% block navbar %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Spacetrading</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
-          <li class="nav-item"><a class="nav-link" href="{% url 'active_games'%}">Active Games</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'open_games'%}">Open Games</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'create_game'%}">Create new game</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'rules'%}">Rules</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-      </ul>
-      <span class="navbar-text">
-        User: {{ user.get_username }}
-      </span>
-    </div>
-  </nav>
-{% endblock %}
+  <span class="navbar-brand">Spacetrading</span>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+      {% if user.is_authenticated %}
+        {% block active_games %}<li class="nav-item"><a class="nav-link" href="{% url 'active_games'%}">Active Games</a></li>{% endblock %}
+        {% block open_games %}<li class="nav-item"><a class="nav-link" href="{% url 'open_games'%}">Open Games</a></li>{% endblock %}
+        {% block create_game %}<li class="nav-item"><a class="nav-link" href="{% url 'create_game'%}">Create game</a></li>{% endblock %}
+      {% endif %}
+        {% block rules %}<li class="nav-item"><a class="nav-link" href="{% url 'rules'%}">Rules</a></li>{% endblock %}
+      {% if user.is_authenticated %}
+        {% block logout %}<li class="nav-item"><a class="nav-link" href="{% url 'logout'%}?next=/spacetrading/rules">Logout</a></li>{% endblock %}
+      {% endif %}
+    </ul>
+    {% if user.is_authenticated %}
+    <span class="navbar-text">
+      User: {{ user.get_username }}
+    </span>
+    {% else %}
+    <form class="form-inline" method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" id="id_username" type="text" name="username" maxlength="30" placeholder="Username"/>
+        <input class="form-control mr-sm-2" type="password" name="password" id="id_password" placeholder="Password"/>
+        <input type="submit" value="Login"  class="btn btn-primary"/>
+        <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+    </form>
+    {% endif %}
+  </div>
+</nav>
 {% block content %}{% endblock %} 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-{% else %}
-  <a href="{% url 'login'%}?next={{request.path}}">Login</a>
-{% endif %} 
+
 </body>
 </html>

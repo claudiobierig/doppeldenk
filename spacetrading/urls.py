@@ -3,7 +3,7 @@ from spacetrading import views
 
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.rules, name='rules'),
     path('rules', views.rules, name='rules'),
     path('games/create/', views.create_game, name='create_game'),
     path('games/active/', views.ActiveGameListView.as_view(), name='active_games'),

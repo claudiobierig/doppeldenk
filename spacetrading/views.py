@@ -1,30 +1,17 @@
+import re
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
-import re
 
 from spacetrading import models
 #from create_svg import generate_player_board
 from spacetrading import forms
 from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_player_boards, generate_trade_modal, generate_plain_symbols
 from spacetrading.logic import move
-
-@login_required
-def index(request):
-    """View function for home page of site."""
-    svg_string = "hello"#generate_player_board.main()
-    context = {
-        'num_books': "1",
-        'svg': svg_string
-    }
-
-    # Render the HTML template index.html with the data in the context variable
-    return render(request, 'spacetrading/index.html', context=context)
 
 @login_required
 def create_game(request):
@@ -50,7 +37,6 @@ def create_game(request):
     }
     return render(request, 'spacetrading/create_game.html', context=context)
 
-@login_required
 def rules(request):
     return render(request, 'spacetrading/rules.html')
 
