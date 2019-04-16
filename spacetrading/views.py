@@ -52,10 +52,8 @@ class ActiveGameListView(LoginRequiredMixin, generic.ListView):
         context['joinable'] = False
         return context
 
-
     def get_queryset(self):
-        games = models.Game.objects.filter(players__user=self.request.user).filter(game_state='r')
-        
+        games = models.Game.objects.filter(players__user=self.request.user).filter(game_state='r').order_by('id')
         return games
 
 class OpenGameListView(LoginRequiredMixin, generic.ListView):
@@ -71,7 +69,7 @@ class OpenGameListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        games = models.Game.objects.filter(game_state='w')
+        games = models.Game.objects.filter(game_state='w').order_by('id')
         return games
     
     def post(self, request, *args, **kwargs):
@@ -116,7 +114,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         context["cost_sell_resources"] = get_cost_trade_resources("sell", active_planet)
         context["influence_so_far"] = get_influence_so_far(game_instance, planets, active_player, active_planet)
         return context
-    
+
     def post(self, request, *args, **kwargs):
         form = forms.Move(request.POST)
         if form.is_valid():
