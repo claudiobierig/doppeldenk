@@ -238,7 +238,7 @@ class Game(models.Model):
     """
     Space Trading Model
     """
-    game_name = models.CharField(max_length=100)
+    game_name = models.CharField(max_length=100, blank=True, null=True)
     number_of_players = models.IntegerField()
     next_move_number = models.IntegerField()
     players = models.ManyToManyField(Player)

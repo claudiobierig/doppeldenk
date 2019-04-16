@@ -3,6 +3,8 @@ from spacetrading import models
 
 class NewGame(forms.Form):
     name = forms.CharField(
+        max_length=100,
+        required=False,
         label="Game Name",
         widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Game Name'})
     )
