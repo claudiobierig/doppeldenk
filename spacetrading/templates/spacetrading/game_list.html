@@ -59,14 +59,13 @@
           {% for player in players|dictsort:"player_number" %}
           {% is_active player players as active %}  
           
-            
-            {% if active %}
+            {% if game.is_active %}{% if active %}
             <font color="red">
-            {% endif %}
+            {% endif %}{% endif %}
               {{ player.user.get_username}}
-            {% if active %}
+            {% if game.is_active %}{% if active %}
             </font>
-            {% endif %}  
+            {% endif %}{% endif %}
             {% if not forloop.last %}, {% endif %}
           {% endfor %}
           {% endwith %}
@@ -85,19 +84,29 @@
     <p>There are no games.</p>
   {% endif %}       
   {% if is_paginated %}
-    <div class="pagination">
-      <span class="page-links">
-        {% if page_obj.has_previous %}
-          <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-        <span class="page-current">
-          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-        {% if page_obj.has_next %}
-          <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
-        {% endif %}
-      </span>
-    </div>
+  <div class="d-flex justify-content-center">
+  <nav aria-label="pagination">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li class="page-item">
+          <a class="page-link" aria-label="Previous" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      {% endif %}
+      <li class="page-item"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
+      {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+  </div>
   {% endif %}
 </div>
 {% endblock %}
