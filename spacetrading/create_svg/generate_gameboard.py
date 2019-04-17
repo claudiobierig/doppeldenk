@@ -171,11 +171,15 @@ def draw_hex_grid(parent, planets, user_active):
                 stroke_width=stroke_width,
                 enableOnClick=user_active
             )
-    
+
     coordinate_group = parent.create_subgroup('coordinates')
-    
+
     for hex_field in colored_hexes:
-        content = "{},{},{}".format(hex_field[0][0], hex_field[0][1], -hex_field[0][0] - hex_field[0][1])
+        content = "{},{},{}".format(
+            hex_field[0][0],
+            hex_field[0][1],
+            -hex_field[0][0] - hex_field[0][1]
+        )
         hex_center = get_hex_center(hex_field[0], HEX_SIZE)
         coordinate_group.create_text(
             "coordinates_{}".format(content),
@@ -184,8 +188,6 @@ def draw_hex_grid(parent, planets, user_active):
             font_size=FONT_SIZE,
             font_colour="#FFFFFF"
         )
-
-    return
 
 def draw_timebox(position, size, name, time, parent):
     """
@@ -293,7 +295,13 @@ def draw_timemarkers(svg, game, players):
     for player in players:
         if player.last_move >= 0:
             timemarkers.append(
-                [player.time_spent, player.last_move, player.colour, player.user.get_username(), 'disc_3d']
+                [
+                    player.time_spent,
+                    player.last_move,
+                    player.colour,
+                    player.user.get_username(),
+                    'disc_3d'
+                ]
             )
     timemarkers.append(
         [
@@ -313,7 +321,7 @@ def draw_timemarkers(svg, game, players):
             "square_3d"
         ]
     )
-    
+
     timemarkers.sort(key=operator.itemgetter(0, 1))
     timemarkers_svg = svg.create_subgroup('timemarkers')
     stack_position = 0
@@ -376,60 +384,15 @@ def draw_playerhelp(svg, position):
         text_anchor="middle"
     )
 
-def draw_influence_tracks(svg, game, planets, players):
-    """
-    draw the influence tracks including the markers of the players
-    """
-    planet_tracks_svg = svg.create_subgroup('planet_influence_tracks')
-    for planet_number, planet in enumerate(planets):
-        for field in range(0, 21):
-            x_pos = WIDTH + planet_number*SIZE_TIMEBOX
-            y_pos = HEIGHT - (field + 1)*SIZE_TIMEBOX
-            planet_tracks_svg.create_rectangle(
-                [x_pos, y_pos],
-                [SIZE_TIMEBOX, SIZE_TIMEBOX],
-                "{}_influence_{}".format(planet.name, field),
-                fill_colour=planet.colour,
-                stroke_colour="black"
-            )
-            if field % 10 == 0:
-                planet_tracks_svg.create_rectangle(
-                    [x_pos, y_pos],
-                    [SIZE_TIMEBOX, SIZE_TIMEBOX],
-                    "{}_influence_{}_transperent".format(planet.name, field),
-                    fill_colour="black",
-                    fill_opacity="0.4"
-                )
-            planet_tracks_svg.create_text(
-                "{}_influence_{}_text".format(planet.name, field),
-                (x_pos + SIZE_TIMEBOX / 2, y_pos + SIZE_TIMEBOX / 2 + 4),
-                str(field),
-                font_size=8
-            )
-        planet_points = []
-        for player in players:
-            points = game.planet_influence_track[planet_number][player.player_number]
-            #TODO: points larger than 20
-            stack_position = planet_points.count(points)
-            planet_points.append(points)
-            x_pos = WIDTH + planet_number*SIZE_TIMEBOX
-            y_pos = (20 - points)*SIZE_TIMEBOX + 15 - 4*stack_position
-            planet_tracks_svg.use_symbol(
-                'disc_3d',
-                'influence_marker_{}_{}'.format(player.user.get_username(), planet.name),
-                position=[x_pos, y_pos],
-                fill_colour=player.colour
-            )
 
-
-def draw_gameboard(game, planets, players, user_active):
+def draw_gameboard(game, planets, players, user_active, bg_image="/static/auth/bg.jpeg", printing_material=False):
     """
     draw the main board
     """
-    svg = Svg(width=str(WIDTH + len(planets)*SIZE_TIMEBOX), height=str(HEIGHT), id_name="gameboard")
+    svg = Svg(width=str(WIDTH), height=str(HEIGHT), id_name="gameboard")
     generate_svg_symbols.add_posibility_for_disc_3d(svg)
     generate_svg_symbols.add_posibility_for_square_3d(svg)
-    svg.create_image("/static/auth/bg.jpeg", width="1200", height="876", x_pos="0", y_pos="0")
+    svg.create_image(bg_image, width="1200", height="876", x_pos="0", y_pos="0")
     draw_timeline(svg)
     draw_hex_grid(svg, planets, user_active)
 
@@ -437,10 +400,10 @@ def draw_gameboard(game, planets, players, user_active):
         draw_planet_ellipse(svg, planet, (WIDTH / 2, HEIGHT / 2))
 
     draw_sun(svg, (WIDTH, HEIGHT), HEX_SIZE)
-    draw_player_ships(svg, players)
-    draw_timemarkers(svg, game, players)
+    if not printing_material:
+        draw_player_ships(svg, players)
+        draw_timemarkers(svg, game, players)
     draw_playerhelp(svg, [WIDTH - 130, 40])
-    draw_influence_tracks(svg, game, planets, players)
     svg_string = svg.get_string()
 
     return svg_string
