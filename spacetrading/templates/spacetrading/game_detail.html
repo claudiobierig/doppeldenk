@@ -313,7 +313,10 @@
 
 {{ gameboard |safe }}
 {{ influence_tracks |safe }}
-{{ planet_market |safe }}
+<br>
+{% for planet in planet_market %}
+    {{ planet |safe }}
+{% endfor %}
 
 <script type="text/javascript" src="/static/spacetrading/game_detail.js"></script>
 {% endblock %}
