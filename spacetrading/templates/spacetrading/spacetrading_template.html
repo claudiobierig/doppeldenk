@@ -25,6 +25,7 @@
         {% block active_games %}<li class="nav-item"><a class="nav-link" href="{% url 'active_games'%}">Active Games</a></li>{% endblock %}
         {% block open_games %}<li class="nav-item"><a class="nav-link" href="{% url 'open_games'%}">Open Games</a></li>{% endblock %}
         {% block create_game %}<li class="nav-item"><a class="nav-link" href="{% url 'create_game'%}">Create game</a></li>{% endblock %}
+        {% block next_game %}<li class="nav-item"><a class="nav-link" href="{% url 'next_game'%}">Next game</a></li>{% endblock %}
       {% endif %}
         {% block rules %}<li class="nav-item"><a class="nav-link" href="{% url 'rules'%}">Rules</a></li>{% endblock %}
       {% if user.is_authenticated %}

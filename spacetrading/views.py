@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
@@ -36,6 +37,17 @@ def create_game(request):
         'form': form
     }
     return render(request, 'spacetrading/create_game.html', context=context)
+
+@login_required
+def next_game(request):
+    """go to next game where user is avtive"""
+    games = models.Game.objects.filter(players__user=request.user).filter(game_state='r').order_by('id')
+    for game in games:
+        players = game.players.all().order_by('player_number')
+        active_player = move.get_active_player(players)
+        if active_player.user == request.user:
+            return HttpResponseRedirect(reverse('game_detail', args=[game.id]))
+    return HttpResponseRedirect(reverse('active_games'))
 
 def rules(request):
     return render(request, 'spacetrading/rules.html')
