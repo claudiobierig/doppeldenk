@@ -19,9 +19,7 @@ def create_game(request):
     """Create a game"""
     # If this is a POST request then process the Form data
     if request.method == 'POST':
-        print(request.POST)
         form = forms.NewGame(request.POST)
-        print(form.data)
         if form.is_valid():
             models.create_game(
                 form.cleaned_data['name'],
@@ -94,7 +92,6 @@ class OpenGameListView(LoginRequiredMixin, generic.ListView):
         for key, _ in request.POST.items():
             if(re.match("join_\\d+", key)):
                 primary_key_game = key[5:]
-                print("Want to join game " + primary_key_game)
                 models.join_game(primary_key_game, request.user)
 
         return HttpResponseRedirect(self.request.path_info)
