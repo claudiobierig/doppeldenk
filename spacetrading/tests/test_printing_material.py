@@ -1,5 +1,5 @@
 from django.test import TestCase
-from spacetrading.create_svg import generate_gameboard, generate_planet_market
+from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_influence_track
 from spacetrading.models import Game
 from spacetrading.models import create_game
 
@@ -32,6 +32,15 @@ class GeneratePrintingMaterial(TestCase):
             html_file.write(svg_string)
             html_file.write("</body>")
         """
+
+    def test_generate_empty_influence_track(self):
+        create_game("empty_gameboard", 0, None)
+        game = Game.objects.get(game_name="empty_gameboard")
+        planets = game.planets.all().order_by('number_of_hexes')
+        svg_string = generate_influence_track.draw_influence_tracks(game, planets, [])
+        svg_filename = "printing_material/influence_track.svg"
+        with open(svg_filename, "w") as svg_file:
+            svg_file.write(svg_string)
 
     def test_generate_empty_planet_markets(self):
         create_game("empty_gameboard", 0, None)
