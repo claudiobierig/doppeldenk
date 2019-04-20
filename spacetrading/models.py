@@ -302,8 +302,7 @@ class Game(models.Model):
             "game_state={game.game_state}".format(game=self)
         )
 
-def create_game(name, number_of_players, user):
-    #TODO: make this error safe and in doubt clean up afterwards
+def create_game(name, number_of_players, play_all_players, user):
     offer_demand_event_times = [40, 30, 25, 20]
     game = Game.objects.create_game(
         game_name=name,
@@ -405,6 +404,9 @@ def create_game(name, number_of_players, user):
         game.game_state = 'r'
     game.save()
     player.save()
+    if play_all_players:
+        for _ in range(number_of_players - 1):
+            join_game(game.id, user)
 
 def join_game(primary_key_game, user):
     game = Game.objects.get(pk=primary_key_game)

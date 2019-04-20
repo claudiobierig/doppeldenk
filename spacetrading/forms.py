@@ -14,6 +14,11 @@ class NewGame(forms.Form):
         min_value=1,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
+    play_all_players = forms.BooleanField(
+        label="Play all Players",
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
 
 class Move(forms.Form):
     coord_q = forms.IntegerField(

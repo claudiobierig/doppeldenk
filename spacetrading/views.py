@@ -24,6 +24,7 @@ def create_game(request):
             models.create_game(
                 form.cleaned_data['name'],
                 form.cleaned_data['number_of_players'],
+                form.cleaned_data['play_all_players'],
                 request.user
             )
 
@@ -69,7 +70,7 @@ class ActiveGameListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        games = models.Game.objects.filter(players__user=self.request.user).filter(game_state='r').order_by('id')
+        games = models.Game.objects.filter(players__user=self.request.user).distinct().filter(game_state='r').order_by('id')
         return games
 
 class OpenGameListView(LoginRequiredMixin, generic.ListView):
