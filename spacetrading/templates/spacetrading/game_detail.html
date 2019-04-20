@@ -2,6 +2,14 @@
 
 {% load spacetrading_tags %}
 
+{% block next_game %}
+{% if nextgame %}
+<li class="nav-item"><a class="nav-link" href="{{ nextgame.get_absolute_url }}">Next game</a></li>
+{% else %}
+<li class="nav-item"><a class="nav-link" href="{% url 'next_game'%}">Next game</a></li>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 {{ player_boards |safe }}<br>
 

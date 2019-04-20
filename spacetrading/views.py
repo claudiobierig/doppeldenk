@@ -42,12 +42,18 @@ def create_game(request):
 def next_game(request):
     """go to next game where user is avtive"""
     games = models.Game.objects.filter(players__user=request.user).filter(game_state='r').order_by('id')
-    for game in games:
+    next = get_next_game(games, request.user)
+    if next:
+        return HttpResponseRedirect(reverse('game_detail', args=[next.id]))
+    return HttpResponseRedirect(reverse('active_games'))
+
+def get_next_game(queryset, user):
+    for game in queryset:
         players = game.players.all().order_by('player_number')
         active_player = move.get_active_player(players)
-        if active_player.user == request.user:
-            return HttpResponseRedirect(reverse('game_detail', args=[game.id]))
-    return HttpResponseRedirect(reverse('active_games'))
+        if active_player.user == user:
+            return game
+    return False
 
 def rules(request):
     return render(request, 'spacetrading/rules.html')
@@ -97,6 +103,20 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
     model = models.Game
     form_class = forms.Move
 
+    def get_next(self, game_instance):
+        all_games = models.Game.objects.filter(players__user=self.request.user).filter(game_state='r').order_by('id')
+        game_gt = all_games.filter(id__gt=game_instance.id)
+        game = get_next_game(game_gt, self.request.user)
+        if game:
+            return game
+        game_lt = all_games.filter(id__lt=game_instance.id)
+        game = get_next_game(game_lt, self.request.user)
+        if game:
+            return game
+
+        return False
+
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
@@ -107,6 +127,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         active_planet = get_active_planet(active_player, planets)
         user_active = active_player is not None and active_player.user == self.request.user
         symbols = generate_plain_symbols.draw_symbols()
+        context['nextgame'] = self.get_next(game_instance)
         context['gameboard'] = generate_gameboard.draw_gameboard(game_instance, planets, players, user_active)
         context['influence_tracks'] = generate_influence_track.draw_influence_tracks(game_instance, planets, players)
         context['planet_market'] = generate_planet_market.draw_planet_market(planets)
