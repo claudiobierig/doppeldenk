@@ -123,6 +123,9 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         players = game_instance.players.all().order_by('player_number')
         active_player = move.get_active_player(players)
         active_planet = get_active_planet(active_player, planets)
+        colour_active_planet = "#FFF"
+        if active_planet is not None:
+            colour_active_planet = active_planet.colour
         user_active = active_player is not None and active_player.user == self.request.user
         symbols = generate_plain_symbols.draw_symbols()
         context['nextgame'] = self.get_next(game_instance)
@@ -140,6 +143,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         context["building_resource"] = symbols["building_resource"]
         context["influence"] = symbols["influence"]
         context["can_trade"] = active_planet is not None
+        context["colour_active_planet"] = colour_active_planet
         context["buy_resources"] = get_trade_resources("buy", active_planet)
         context["sell_resources"] = get_trade_resources("sell", active_planet)
         context["cost_buy_resources"] = get_cost_trade_resources("buy", active_planet)
