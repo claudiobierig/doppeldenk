@@ -48,66 +48,11 @@ function clickHex(hex_element)
     lastClickedHex = hex_element
 }
 
-function on_close_trade_modal()
-{
-    console.log("on_close")
-    for(resource = 1; resource <= 5; resource++)
-    {
-        document.getElementById("id_buy_resource_" + resource).value = 0
-        document.getElementById("id_sell_resource_" + resource).value = 0
-        name_buy = "buy_" + resource
-        element_buy = document.getElementById(name_buy)
-        if(element_buy != null){
-            //TODO: add only option 0 and select
-        }
-        name_sell = "sell_" + resource
-        element_sell = document.getElementById(name_sell)
-        if(element_sell != null){
-            //TODO: add only option 0 and select
-        }
-    }
-
-    name_influence = "buy_i"
-    element_influence = document.getElementById(name_influence)
-    //TODO: select 0
-    
-    //TODO refresh choices
-
-}
-
-function on_trade()
-{
-    console.log("on_trade")
-    for(resource = 1; resource <= 5; resource++)
-    {
-        name_buy = "buy_" + resource
-        try{
-            element_buy = document.getElementById(name_buy)
-            if(element_buy != null){
-                document.getElementById("id_buy_resource_" + resource).value = parseInt(element_buy.options[element_buy.selectedIndex].value)
-            }
-        }
-        catch(error) {}
-        name_sell = "sell_" + resource
-        try{
-            element_sell = document.getElementById(name_sell)
-            if(element_sell != null){
-                document.getElementById("id_sell_resource_" + resource).value = parseInt(element_sell.options[element_sell.selectedIndex].value)
-            }
-        }
-        catch(error) {}
-    }
-    
-    name_influence = "buy_i"
-    element_influence = document.getElementById(name_influence)
-    document.getElementById("id_buy_influence").value = parseInt(element_influence.options[element_influence.selectedIndex].value)
-    //TODO: set text in player panel
-}
 
 function refreshChoices()
 {
     getCurrentState()
-    setTradeModalPlayerState()
+    setViewPlayerState()
     /*
     TODO:
     
@@ -128,6 +73,16 @@ function refreshChoices()
     */
 }
 
+function setViewPlayerState()
+{
+    active_player.querySelector('[id^="coins"]').innerHTML = current_money
+    active_player.querySelector('[id^="resource_amount_1_"]').innerHTML = current_resources[0]
+    active_player.querySelector('[id^="resource_amount_2_"]').innerHTML = current_resources[1]
+    active_player.querySelector('[id^="resource_amount_3_"]').innerHTML = current_resources[2]
+    active_player.querySelector('[id^="resource_amount_4_"]').innerHTML = current_resources[3]
+    active_player.querySelector('[id^="resource_amount_5_"]').innerHTML = current_resources[4]
+}
+
 function getCurrentState()
 {
     current_money = starting_money
@@ -135,7 +90,7 @@ function getCurrentState()
     for(resource = 1; resource <= 5; resource++)
     {
         current_resources[resource-1] = starting_resources[resource-1]
-        name_buy = "buy_" + resource
+        name_buy = "id_buy_resource_" + resource
         try{
             element_buy = document.getElementById(name_buy)
             if(element_buy != null){
@@ -150,7 +105,7 @@ function getCurrentState()
             }
         }
         catch(error) {}
-        name_sell = "sell_" + resource
+        name_sell = "id_sell_resource_" + resource
         try{
             element_sell = document.getElementById(name_sell)
             if(element_sell != null){
@@ -166,7 +121,7 @@ function getCurrentState()
         }
         catch(error) {}
     }
-    element_influence = document.getElementById("buy_i")
+    element_influence = document.getElementById("id_buy_influence")
     buy_influence_amount = parseInt(element_influence.options[element_influence.selectedIndex].value)
     current_influence = starting_influence
     if(buy_influence_amount > 0 && traded){
@@ -178,18 +133,6 @@ function getCurrentState()
     current_influence = current_influence + buy_influence_amount
 }
 
-function setTradeModalPlayerState()
-{
-    //set current_money and current_resources in trade modal
-    document.getElementById("trade_modal_money").innerHTML = current_money
-    document.getElementById("trade_modal_resource_1").innerHTML = current_resources[0]
-    document.getElementById("trade_modal_resource_2").innerHTML = current_resources[1]
-    document.getElementById("trade_modal_resource_3").innerHTML = current_resources[2]
-    document.getElementById("trade_modal_resource_4").innerHTML = current_resources[3]
-    document.getElementById("trade_modal_resource_5").innerHTML = current_resources[4]
-    document.getElementById("trade_modal_influence").innerHTML = current_influence
-}
-
 const active_player = getActivePlayer()
 const starting_money = parseInt(getAttributeFromPlayerboard(active_player, "money"))
 const starting_resources = [
@@ -199,7 +142,7 @@ const starting_resources = [
     parseInt(getAttributeFromPlayerboard(active_player, "resource_4")),
     parseInt(getAttributeFromPlayerboard(active_player, "resource_5"))
 ]
-const starting_influence = parseInt(document.getElementById("trade_modal_influence").innerHTML)
+const starting_influence = parseInt(document.getElementById("starting_influence").value)
 
 current_money = starting_money
 current_resources = [starting_resources[0], starting_resources[1], starting_resources[2], starting_resources[3], starting_resources[4]]

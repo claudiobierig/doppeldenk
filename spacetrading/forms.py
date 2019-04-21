@@ -30,49 +30,105 @@ class Move(forms.Form):
         widget=forms.HiddenInput(), initial=0
     )
 
+    CHOICES = (
+        ('0', 0),
+        ('1', 1),
+        ('2', 2),
+        ('3', 3),
+        ('4', 4),
+        ('5', 5),
+        ('6', 6),
+        ('7', 7),
+        ('8', 8),
+        ('9', 9),
+    )
     sell_resource_1 = forms.IntegerField(
         label="Sell resource 1", max_value=9, min_value=0,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
     sell_resource_2 = forms.IntegerField(
         label="Sell resource 2", max_value=9, min_value=0,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
     sell_resource_3 = forms.IntegerField(
         label="Sell resource 3", max_value=9, min_value=0,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
     sell_resource_4 = forms.IntegerField(
         label="Sell resource 4", max_value=9, min_value=0,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
     sell_resource_5 = forms.IntegerField(
         label="Sell resource 5", max_value=9, min_value=0,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
 
     buy_resource_1 = forms.IntegerField(
         label="Buy resource 1", max_value=9, min_value=0,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
     buy_resource_2 = forms.IntegerField(
         label="Buy resource 2", max_value=9, min_value=0,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
     buy_resource_3 = forms.IntegerField(
         label="Buy resource 3", max_value=9, min_value=0,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
     buy_resource_4 = forms.IntegerField(
         label="Buy resource 4", max_value=9, min_value=0,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
     buy_resource_5 = forms.IntegerField(
         label="Buy resource 5", max_value=9, min_value=0,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
 
     buy_influence = forms.IntegerField(
         label="Buy influence", min_value=0, max_value=99,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.Select(
+            choices=CHOICES,
+            attrs={'onchange': 'refreshChoices()'}
+        ),
+        initial=0
     )
