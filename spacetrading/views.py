@@ -41,9 +41,9 @@ def create_game(request):
 def next_game(request):
     """go to next game where user is avtive"""
     games = models.Game.objects.filter(players__user=request.user).filter(game_state='r').order_by('id')
-    next = get_next_game(games, request.user)
-    if next:
-        return HttpResponseRedirect(reverse('game_detail', args=[next.id]))
+    nextg = get_next_game(games, request.user)
+    if nextg:
+        return HttpResponseRedirect(reverse('game_detail', args=[nextg.id]))
     return HttpResponseRedirect(reverse('active_games'))
 
 def get_next_game(queryset, user):
