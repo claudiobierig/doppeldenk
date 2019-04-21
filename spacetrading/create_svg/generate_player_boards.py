@@ -150,14 +150,14 @@ def draw_player_boards(players, game):
     draw the player board
     """
 
-    svg = Svg(width=480, height=240, id_name="playerboards")
+    svg = Svg(width=960, height=120, id_name="playerboards")
     add_symbols(svg)
     active_player = move.get_active_player(players)
     for index, player in enumerate(players):
         active = False
         if active_player is not None and active_player.player_number == player.player_number:
             active = True
-        create_playerboard(svg, player, game, [10 + 240*(index % 2), 5 + 120*(index >= 2)], active)
+        create_playerboard(svg, player, game, [10 + 240*index, 5], active)
 
     svg_string = svg.get_string()
 

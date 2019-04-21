@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content %}
+{{ player_boards |safe }}
 <div class="row">
 <div class="col">
 {% if user_active %}
@@ -149,15 +150,9 @@
     <input type="hidden" value="{{influence_so_far}}" id="starting_influence">
     <input class="btn btn-primary" type="submit" value="Finish Move" name="Regular">
     <input class="btn btn-primary" type="submit" value="Pass" name="Pass">
-    </form>
+    </form><br>
 {% endif %}
-</div>
-<div class="col">
-    {{ player_boards |safe }}
-</div>
-</div>
-<div class="row">
-<div class="col">
+
 {% for planet in planet_market %}
     {{ planet |safe }}
 {% endfor %}
