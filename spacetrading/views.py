@@ -11,7 +11,7 @@ from django.contrib import messages
 from spacetrading import models
 #from create_svg import generate_player_board
 from spacetrading import forms
-from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_player_boards, generate_trade_modal, generate_plain_symbols, generate_influence_track
+from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_player_boards, generate_trade_modal, generate_plain_symbols
 from spacetrading.logic import move
 
 @login_required
@@ -130,8 +130,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         symbols = generate_plain_symbols.draw_symbols()
         context['nextgame'] = self.get_next(game_instance)
         context['gameboard'] = generate_gameboard.draw_gameboard(game_instance, planets, players, user_active)
-        context['influence_tracks'] = generate_influence_track.draw_influence_tracks(game_instance, planets, players)
-        context['planet_market'] = generate_planet_market.draw_planet_market(planets)
+        context['planet_market'] = generate_planet_market.draw_planet_market(game_instance, planets, players)
         context['player_boards'] = generate_player_boards.draw_player_boards(players, game_instance)
         context['trade_modal'] = generate_trade_modal.draw_trade_modal(players, planets)
         context['user_active'] = user_active
