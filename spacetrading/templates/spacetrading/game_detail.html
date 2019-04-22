@@ -11,7 +11,6 @@
 {% endblock %}
 
 {% block content %}
-{{ player_boards |safe }}
 <div class="row">
 <div class="col">
 {% if user_active %}
@@ -126,7 +125,11 @@
                     {% endif %}
                 </td>
                 <td style="text-align: center">
-                    {{ form.buy_influence }}
+                    {% if can_trade %}
+                        {{ form.buy_influence }}
+                    {% else %}
+                        <input type="hidden" value="0" name="{{form.buy_influence.name}}" id="{{form.buy_influence.auto_id}}">
+                    {% endif %}
                 </td>
             </tr>
             <tr class="table-danger">
@@ -152,18 +155,18 @@
     <input class="btn btn-primary" type="submit" value="Pass" name="Pass">
     </form><br>
 {% endif %}
-
-{% for planet in planet_market %}
-    {{ planet |safe }}
-{% endfor %}
+{{ player_boards |safe }}
 </div>
 <div class="col">
 {{ gameboard |safe }}
 </div>
-<div class="col">
-{{ influence_tracks |safe }}
 </div>
-</div>
+
+{% for planet in planet_market %}
+    {{ planet |safe }}
+{% endfor %}
+
+
 
 
 <script type="text/javascript" src="/static/spacetrading/game_detail.js"></script>

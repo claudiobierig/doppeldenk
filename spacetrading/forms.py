@@ -1,5 +1,4 @@
 from django import forms
-from spacetrading import models
 
 class NewGame(forms.Form):
     name = forms.CharField(

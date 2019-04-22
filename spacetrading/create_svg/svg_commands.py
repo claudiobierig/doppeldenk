@@ -349,6 +349,90 @@ class Svg(object):
         image.text = " "
         return Svg(image)
 
+    def create_scoring_track(self, size_box, subgroup_name, x_elements, y_elements, grey_element, fill_colour="#FFFFFF", font_size=8, additional_arguments=None):
+        """
+        create the whole scoring track
+        """
+        if additional_arguments is None:
+            additional_arguments = {}
+        layer = self.create_subgroup(subgroup_name)
+        for i in range(0, x_elements + 1):
+            layer.draw_scoring_box(
+                (i*size_box, 0),
+                (size_box, size_box),
+                "{}_{}".format(subgroup_name, i),
+                i,
+                grey_element,
+                fill_colour,
+                font_size,
+                additional_arguments
+            )
+        for i in range(x_elements, x_elements + y_elements + 1):
+            layer.draw_scoring_box(
+                (x_elements*size_box, (i - x_elements)*size_box),
+                (size_box, size_box),
+                "{}_{}".format(subgroup_name, i),
+                i,
+                grey_element,
+                fill_colour,
+                font_size,
+                additional_arguments
+            )
+        for i in range(x_elements + y_elements, 2*x_elements + y_elements + 1):
+            layer.draw_scoring_box(
+                ((2*x_elements + y_elements - i)*size_box, y_elements*size_box),
+                (size_box, size_box),
+                "{}_{}".format(subgroup_name, i),
+                i,
+                grey_element,
+                fill_colour,
+                font_size,
+                additional_arguments
+            )
+        for i in range(2*x_elements + y_elements, 2*x_elements + 2*y_elements):
+            layer.draw_scoring_box(
+                (0, (2*x_elements + 2*y_elements - i)*size_box),
+                (size_box, size_box),
+                "{}_{}".format(subgroup_name, i),
+                i,
+                grey_element,
+                fill_colour,
+                font_size,
+                additional_arguments
+            )
+    
+    def draw_scoring_box(self, position, size, id_name, number, grey_element, fill_colour="#FFFFFF", font_size=8, additional_arguments=None):
+        """
+        draw one box of the scoring track
+        """
+        if additional_arguments is None:
+            additional_arguments = {}
+        additional_arguments["value"] = str(number)
+
+        (position_x, position_y) = position
+        (width, height) = size
+
+        self.create_rectangle((position_x, position_y), (width, height),
+                                id_name, fill_colour=fill_colour,
+                                stroke_colour="#000000",
+                                stroke_width=1,
+                                fill_opacity=1,
+                                additional_arguments=additional_arguments)
+        if number % grey_element == 0:
+            self.create_rectangle(
+                [position_x, position_y],
+                size,
+                "{}_transperent".format(id_name),
+                fill_colour="black",
+                fill_opacity="0.4"
+            )
+        self.create_text(
+            id_name,
+            (position_x + width / 2, position_y + height / 2 + font_size / 2),
+            str(number),
+            font_size=font_size
+        )
+
     def get_string(self):
         """
         return root element converted to string
@@ -357,6 +441,28 @@ class Svg(object):
 
     def __str__(self):
         return self.get_string()
+
+def get_position(size, x_elements, y_elements, points, stack_position):
+    """
+    given the points and the number of markers below in the stack
+    return the position where to print the marker
+    """
+    HEIGHT_DISC = 4
+    POSITION_LOWEST_DISC = 15
+    space = points % (2*(x_elements+y_elements))
+    if 0 <= space <= x_elements:
+        x_pos = space * size
+        y_pos = POSITION_LOWEST_DISC
+    elif x_elements < space <= x_elements + y_elements:
+        x_pos = x_elements * size
+        y_pos = POSITION_LOWEST_DISC + (space - x_elements) * size
+    elif x_elements + y_elements < space <= 2*x_elements + y_elements:
+        x_pos = (2*x_elements + y_elements - space) * size
+        y_pos = POSITION_LOWEST_DISC + y_elements*size
+    elif 2*x_elements + y_elements < space < 2*x_elements + 2*y_elements:
+        x_pos = 0
+        y_pos = POSITION_LOWEST_DISC + (2*x_elements + 2*y_elements - space) * size
+    return [x_pos, y_pos - 4*stack_position]
 
 
 def main():

@@ -8,7 +8,7 @@ class GeneratePrintingMaterial(TestCase):
         pass
 
     def test_generate_empty_gameboard(self):
-        create_game("empty_gameboard", 0, None)
+        create_game("empty_gameboard", 0, False, None)
         game = Game.objects.get(game_name="empty_gameboard")
         planets = game.planets.all().order_by('number_of_hexes')
         for planet in planets:
@@ -34,7 +34,7 @@ class GeneratePrintingMaterial(TestCase):
         """
 
     def test_generate_empty_influence_track(self):
-        create_game("empty_gameboard", 0, None)
+        create_game("empty_gameboard", 0, False, None)
         game = Game.objects.get(game_name="empty_gameboard")
         planets = game.planets.all().order_by('number_of_hexes')
         svg_string = generate_influence_track.draw_influence_tracks(game, planets, [])
@@ -43,7 +43,7 @@ class GeneratePrintingMaterial(TestCase):
             svg_file.write(svg_string)
 
     def test_generate_empty_planet_markets(self):
-        create_game("empty_gameboard", 0, None)
+        create_game("empty_gameboard", 0, False, None)
         game = Game.objects.get(game_name="empty_gameboard")
         planets = game.planets.all().order_by('number_of_hexes')
         for planet in planets:
@@ -58,9 +58,11 @@ class GeneratePrintingMaterial(TestCase):
         with open(html_filename, "w") as html_file:
             html_file.write("<!DOCTYPE html><body>")
             html_file.write(svg_strings[0])
+            html_file.write("<br>")
             html_file.write(svg_strings[1])
             html_file.write("<br>")
             html_file.write(svg_strings[2])
+            html_file.write("<br>")
             html_file.write(svg_strings[3])
             html_file.write("<br>")
             html_file.write(svg_strings[4])
