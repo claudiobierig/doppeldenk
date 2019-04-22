@@ -97,20 +97,20 @@ def add_posibility_for_planet_market(svg):
     symbol = Svg(etree.SubElement(svg.root,
                                   'symbol',
                                   {'id': 'planet_market',
-                                   'view_box': '0 0 220 120'
+                                   'view_box': '0 0 300 210'
                                   }))
-    symbol.create_rectangle([0, 0], [220, 30], "top_of_planet_market")
-    symbol.create_rectangle([0, 110], [220, 30], "bottom_of_planet_market")
-    symbol.create_rectangle([19, 30], [2, 80], "0_sep_of_planet_market", fill_colour="black")
-    symbol.create_rectangle([49, 30], [2, 80], "1st_sep_of_planet_market", fill_colour="black")
-    symbol.create_rectangle([79, 30], [2, 80], "2nd_sep_of_planet_market", fill_colour="black")
-    symbol.create_rectangle([109, 30], [2, 80], "3rd_sep_of_planet_market", fill_colour="black")
-    symbol.create_rectangle([139, 30], [2, 80], "4th_sep_of_planet_market", fill_colour="black")
-    symbol.create_rectangle([169, 30], [2, 80], "5th_sep_of_planet_market", fill_colour="black")
-    symbol.create_rectangle([199, 30], [2, 80], "7th_sep_of_planet_market", fill_colour="black")
-    symbol.create_rectangle([0, 0], [20, 120], "left_of_planet_market")
-    symbol.create_rectangle([200, 0], [20, 120], "right_of_planet_market")
-    symbol.create_rectangle([0, 65], [220, 10], "middle_of_planet_market")
+    symbol.create_rectangle([30, 30], [240, 35], "top_of_planet_market")
+    symbol.create_rectangle([30, 145], [240, 35], "bottom_of_planet_market")
+    symbol.create_rectangle([59, 65], [2, 80], "0_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([89, 65], [2, 80], "1st_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([119, 65], [2, 80], "2nd_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([149, 65], [2, 80], "3rd_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([179, 65], [2, 80], "4th_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([209, 65], [2, 80], "5th_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([239, 65], [2, 80], "7th_sep_of_planet_market", fill_colour="black")
+    symbol.create_rectangle([30, 30], [30, 150], "left_of_planet_market")
+    symbol.create_rectangle([240, 30], [30, 150], "right_of_planet_market")
+    symbol.create_rectangle([30, 100], [240, 10], "middle_of_planet_market")
 
     buy_values = [1, 2, 3, 4, 5, 6]
     sell_values = [7, 6, 5, 4, 3, 2]
@@ -118,7 +118,7 @@ def add_posibility_for_planet_market(svg):
     for index, value in enumerate(sell_values):
         symbol.create_text(
             'sell_value_{}'.format(value),
-            [index * 30 + 35, 21],
+            [index * 30 + 75, 56],
             str(value),
             font_size=font_size,
             font_colour="black"
@@ -127,7 +127,7 @@ def add_posibility_for_planet_market(svg):
     for index, value in enumerate(buy_values):
         symbol.create_text(
             'buy_value_{}'.format(value),
-            [index * 30 + 35, 131],
+            [index * 30 + 75, 166],
             str(value),
             font_size=font_size,
             font_colour="black"

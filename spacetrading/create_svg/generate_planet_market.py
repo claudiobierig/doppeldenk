@@ -21,20 +21,20 @@ def get_symbol_name(resource):
         return 'building_resource'
 
 def get_rel_buy_position(price):
-    x_pos = 30 * price - 10
-    y_pos = 77
+    x_pos = 30 * price + 30
+    y_pos = 112
     return [x_pos, y_pos]
 
 def get_rel_sell_position(price):
-    x_pos = 230 - (30*price)
-    y_pos = 32
+    x_pos = 270 - (30*price)
+    y_pos = 67
     return [x_pos, y_pos]
 
 
 def draw_planet_market(planets):
     svgs = []
     for planet in planets:
-        svg = Svg(width=220, height=140, id_name="svg_planet_market_{}".format(planet.name))
+        svg = Svg(width=300, height=210, id_name="svg_planet_market_{}".format(planet.name))
         generate_svg_symbols.add_posibility_for_planet_market(svg)
         generate_svg_symbols.add_posibility_for_empty_res(svg)
         generate_svg_symbols.add_posibility_for_red_cross(svg)
