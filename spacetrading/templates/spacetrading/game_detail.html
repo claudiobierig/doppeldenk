@@ -125,7 +125,11 @@
                     {% endif %}
                 </td>
                 <td style="text-align: center">
-                    {{ form.buy_influence }}
+                    {% if can_trade %}
+                        {{ form.buy_influence }}
+                    {% else %}
+                        <input type="hidden" value="0" name="{{form.buy_influence.name}}" id="{{form.buy_influence.auto_id}}">
+                    {% endif %}
                 </td>
             </tr>
             <tr class="table-danger">
