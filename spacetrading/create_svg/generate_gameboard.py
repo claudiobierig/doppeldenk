@@ -6,6 +6,7 @@ import math
 import operator
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg import generate_svg_symbols
+from spacetrading.logic import move
 
 HEX_SIZE = 20
 FONT_SIZE = 6
@@ -255,6 +256,7 @@ def draw_player_ships(svg, players):
     draw ships of all players
     """
     players_group = svg.create_subgroup('player_ships')
+    active_player = move.get_active_player(players)
     for player in players:
         if player.last_move >= 0:
             hex_center = get_hex_center(player.ship_position, HEX_SIZE)
@@ -263,7 +265,11 @@ def draw_player_ships(svg, players):
                 (SHIP_WIDTH, SHIP_HEIGHT),
                 "ship_{}".format(player.user.get_username()),
                 fill_colour=player.colour,
-                stroke_colour="black"
+                stroke_colour="black",
+                additional_arguments={
+                    "active": "{}".format(player == active_player),
+                    "class": "ship"
+                }
             )
 
 def get_timemarker_position(time_spent, stack_position):
@@ -292,6 +298,7 @@ def draw_timemarkers(svg, game, players):
     draw timemarkers of all players
     """
     timemarkers = []
+    active_player = move.get_active_player(players)
     for player in players:
         if player.last_move >= 0:
             timemarkers.append(
@@ -299,8 +306,9 @@ def draw_timemarkers(svg, game, players):
                     player.time_spent,
                     player.last_move,
                     player.colour,
-                    player.user.get_username(),
-                    'disc_3d'
+                    player.player_number,
+                    'disc_3d',
+                    player == active_player
                 ]
             )
     timemarkers.append(
@@ -309,7 +317,8 @@ def draw_timemarkers(svg, game, players):
             game.planet_rotation_event_move,
             "yellow",
             "planet_rotation",
-            "square_3d"
+            "square_3d",
+            False
         ]
     )
     timemarkers.append(
@@ -318,7 +327,8 @@ def draw_timemarkers(svg, game, players):
             game.offer_demand_event_move,
             "orange",
             "offer_demand",
-            "square_3d"
+            "square_3d",
+            False
         ]
     )
 
@@ -336,7 +346,12 @@ def draw_timemarkers(svg, game, players):
             timemarker[4],
             'timemarker_{}'.format(timemarker[3]),
             position=get_timemarker_position(timemarker[0], stack_position),
-            fill_colour=timemarker[2]
+            fill_colour=timemarker[2],
+            additional_arguments={
+                "active": "{}".format(timemarker[5]),
+                "time_spent": "{}".format(timemarker[0]),
+                "class": "Timemarker"
+            }
         )
 
 def draw_playerhelp(svg, position):

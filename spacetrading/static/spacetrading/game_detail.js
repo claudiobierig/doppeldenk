@@ -46,6 +46,18 @@ function clickHex(hex_element)
     hex_element.style.stroke = "red"
     
     lastClickedHex = hex_element
+    /*
+    get timemarker group
+    get new position
+    get #of timemarkers at new position
+    compute placement
+    append to group
+    */
+    if(time_spent < 0){
+        console.log("0")
+    }else{
+        console.log(time_spent + computeDistance())
+    }
 }
 
 
@@ -133,6 +145,28 @@ function getCurrentState()
     current_influence = current_influence + buy_influence_amount
 }
 
+function getActiveShipPosition()
+{
+    const q = parseInt(getAttributeFromPlayerboard(active_player, "coord_q"))
+    const r = parseInt(getAttributeFromPlayerboard(active_player, "coord_r"))
+    return [q, r, -q -r]
+}
+
+function computeDistance()
+{
+    if(starting_position[0] == 0 && starting_position[1] == 0){
+        return 0
+    }
+    const q = parseInt(document.getElementById("id_coord_q").value)
+    const r = parseInt(document.getElementById("id_coord_r").value)
+    const s = -q -r
+    return Math.max(
+        Math.abs(starting_position[0]-q),
+        Math.abs(starting_position[1]-r),
+        Math.abs(starting_position[2]-s)
+    ) + 2
+}
+
 const active_player = getActivePlayer()
 const starting_money = parseInt(getAttributeFromPlayerboard(active_player, "money"))
 const starting_resources = [
@@ -143,6 +177,8 @@ const starting_resources = [
     parseInt(getAttributeFromPlayerboard(active_player, "resource_5"))
 ]
 const starting_influence = parseInt(document.getElementById("starting_influence").value)
+const starting_position = getActiveShipPosition()
+const time_spent = parseInt(getAttributeFromPlayerboard(active_player, "time_spent"))
 
 current_money = starting_money
 current_resources = [starting_resources[0], starting_resources[1], starting_resources[2], starting_resources[3], starting_resources[4]]

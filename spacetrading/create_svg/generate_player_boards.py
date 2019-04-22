@@ -41,7 +41,10 @@ def create_playerboard(svg, player, game, position, active):
         "resource_2": str(player.resources[1]),
         "resource_3": str(player.resources[2]),
         "resource_4": str(player.resources[3]),
-        "resource_5": str(player.resources[4])
+        "resource_5": str(player.resources[4]),
+        "coord_q": str(player.ship_position[0]),
+        "coord_r": str(player.ship_position[1]),
+        "time_spent": str(player.time_spent)
     }
     subgroup = svg.create_subgroup(
         "playerboard_" + playername,
