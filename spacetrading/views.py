@@ -193,7 +193,7 @@ def get_active_planet(player, planets):
 
 def get_influence_so_far(game, planets, active_player, active_planet):
     if active_planet is None:
-        return "0"
+        return ""
     for index, planet in enumerate(planets):
         if planet == active_planet:
             return str(game.planet_influence_track[index][active_player.player_number])
