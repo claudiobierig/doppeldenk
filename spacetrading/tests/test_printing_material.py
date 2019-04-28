@@ -4,6 +4,15 @@ from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.models import Game
 from spacetrading.models import create_game
 
+def generate_symbol_svg(name, scaling=None):
+    svg = Svg(width=30, height=30, id_name="{}_svg".format(name))
+    generate_svg_symbols.add_posibility_for_symbol(svg, name)
+    additional_arguments = {}
+    if scaling is not None:
+        additional_arguments["transform"] = "scale({})".format(scaling)
+    svg.use_symbol(name, "{}_id".format(name), position=[0, 0], additional_arguments=additional_arguments)
+    return svg
+
 class GeneratePrintingMaterial(TestCase):
     def setUp(self):
         pass
@@ -76,12 +85,13 @@ class GeneratePrintingMaterial(TestCase):
     
     def test_generate_symbols(self):
         svgs = generate_plain_symbols.draw_symbols()
-        planet_rotation_svg = Svg(width=30, height=30, id_name="planet_rotation_svg")
-        generate_svg_symbols.add_posibility_for_planet_rotation(planet_rotation_svg)
-        planet_rotation_svg.use_symbol("planet_rotation", "planet_rotation_id", position=[0, 0])
-        production_svg = Svg(width=30, height=30, id_name="production_svg")
-        generate_svg_symbols.add_posibility_for_production(production_svg)
-        production_svg.use_symbol("production", "production_id", position=[0, 0])
+        
+        planet_rotation_svg = generate_symbol_svg("planet_rotation")
+        production_svg = generate_symbol_svg("production")
+        time_svg = generate_symbol_svg("time", scaling=1.5)
+        politician_svg = generate_symbol_svg("politician")
+        influence_svg = generate_symbol_svg("influence", scaling=1.5)
+        star_svg = generate_symbol_svg("star")
 
         html_filename = "printing_material/symbols.html"
         with open(html_filename, "w") as html_file:
@@ -99,6 +109,10 @@ class GeneratePrintingMaterial(TestCase):
             html_file.write(production_svg.get_string())
             html_file.write(production_svg.get_string())
             html_file.write("<br>")
+            html_file.write(time_svg.get_string())
+            html_file.write(politician_svg.get_string())
+            html_file.write(influence_svg.get_string())
+            html_file.write(star_svg.get_string())
 
             html_file.write("</body>")
 
