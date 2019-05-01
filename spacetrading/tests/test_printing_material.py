@@ -1,5 +1,6 @@
 from django.test import TestCase
 from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_printing_player_boards, generate_plain_symbols, generate_svg_symbols
+from spacetrading.create_svg import generate_politician_cards
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.models import Game
 from spacetrading.models import create_game
@@ -116,3 +117,14 @@ class GeneratePrintingMaterial(TestCase):
 
             html_file.write("</body>")
 
+    def test_generate_politician_cards(self):
+        create_game("empty_gameboard", 0, False, None)
+        game = Game.objects.get(game_name="empty_gameboard")
+        planets = game.planets.all().order_by('number_of_hexes')
+        svgs = generate_politician_cards.draw_politicians(planets)
+        html_filename = "printing_material/politicians.html"
+        with open(html_filename, "w") as html_file:
+            html_file.write("<!DOCTYPE html><body>")
+            for svg in svgs:
+                html_file.write(svg.get_string())
+            html_file.write("</body>")
