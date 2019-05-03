@@ -12,6 +12,7 @@
 - [Star icon](https://www.svgrepo.com/svg/113511/star-in-black-of-five-points-shape) ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/))
 - [Join game icon](https://fontawesome.com/) ([MIT](https://opensource.org/licenses/MIT))
 - [Arrow icon](https://www.flaticon.com/free-icon/right-arrow_109617) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/))
+- Coin Icon
   
 ## Software
 
