@@ -75,12 +75,12 @@ class MoveTest(TestCase):
         player1.save()
         player2.save()
         self.players = self.game.players.all()
-        self.assertEqual(move.EVENT_TYPE.PLANET_ROTATION, move.get_next_event(self.game, self.players))
+        self.assertEqual(move.Event.PLANET_ROTATION, move.get_next_event(self.game, self.players))
         self.game.planet_rotation_event_time = 30
         self.game.planet_rotation_event_move = 1
-        self.assertEqual(move.EVENT_TYPE.PLANET_ROTATION, move.get_next_event(self.game, self.players))
+        self.assertEqual(move.Event.PLANET_ROTATION, move.get_next_event(self.game, self.players))
         self.game.planet_rotation_event_time = 40
-        self.assertEqual(move.EVENT_TYPE.OFFER_DEMAND, move.get_next_event(self.game, self.players))
+        self.assertEqual(move.Event.OFFER_DEMAND, move.get_next_event(self.game, self.players))
         
     def test_get_active_player(self):
         self.assertEqual(0, move.get_active_player(self.players).player_number)

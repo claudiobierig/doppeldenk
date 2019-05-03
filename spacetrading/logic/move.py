@@ -4,7 +4,9 @@ Business logic how to handle a move
 
 from enum import Enum
 
-class EVENT_TYPE(Enum):
+from spacetrading.logic import gamesettings
+
+class Event(Enum):
     """
     Enum of all Events
     """
@@ -57,7 +59,6 @@ class MoveError(Exception):
     """
     Exception class containing no additional information
     """
-    pass
 
 def get_trade_balance_or_raise(active_player, active_planet, planet_number, game, data):
     """
@@ -195,9 +196,9 @@ def change_game(game, players, planets, active_planet_number, active_player_numb
     game.next_move_number = game.next_move_number + 1
     next_event = get_next_event(game, players)
     while next_event is not None:
-        if next_event == EVENT_TYPE.PLANET_ROTATION:
+        if next_event == Event.PLANET_ROTATION:
             planet_rotation(game, players, planets)
-        elif next_event == EVENT_TYPE.OFFER_DEMAND:
+        elif next_event == Event.OFFER_DEMAND:
             offer_demand(game, planets)
         next_event = get_next_event(game, players)
     game.planet_influence_track[active_planet_number][active_player_number] = game.planet_influence_track[active_planet_number][active_player_number] + data["buy_influence"]
@@ -224,7 +225,7 @@ def compute_distance(coordinates1, coordinates2):
 def get_next_event(game, players):
     """
     return None if a player has to move before the next event
-    otherwise return the corresponding EVENT_TYPE enum entry
+    otherwise return the corresponding Event enum entry
     """
     planet_rotation_event = [game.planet_rotation_event_time, game.planet_rotation_event_move]
     offer_demand_event = [game.offer_demand_event_time, game.offer_demand_event_move]
@@ -233,10 +234,10 @@ def get_next_event(game, players):
         return None
     if is_before(planet_rotation_event, offer_demand_event):
         if is_before(planet_rotation_event, [active_player.time_spent, active_player.last_move]):
-            return EVENT_TYPE.PLANET_ROTATION
+            return Event.PLANET_ROTATION
     else:
         if is_before(offer_demand_event, [active_player.time_spent, active_player.last_move]):
-            return EVENT_TYPE.OFFER_DEMAND
+            return Event.OFFER_DEMAND
 
     return None
 
@@ -247,7 +248,7 @@ def planet_rotation(game, players, planets):
     set event move
     increase turn counter
     """
-    game.planet_rotation_event_time = game.planet_rotation_event_time + 10
+    game.planet_rotation_event_time = game.planet_rotation_event_time + gamesettings.PLANET_ROTATION_TIME
     game.planet_rotation_event_move = game.next_move_number
     game.next_move_number = game.next_move_number + 1
     game.save()
@@ -268,8 +269,7 @@ def offer_demand(game, planets):
     set event move
     increase turn counter
     """
-    time_increase = [40, 30, 25, 20]
-    game.offer_demand_event_time = game.offer_demand_event_time + time_increase[game.number_of_players - 1]
+    game.offer_demand_event_time = game.offer_demand_event_time + gamesettings.OFFER_DEMAND_EVENT_TIMES[game.number_of_players - 1]
     game.offer_demand_event_move = game.next_move_number
     game.next_move_number = game.next_move_number + 1
     game.save()
@@ -325,7 +325,7 @@ def compute_points(game, player_number):
         if current_player_influence == 0:
             continue
         rated_higher = sum(i > current_player_influence for i in planet_influence)
-        rated_same = sum(i == current_player_influence for i in planet_influence)       
+        rated_same = sum(i == current_player_influence for i in planet_influence)
         result = result + int(sum(planet_points[rated_higher : rated_higher + rated_same])/rated_same)
 
     return result
