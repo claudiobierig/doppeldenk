@@ -41,7 +41,6 @@
       - Setup automatic generation of game_detail.html (6h)
       - get rid of templatetags (0h)
       - move stuff from generate_svg to js (40h)
-    - move functions from models.py to logic/initiate.py or similar (1h)
     - views.py (8h)
       - create_game: doesn't need to know about content of form (1h)
       - next_game: move subfunction to model, move filter into subfunction (1h)

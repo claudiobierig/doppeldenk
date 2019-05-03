@@ -1,3 +1,7 @@
+"""
+Tests to check the correctness of the spacetrading.logic module
+"""
+
 from django.test import TestCase
 from spacetrading.models import Game
 from spacetrading.models import Player
@@ -7,7 +11,9 @@ from spacetrading.logic import move
 # Create your tests here.
 
 class MoveTest(TestCase):
-    
+    """
+    Class for all tests of logic.move
+    """
     def setUp(self):
         self.game = Game.objects.create_game(
             game_name="test",
@@ -173,4 +179,8 @@ class MoveTest(TestCase):
 
     def test_change_game(self):
         self.assertFalse(True)
+"""
+
+"""
+Test class for initialize module
 """
