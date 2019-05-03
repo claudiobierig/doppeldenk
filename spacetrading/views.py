@@ -12,7 +12,7 @@ from spacetrading import models
 #from create_svg import generate_player_board
 from spacetrading import forms
 from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_player_boards, generate_trade_modal, generate_plain_symbols
-from spacetrading.logic import move
+from spacetrading.logic import move, initialize
 
 @login_required
 def create_game(request):
@@ -21,7 +21,7 @@ def create_game(request):
     if request.method == 'POST':
         form = forms.NewGame(request.POST)
         if form.is_valid():
-            models.create_game(
+            initialize.create_game(
                 form.cleaned_data['name'],
                 form.cleaned_data['number_of_players'],
                 form.cleaned_data['play_all_players'],
@@ -93,7 +93,7 @@ class OpenGameListView(LoginRequiredMixin, generic.ListView):
         for key, _ in request.POST.items():
             if(re.match("join_\\d+", key)):
                 primary_key_game = key[5:]
-                models.join_game(primary_key_game, request.user)
+                initialize.join_game(primary_key_game, request.user)
 
         return HttpResponseRedirect(self.request.path_info)
 
