@@ -1,6 +1,13 @@
 # Roadmap
 
-## Planed Features (~90h + Refactoring + ~80h Eurocrisis)
+## Prio
+
+- Change UI/UX of planet market
+- Add Event additional resource
+- Add Event midgame scoring
+- Refactoring
+
+## Planed Features (~80h + Refactoring + ~80h Eurocrisis)
 
 - List of finished games (2h)
 - Option to change PW (16h)
@@ -11,8 +18,7 @@
   - influence points
   - market prices
 - Fix SVGs so they can be used for both printing and webpage (10h)
-- Update to new rules after WE (24h)
-  - Change limit of resources (1h)
+- Update to new rules after WE (22h)
   - Add event to add demand resources (8h)
   - Change cost influence (4h)
   - Add event mid game scoring (8h)
@@ -26,8 +32,6 @@
     - Maybe put resources on planet board (2h)
   - Different resource symbols, building resource -> oil barrel (2h)
   - Fit on screen (8h)
-- Add option for different rule options in creating game (8h)
-  - Show in list and detail view
 - Add EuroCrisis (80h + refactoring)
 
 ## Open Bugs (4h)
@@ -59,7 +63,6 @@
       - get rid of templatetags (0h)
       - move stuff from generate_svg to js (40h)
     - views.py (8h)
-      - create_game: doesn't need to know about content of form (1h)
       - next_game: move subfunction to model, move filter into subfunction (1h)
       - rules: check if we really need this for template (1h)
       - List views: Move querysets to model (1h)
