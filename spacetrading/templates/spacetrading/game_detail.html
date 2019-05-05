@@ -13,6 +13,16 @@
 {% block content %}
 <div class="row">
 <div class="col">
+<div class="card mt-3">
+<div class="card-body">
+<h4 class="card-title">Settings</h4>
+<ul>
+{% for setting in settings %}
+    <li>{{ setting }}</li>
+{% endfor %}
+</ul>
+</div></div>
+
 {% if user_active %}
     <form action="" method="post">
     {% csrf_token %}

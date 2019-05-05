@@ -1,6 +1,13 @@
+"""
+forms needed to play spacetrading
+"""
+
 from django import forms
 
 class NewGame(forms.Form):
+    """
+    Form to create a new spacetrading game
+    """
     name = forms.CharField(
         max_length=100,
         required=False,
@@ -18,8 +25,17 @@ class NewGame(forms.Form):
         required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
+    resource_limit = forms.IntegerField(
+        label="Maximal number of one resource",
+        max_value=15,
+        min_value=5,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
 
 class Move(forms.Form):
+    """
+    Form to make a move
+    """
     coord_q = forms.IntegerField(
         label="Coordinate q", min_value=-20, max_value=20,
         widget=forms.HiddenInput(), initial=0

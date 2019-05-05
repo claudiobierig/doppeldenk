@@ -9,7 +9,7 @@ import random
 from spacetrading.logic import gamesettings
 from spacetrading.models import Game, Player, Planet
 
-def create_game(name, number_of_players, play_all_players, user):
+def create_game(data, user):
     """
     create a game with
     - name (string)
@@ -17,10 +17,16 @@ def create_game(name, number_of_players, play_all_players, user):
     - play_all_players (bool)
     - user (Django user)
     """
+
+    name = data['name']
+    number_of_players = data['number_of_players']
+    play_all_players = data['play_all_players']
+    resource_limit = data['resource_limit']
     game = Game.objects.create_game(
         game_name=name,
         number_of_players=number_of_players,
-        offer_demand_event_time=gamesettings.OFFER_DEMAND_EVENT_TIMES[number_of_players-1]
+        offer_demand_event_time=gamesettings.OFFER_DEMAND_EVENT_TIMES[number_of_players-1],
+        resource_limit=resource_limit
     )
     b_resources = ['1', '2', '3', '4', '5']
     remaining_s_resources = ['1', '2', '3', '4', '5']

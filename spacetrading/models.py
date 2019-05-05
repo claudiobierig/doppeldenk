@@ -209,7 +209,8 @@ class GameManager(models.Manager):
             planet_rotation_event_move=0,
             offer_demand_event_time=20,
             offer_demand_event_move=0,
-            planet_influence_track=None
+            planet_influence_track=None,
+            resource_limit=9
     ):
         if planet_influence_track is None:
             planet_influence_track = [
@@ -228,7 +229,8 @@ class GameManager(models.Manager):
             planet_rotation_event_move=planet_rotation_event_move,
             offer_demand_event_time=offer_demand_event_time,
             offer_demand_event_move=offer_demand_event_move,
-            planet_influence_track=planet_influence_track
+            planet_influence_track=planet_influence_track,
+            resource_limit=resource_limit
         )
         return game
 
@@ -269,6 +271,8 @@ class Game(models.Model):
         default='w',
         help_text='In which state is the game',
     )
+
+    resource_limit = models.IntegerField(default=9)
 
     objects = GameManager()
 

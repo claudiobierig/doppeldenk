@@ -16,6 +16,10 @@
     {{ form.number_of_players }}
   </div>
   <div class="form-group">
+    <label for="{{ form.resource_limit.auto_id }}">{{ form.resource_limit.label }}</label>
+    {{ form.resource_limit }}
+  </div>
+  <div class="form-group">
     <div class="form-check">
       {{ form.play_all_players }}
       <label for="{{ form.play_all_players.auto_id }}" class="form-check-label" >{{ form.play_all_players.label }}</label>

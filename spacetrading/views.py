@@ -22,9 +22,7 @@ def create_game(request):
         form = forms.NewGame(request.POST)
         if form.is_valid():
             initialize.create_game(
-                form.cleaned_data['name'],
-                form.cleaned_data['number_of_players'],
-                form.cleaned_data['play_all_players'],
+                form.cleaned_data,
                 request.user
             )
 
@@ -148,6 +146,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         context["cost_buy_resources"] = get_cost_trade_resources("buy", active_planet)
         context["cost_sell_resources"] = get_cost_trade_resources("sell", active_planet)
         context["influence_so_far"] = get_influence_so_far(game_instance, planets, active_player, active_planet)
+        context["settings"] = ["Resource limit: {}".format(game_instance.resource_limit)]
         return context
 
     def post(self, request, *args, **kwargs):

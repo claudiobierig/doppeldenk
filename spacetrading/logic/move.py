@@ -89,20 +89,15 @@ def get_trade_balance_or_raise(active_player, active_planet, planet_number, game
     trade_balance = 0
     traded = False
 
-    number_of_resources = 0
-    for resource in active_player.resources:
-        number_of_resources = number_of_resources + resource
-
     for key, value in buy_mapping:
         if data[key] != 0:
             if active_planet is None:
                 raise MoveError("You cannot trade, if you are not at a planet")
             if value not in active_planet.buy_resources:
                 raise MoveError("You cannot trade the resources you selected at the planet you are")
-            if data[key] + active_player.resources[int(value) - 1] > 9:
-                raise MoveError("You cannot hold more than 9 resources")
+            if data[key] + active_player.resources[int(value) - 1] > game.resource_limit:
+                raise MoveError("You cannot hold more than {} of one resource".format(game.resource_limit))
             trade_balance = trade_balance - data[key]*active_planet.cost_buy_resource[active_planet.buy_resources.index(value)]
-            number_of_resources = number_of_resources + data[key]
             traded = True
 
     for key, value in sell_mapping:
@@ -114,12 +109,9 @@ def get_trade_balance_or_raise(active_player, active_planet, planet_number, game
             if data[key] > active_player.resources[int(value) - 1]:
                 raise MoveError("You tried to sell more resources than you have")
             trade_balance = trade_balance + data[key]*active_planet.cost_sell_resource[active_planet.sell_resources.index(value)]
-            number_of_resources = number_of_resources - data[key]
             traded = True
     if active_planet is None and data["buy_influence"] != 0:
         raise MoveError("You cannot trade, if you are not at a planet")
-    if number_of_resources > 9:
-        raise MoveError("You cannot hold more than 9 resources")
 
     trade_balance = trade_balance - get_cost_influence(traded, data["buy_influence"], game.planet_influence_track[planet_number][active_player.player_number])
     if trade_balance + active_player.money < 0:
