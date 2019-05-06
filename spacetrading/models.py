@@ -3,7 +3,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.urls import reverse
 
-from spacetrading.logic import move
+from spacetrading.logic import move, gamesettings
 
 # Create your models here.
 
@@ -205,9 +205,9 @@ class GameManager(models.Manager):
             number_of_players=1,
             next_move_number=0,
             game_state='w',
-            planet_rotation_event_time=10,
+            planet_rotation_event_time=gamesettings.PLANET_ROTATION_TIME,
             planet_rotation_event_move=0,
-            offer_demand_event_time=20,
+            offer_demand_event_time=gamesettings.OFFER_DEMAND_EVENT_TIMES[0],
             offer_demand_event_move=0,
             planet_influence_track=None,
             resource_limit=9

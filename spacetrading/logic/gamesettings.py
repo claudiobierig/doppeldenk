@@ -3,8 +3,7 @@ Consists of constants used throughout the game
 """
 
 PLANET_ROTATION_TIME = 10
-OFFER_DEMAND_EVENT_TIMES = [40, 30, 25, 20]
-MAX_NUMBER_OF_RESOURCES = 9
+OFFER_DEMAND_EVENT_TIMES = [40, 20, 15, 10]
 
 SETUP_BUY_PRICE = [2, 4]
 SETUP_SELL_PRICE = [4, 6]

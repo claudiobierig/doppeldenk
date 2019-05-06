@@ -3,6 +3,7 @@
 ## Prio
 
 - Change UI/UX of planet market
+- Create printing material
 - Add Event additional resource
 - Add Event midgame scoring
 - Refactoring
@@ -23,6 +24,7 @@
   - Change cost influence (4h)
   - Add event mid game scoring (8h)
   - Rulebook update (2h)
+  - Adjust offer/demand times
 - Improve UI and UX (30h)
   - Planet market (16h)
     - Split planet market and influence track
@@ -32,6 +34,7 @@
     - Maybe put resources on planet board (2h)
   - Different resource symbols, building resource -> oil barrel (2h)
   - Fit on screen (8h)
+- Update Printing Material (8h)
 - Add EuroCrisis (80h + refactoring)
 
 ## Open Bugs (4h)
@@ -78,5 +81,6 @@
   - move 2dArray to extra app (maybe even extra Repo) (10h)
     - refactor the used functions once transistion is made
     - check for licensing
+  - Move all Magic Numbers to gamesettings
   - use form class for login (4h)
   - Cleanup settings (2h)
