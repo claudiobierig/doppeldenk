@@ -1,5 +1,11 @@
 # Worklog
 
+## Add possibility to wait + fly to same location 1/2h (11.05.2019)
+
+- Not including auto setting field when clicking on hex
+
+**Tags:** Feature
+
 ## Change Resource Limit 1/2h (05.05.2019)
 
 - Change resource limit to per resource
