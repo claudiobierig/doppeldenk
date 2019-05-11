@@ -154,7 +154,7 @@ def change_active_player(active_player, next_move_number, data, trade_balance):
     if active_player.last_move < 0:
         active_player.time_spent = 0
     else:
-        active_player.time_spent = active_player.time_spent + compute_distance(active_player.ship_position, [data['coord_q'], data['coord_r']])
+        active_player.time_spent = active_player.time_spent + data['spend_time']
     active_player.last_move = next_move_number
     active_player.ship_position = [data['coord_q'], data['coord_r']]
     active_player.money = active_player.money + trade_balance
