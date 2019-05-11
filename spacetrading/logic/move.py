@@ -68,8 +68,8 @@ def get_trade_balance_or_raise(active_player, active_planet, planet_number, game
     if active_player is None:
         finish_game(game)
         raise MoveError("no active player")
-    if active_player.ship_position == [data['coord_q'], data['coord_r']] or [data['coord_q'], data['coord_r']] == [0, 0]:
-        raise MoveError("You need to fly to another place")
+    if [data['coord_q'], data['coord_r']] == [0, 0]:
+        raise MoveError("You didn't choose where to fly.")
 
     buy_mapping = [
         ["buy_resource_1", '1'],
@@ -207,6 +207,9 @@ def compute_distance(coordinates1, coordinates2):
     """
     computes how long the ships needs to fly from coordinates1 to coordinates2
     """
+    if coordinates1 == coordinates2:
+        return gamesettings.IDLE_MOVE_TIME
+
     absolute_distance = max(
         abs(coordinates1[0]-coordinates2[0]),
         abs(coordinates1[1]-coordinates2[1]),

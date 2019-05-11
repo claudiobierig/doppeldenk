@@ -52,3 +52,5 @@ PLANETS = [
         0.8
     ]
 ]
+
+IDLE_MOVE_TIME = 4
