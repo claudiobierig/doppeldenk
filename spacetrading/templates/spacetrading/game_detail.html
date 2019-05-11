@@ -36,6 +36,7 @@
                 <th style="text-align: center">{{ water |safe}}</th>
                 <th style="text-align: center">{{ building_resource |safe}}</th>
                 <th style="text-align: center">{{ influence |safe}}</th>
+                <th style="text-align: center">{{ time |safe}}</th>
             </tr>
         </thead>
         <tbody>
@@ -82,6 +83,7 @@
                     {% endif %}
                 </td>
                 <td></td>
+                <td></td>
             </tr>
             <tr class="table-success">
                 <td style="text-align: center">Price:</td>
@@ -90,6 +92,7 @@
                 <td style="text-align: center" id="price_sell_resource_3">{% get_cost_resource '3' sell_resources cost_sell_resources %}</td>
                 <td style="text-align: center" id="price_sell_resource_4">{% get_cost_resource '4' sell_resources cost_sell_resources %}</td>
                 <td style="text-align: center" id="price_sell_resource_5">{% get_cost_resource '5' sell_resources cost_sell_resources %}</td>
+                <td></td>
                 <td></td>
             </tr>
             <tr class="table-danger">
@@ -141,6 +144,13 @@
                         <input type="hidden" value="0" name="{{form.buy_influence.name}}" id="{{form.buy_influence.auto_id}}">
                     {% endif %}
                 </td>
+                <td>
+                    {% if first_move %}
+                        <input type="hidden" value="0" name="{{form.spend_time.name}}" id="{{form.spend_time.auto_id}}">
+                    {% else %}
+                        {{ form.spend_time }}
+                    {% endif %}
+                </td>
             </tr>
             <tr class="table-danger">
                 <td style="text-align: center">Price:</td>
@@ -149,6 +159,7 @@
                 <td style="text-align: center" id="price_buy_resource_3">{% get_cost_resource '3' buy_resources cost_buy_resources %}</td>
                 <td style="text-align: center" id="price_buy_resource_4">{% get_cost_resource '4' buy_resources cost_buy_resources %}</td>
                 <td style="text-align: center" id="price_buy_resource_5">{% get_cost_resource '5' buy_resources cost_buy_resources %}</td>
+                <td></td>
                 <td></td>
             </tr>
         </tbody>

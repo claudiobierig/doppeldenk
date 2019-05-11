@@ -22,6 +22,8 @@ def draw_single_symbol(symbolname):
         generate_svg_symbols.add_posibility_for_building_res(svg)
     elif symbolname == "influence":
         generate_svg_symbols.add_posibility_for_influence(svg)
+    elif symbolname == "time":
+        generate_svg_symbols.add_posibility_for_time(svg)
 
     svg.use_symbol(
         symbolname,
@@ -42,7 +44,8 @@ def draw_symbols():
         "food": draw_single_symbol("food"),
         "water": draw_single_symbol("water"),
         "building_resource": draw_single_symbol("building_resource"),
-        "influence": draw_single_symbol("influence")
+        "influence": draw_single_symbol("influence"),
+        "time": draw_single_symbol("time")
     }
 
     return svgs

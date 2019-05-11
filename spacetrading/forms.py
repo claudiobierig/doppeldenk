@@ -61,7 +61,10 @@ class Move(forms.Form):
         label="Sell resource 1", max_value=9, min_value=0,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
         initial=0
     )
@@ -69,7 +72,10 @@ class Move(forms.Form):
         label="Sell resource 2", max_value=9, min_value=0,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
         initial=0
     )
@@ -77,7 +83,10 @@ class Move(forms.Form):
         label="Sell resource 3", max_value=9, min_value=0,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
         initial=0
     )
@@ -85,7 +94,10 @@ class Move(forms.Form):
         label="Sell resource 4", max_value=9, min_value=0,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
         initial=0
     )
@@ -93,7 +105,10 @@ class Move(forms.Form):
         label="Sell resource 5", max_value=9, min_value=0,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
         initial=0
     )
@@ -102,7 +117,10 @@ class Move(forms.Form):
         label="Buy resource 1", max_value=9, min_value=0,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
         initial=0
     )
@@ -110,7 +128,10 @@ class Move(forms.Form):
         label="Buy resource 2", max_value=9, min_value=0,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
         initial=0
     )
@@ -118,7 +139,10 @@ class Move(forms.Form):
         label="Buy resource 3", max_value=9, min_value=0,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
         initial=0
     )
@@ -126,7 +150,10 @@ class Move(forms.Form):
         label="Buy resource 4", max_value=9, min_value=0,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
         initial=0
     )
@@ -134,7 +161,10 @@ class Move(forms.Form):
         label="Buy resource 5", max_value=9, min_value=0,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
         initial=0
     )
@@ -143,7 +173,16 @@ class Move(forms.Form):
         label="Buy influence", min_value=0, max_value=99,
         widget=forms.Select(
             choices=CHOICES,
-            attrs={'onchange': 'refreshChoices()'}
+            attrs={
+                'onchange': 'refreshChoices()',
+                'class': "form-control form-control-sm"
+            }
         ),
+        initial=0
+    )
+
+    spend_time = forms.IntegerField(
+        label="Spend time", min_value=0, max_value=100,
+        widget=forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
         initial=0
     )

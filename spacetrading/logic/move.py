@@ -70,6 +70,9 @@ def get_trade_balance_or_raise(active_player, active_planet, planet_number, game
         raise MoveError("no active player")
     if [data['coord_q'], data['coord_r']] == [0, 0]:
         raise MoveError("You didn't choose where to fly.")
+    distance = compute_distance(active_player.ship_position, [data['coord_q'], data['coord_r']])
+    if distance > data['spend_time'] and active_player.last_move >= 0:
+        raise MoveError("You want to spend {} time, but the distance to you destination is {}".format(data['spend_time'], distance))
 
     buy_mapping = [
         ["buy_resource_1", '1'],
