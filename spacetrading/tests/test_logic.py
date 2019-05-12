@@ -19,7 +19,7 @@ class MoveTest(TestCase):
             game_name="test",
             number_of_players=2,
             game_state="r",
-            offer_demand_event_time=30
+            offer_demand_event_time=20
         )
 
         player1 = Player.objects.create_player(
@@ -82,7 +82,7 @@ class MoveTest(TestCase):
         player2.save()
         self.players = self.game.players.all()
         self.assertEqual(move.Event.PLANET_ROTATION, move.get_next_event(self.game, self.players))
-        self.game.planet_rotation_event_time = 30
+        self.game.planet_rotation_event_time = 20
         self.game.planet_rotation_event_move = 1
         self.assertEqual(move.Event.PLANET_ROTATION, move.get_next_event(self.game, self.players))
         self.game.planet_rotation_event_time = 40
@@ -141,7 +141,7 @@ class MoveTest(TestCase):
         move.offer_demand(self.game, self.planets)
         self.assertEqual(1, self.game.next_move_number)
         self.assertEqual(0, self.game.offer_demand_event_move)
-        self.assertEqual(60, self.game.offer_demand_event_time)
+        self.assertEqual(40, self.game.offer_demand_event_time)
         planet1 = self.planets.get(name="a")
         planet2 = self.planets.get(name="b")
         self.assertEqual(2, planet1.cost_buy_resource[0])

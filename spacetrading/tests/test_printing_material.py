@@ -1,9 +1,9 @@
 from django.test import TestCase
-from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_printing_player_boards, generate_plain_symbols, generate_svg_symbols
+from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_planet_market2, generate_printing_player_boards, generate_plain_symbols, generate_svg_symbols
 from spacetrading.create_svg import generate_politician_cards
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.models import Game
-from spacetrading.models import create_game
+from spacetrading.logic.initialize import create_game
 
 def generate_symbol_svg(name, scaling=None):
     svg = Svg(width=30, height=30, id_name="{}_svg".format(name))
@@ -19,7 +19,16 @@ class GeneratePrintingMaterial(TestCase):
         pass
 
     def test_generate_empty_gameboard(self):
-        create_game("empty_gameboard", 0, False, None)
+        data = {
+            "name": "empty_gameboard",
+            "number_of_players": 0,
+            "play_all_players": False,
+            "resource_limit": 5
+        }
+        create_game(
+            data,
+            None
+        )
         game = Game.objects.get(game_name="empty_gameboard")
         planets = game.planets.all().order_by('number_of_hexes')
         for planet in planets:
@@ -45,7 +54,16 @@ class GeneratePrintingMaterial(TestCase):
         """
 
     def test_generate_empty_planet_markets(self):
-        create_game("empty_gameboard", 0, False, None)
+        data = {
+            "name": "empty_gameboard",
+            "number_of_players": 0,
+            "play_all_players": False,
+            "resource_limit": 5
+        }
+        create_game(
+            data,
+            None
+        )
         game = Game.objects.get(game_name="empty_gameboard")
         planets = game.planets.all().order_by('number_of_hexes')
         for planet in planets:
@@ -71,7 +89,16 @@ class GeneratePrintingMaterial(TestCase):
             html_file.write("</body>")
 
     def test_generate_empty_playerboards(self):
-        create_game("empty_gameboard", 4, True, None)
+        data = {
+            "name": "empty_gameboard",
+            "number_of_players": 0,
+            "play_all_players": False,
+            "resource_limit": 5
+        }
+        create_game(
+            data,
+            None
+        )
         game = Game.objects.get(game_name="empty_gameboard")
         players = game.players.all()
         svg_string = generate_printing_player_boards.draw_player_boards(players)
@@ -118,7 +145,16 @@ class GeneratePrintingMaterial(TestCase):
             html_file.write("</body>")
 
     def test_generate_politician_cards(self):
-        create_game("empty_gameboard", 0, False, None)
+        data = {
+            "name": "empty_gameboard",
+            "number_of_players": 0,
+            "play_all_players": False,
+            "resource_limit": 5
+        }
+        create_game(
+            data,
+            None
+        )
         game = Game.objects.get(game_name="empty_gameboard")
         planets = game.planets.all().order_by('number_of_hexes')
         svgs = generate_politician_cards.draw_politicians(planets)
@@ -128,3 +164,6 @@ class GeneratePrintingMaterial(TestCase):
             for svg in svgs:
                 html_file.write(svg.get_string())
             html_file.write("</body>")
+
+    def test_generate_planet_market_2(self):
+        svgs = generate_planet_market2.draw_planet_market([])
