@@ -65,12 +65,10 @@
       - Setup automatic generation of game_detail.html (6h)
       - get rid of templatetags (0h)
       - move stuff from generate_svg to js (40h)
-    - views.py (8h)
-      - next_game: move subfunction to model, move filter into subfunction (1h)
+    - views.py (6h + js stuff)
       - rules: check if we really need this for template (1h)
       - List views: Move querysets to model (1h)
       - Detail View: (4h + js stuff)
-        - Move get_next to model, should use the same function as next_game
         - context should be simplified by a lot after moving stuff to js
       - get_* functions should all vanish after js move, otherwise move to model
   - autopep8 (4h)

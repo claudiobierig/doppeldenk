@@ -1,5 +1,11 @@
 # Worklog
 
+## Refactor next gae 1/1h (16.05.2019)
+
+- Combine functions and move from view to model
+
+**Tags:** Refactoring
+
 ## Add possibility to wait + fly to same location 1/2h (11.05.2019)
 
 - Not including auto setting field when clicking on hex
