@@ -234,6 +234,20 @@ class GameManager(models.Manager):
         )
         return game
 
+    def next(self, user, current_id=0):
+        all_games = self.filter(players__user=user).filter(game_state='r').order_by('id')
+        game_gt = all_games.filter(id__gt=current_id)
+        for game in game_gt:
+            if user == game.get_active_user():
+                return game
+
+        game_lt = all_games.filter(id__lt=current_id)
+        for game in game_lt:
+            if user == game.get_active_user():
+                return game
+
+        return False
+
 class Game(models.Model):
     """
     Space Trading Model
@@ -293,6 +307,9 @@ class Game(models.Model):
 
     def get_active_player(self):
         return move.get_active_player(self.players.all())
+
+    def get_active_user(self):
+        return self.get_active_player().user
 
     def __str__(self):
         """String for representing the Model object."""

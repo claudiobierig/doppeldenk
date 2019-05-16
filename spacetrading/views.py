@@ -38,19 +38,10 @@ def create_game(request):
 @login_required
 def next_game(request):
     """go to next game where user is avtive"""
-    games = models.Game.objects.filter(players__user=request.user).filter(game_state='r').order_by('id')
-    nextg = get_next_game(games, request.user)
-    if nextg:
-        return HttpResponseRedirect(reverse('game_detail', args=[nextg.id]))
+    game = models.Game.objects.next(request.user)
+    if game:
+        return HttpResponseRedirect(reverse('game_detail', args=[game.id]))
     return HttpResponseRedirect(reverse('active_games'))
-
-def get_next_game(queryset, user):
-    for game in queryset:
-        players = game.players.all().order_by('player_number')
-        active_player = move.get_active_player(players)
-        if active_player.user == user:
-            return game
-    return False
 
 def rules(request):
     return render(request, 'spacetrading/rules.html')
@@ -99,20 +90,6 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
     model = models.Game
     form_class = forms.Move
 
-    def get_next(self, game_instance):
-        all_games = models.Game.objects.filter(players__user=self.request.user).filter(game_state='r').order_by('id')
-        game_gt = all_games.filter(id__gt=game_instance.id)
-        game = get_next_game(game_gt, self.request.user)
-        if game:
-            return game
-        game_lt = all_games.filter(id__lt=game_instance.id)
-        game = get_next_game(game_lt, self.request.user)
-        if game:
-            return game
-
-        return False
-
-
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
@@ -126,7 +103,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
             colour_active_planet = active_planet.colour
         user_active = active_player is not None and active_player.user == self.request.user
         symbols = generate_plain_symbols.draw_symbols()
-        context['nextgame'] = self.get_next(game_instance)
+        context['nextgame'] = models.Game.objects.next(self.request.user, game_instance.id)
         context['gameboard'] = generate_gameboard.draw_gameboard(game_instance, planets, players, user_active)
         context['planet_market'] = generate_planet_market.draw_planet_market(game_instance, planets, players)
         context['player_boards'] = generate_player_boards.draw_player_boards(players, game_instance)
