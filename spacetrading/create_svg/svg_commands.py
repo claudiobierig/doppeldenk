@@ -345,7 +345,8 @@ class Svg(object):
         """
         Create an image in root and return it.
         """
-        image = etree.SubElement(self.root, 'image', {'href': image_name, 'width': width, 'height': height, 'x': x_pos, 'y': y_pos})
+        image = etree.SubElement(self.root, 'image', {
+                                 'href': image_name, 'width': width, 'height': height, 'x': x_pos, 'y': y_pos})
         image.text = " "
         return Svg(image)
 
@@ -400,7 +401,7 @@ class Svg(object):
                 font_size,
                 additional_arguments
             )
-    
+
     def draw_scoring_box(self, position, size, id_name, number, grey_element, fill_colour="#FFFFFF", font_size=8, additional_arguments=None):
         """
         draw one box of the scoring track
@@ -413,11 +414,11 @@ class Svg(object):
         (width, height) = size
 
         self.create_rectangle((position_x, position_y), (width, height),
-                                id_name, fill_colour=fill_colour,
-                                stroke_colour="#000000",
-                                stroke_width=1,
-                                fill_opacity=1,
-                                additional_arguments=additional_arguments)
+                              id_name, fill_colour=fill_colour,
+                              stroke_colour="#000000",
+                              stroke_width=1,
+                              fill_opacity=1,
+                              additional_arguments=additional_arguments)
         if number % grey_element == 0:
             self.create_rectangle(
                 [position_x, position_y],
@@ -442,6 +443,7 @@ class Svg(object):
     def __str__(self):
         return self.get_string()
 
+
 def get_position(size, x_elements, y_elements, points, stack_position):
     """
     given the points and the number of markers below in the stack
@@ -461,7 +463,8 @@ def get_position(size, x_elements, y_elements, points, stack_position):
         y_pos = POSITION_LOWEST_DISC + y_elements*size
     elif 2*x_elements + y_elements < space < 2*x_elements + 2*y_elements:
         x_pos = 0
-        y_pos = POSITION_LOWEST_DISC + (2*x_elements + 2*y_elements - space) * size
+        y_pos = POSITION_LOWEST_DISC + \
+            (2*x_elements + 2*y_elements - space) * size
     return [x_pos, y_pos - 4*stack_position]
 
 

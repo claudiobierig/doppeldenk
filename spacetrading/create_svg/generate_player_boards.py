@@ -7,6 +7,7 @@ from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg import generate_svg_symbols
 from spacetrading.logic import move
 
+
 def get_symbol_name(resource):
     if resource is '0':
         return 'resource_placeholder'
@@ -50,7 +51,7 @@ def create_playerboard(svg, player, game, position, active):
     font_colour = "black"
     if active:
         font_colour = "red"
-    
+
     subgroup.create_rectangle(
         [position[0], position[1]],
         [220, 110],
@@ -58,12 +59,12 @@ def create_playerboard(svg, player, game, position, active):
         stroke_colour="black", fill_opacity="1",
         fill_colour=player.colour,
         additional_arguments={
-            "rx" : "10",
-            "ry" : "10"
+            "rx": "10",
+            "ry": "10"
         }
     )
     font_size = 12
-    
+
     subgroup.create_rectangle(
         [position[0] + 10, position[1] + 10],
         [100, 95],
@@ -75,7 +76,7 @@ def create_playerboard(svg, player, game, position, active):
             "ry": "10"
         }
     )
-    
+
     subgroup.create_text(
         "playerboard_name_" + playername,
         [position[0] + 20, position[1] + 20 + font_size],
@@ -92,7 +93,6 @@ def create_playerboard(svg, player, game, position, active):
         font_size=font_size
     )
 
-    
     subgroup.use_symbol(
         "coin",
         "coin_" + playername,
@@ -157,11 +157,13 @@ def draw_player_boards(players, game):
         active = False
         if active_player is not None and active_player.player_number == player.player_number:
             active = True
-        create_playerboard(svg, player, game, [10 + 240*(index%2), 5 + 120*int(index/2)], active)
+        create_playerboard(svg, player, game, [
+                           10 + 240*(index % 2), 5 + 120*int(index/2)], active)
 
     svg_string = svg.get_string()
 
     return svg_string
+
 
 if __name__ == '__main__':
     pass

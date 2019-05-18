@@ -43,8 +43,8 @@ class PlanetManager(models.Manager):
             cost_sell_resource = [0, 0, 0, 0, 0]
         if position_of_hexes is None:
             position_of_hexes = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
-                               [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
-        
+                                 [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
+
         planet = self.create(
             name=name,
             colour=colour,
@@ -119,15 +119,15 @@ class Planet(models.Model):
 
     objects = PlanetManager()
 
-
     def __str__(self):
         return str("name: {planet.name}, "
-                    "number_of_hexes: {planet.number_of_hexes}, "
-                    "current_position: {planet.current_position}, "
-                    "buy_resources: {planet.buy_resources}, "
-                    "cost_buy_resource: {planet.cost_buy_resource}, "
-                    "sell_resources: {planet.sell_resources}, "
-                    "cost_sell_resource: {planet.cost_sell_resource}".format(planet=self))
+                   "number_of_hexes: {planet.number_of_hexes}, "
+                   "current_position: {planet.current_position}, "
+                   "buy_resources: {planet.buy_resources}, "
+                   "cost_buy_resource: {planet.cost_buy_resource}, "
+                   "sell_resources: {planet.sell_resources}, "
+                   "cost_sell_resource: {planet.cost_sell_resource}".format(planet=self))
+
 
 class PlayerManager(models.Manager):
     def create_player(
@@ -162,6 +162,7 @@ class PlayerManager(models.Manager):
             has_passed=has_passed
         )
         return player
+
 
 class Player(models.Model):
     """
@@ -235,7 +236,8 @@ class GameManager(models.Manager):
         return game
 
     def next(self, user, current_id=0):
-        all_games = self.filter(players__user=user).filter(game_state='r').order_by('id')
+        all_games = self.filter(players__user=user).filter(
+            game_state='r').order_by('id')
         game_gt = all_games.filter(id__gt=current_id)
         for game in game_gt:
             if user == game.get_active_user():
@@ -247,6 +249,7 @@ class GameManager(models.Manager):
                 return game
 
         return False
+
 
 class Game(models.Model):
     """
@@ -299,7 +302,7 @@ class Game(models.Model):
         return (self.game_state is 'r')
 
     def get_users(self):
-        user_group_set = set() #self.players.select_related('user')
+        user_group_set = set()
         for player in self.players.all():
             user_group_set.add(player.user)
 

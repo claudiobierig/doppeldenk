@@ -4,6 +4,7 @@ forms needed to play spacetrading
 
 from django import forms
 
+
 class NewGame(forms.Form):
     """
     Form to create a new spacetrading game
@@ -12,7 +13,8 @@ class NewGame(forms.Form):
         max_length=100,
         required=False,
         label="Game Name",
-        widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Game Name'})
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Game Name'})
     )
     number_of_players = forms.IntegerField(
         label="Number of Players",
@@ -31,6 +33,7 @@ class NewGame(forms.Form):
         min_value=5,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
+
 
 class Move(forms.Form):
     """
@@ -183,6 +186,7 @@ class Move(forms.Form):
 
     spend_time = forms.IntegerField(
         label="Spend time", min_value=0, max_value=100,
-        widget=forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+        widget=forms.NumberInput(
+            attrs={'class': 'form-control form-control-sm'}),
         initial=0
     )

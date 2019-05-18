@@ -8,11 +8,13 @@ from spacetrading.create_svg import generate_svg_symbols
 WIDTH = 120
 HEIGHT = 180
 
+
 class Action:
     def __init__(self, times_, left_, right_):
         self.times = times_
         self.left = left_
         self.right = right_
+
 
 def get_relative_location(number_of_symbols):
     if number_of_symbols == 1:
@@ -24,6 +26,7 @@ def get_relative_location(number_of_symbols):
     elif number_of_symbols == 4:
         return [[10, 10], [30, 10], [10, 30], [30, 30]]
     return []
+
 
 def get_symbol_size(name):
     if name == "politician":
@@ -55,8 +58,10 @@ def get_symbol_size(name):
     print(name)
     return 0
 
+
 def draw_politician(name, colour, points, era, actions):
-    svg = Svg(width=str(WIDTH + 4), height=str(HEIGHT + 4), id_name=f"id_{name}")
+    svg = Svg(width=str(WIDTH + 4),
+              height=str(HEIGHT + 4), id_name=f"id_{name}")
     generate_svg_symbols.add_posibility_for_politician(svg)
     generate_svg_symbols.add_posibility_for_arrow(svg)
     generate_svg_symbols.add_posibility_for_influence(svg)
@@ -75,8 +80,8 @@ def draw_politician(name, colour, points, era, actions):
         stroke_colour="black",
         stroke_width="2",
         additional_arguments={
-            "rx" : "20",
-            "ry" : "20"
+            "rx": "20",
+            "ry": "20"
         }
     )
 
@@ -97,7 +102,7 @@ def draw_politician(name, colour, points, era, actions):
                 "ry": "10"
             }
         )
-        
+
         scale_arrow = size_arrow/30
         svg.use_symbol(
             "arrow",
@@ -127,12 +132,14 @@ def draw_politician(name, colour, points, era, actions):
     start_y = 2 + 8*gap_y + 3*size_y
     if len(points) == 1:
         winner_points = points[0]
-        start_x = 2 + WIDTH - offset_x - winner_points*size_politician - (winner_points - 1)*gap_politician
+        start_x = 2 + WIDTH - offset_x - winner_points * \
+            size_politician - (winner_points - 1)*gap_politician
         for i in range(winner_points):
             svg.use_symbol(
                 "politician",
                 f"politician_points_{i}_{name}",
-                position=[(start_x + i*(size_politician+gap_politician))/scale_factor, start_y/scale_factor],
+                position=[(start_x + i*(size_politician+gap_politician)
+                           )/scale_factor, start_y/scale_factor],
                 additional_arguments={
                     "transform": f"scale({scale_factor})"
                 }
@@ -150,13 +157,14 @@ def draw_politician(name, colour, points, era, actions):
             svg.use_symbol(
                 "politician",
                 f"politician_points_symbol_{i}_{name}",
-                position=[(start_x + 4 + i*25)/scale_factor, start_y/scale_factor],
+                position=[(start_x + 4 + i*25)/scale_factor,
+                          start_y/scale_factor],
                 additional_arguments={
                     "transform": f"scale({scale_factor})"
                 }
             )
     for action_number, action in enumerate(actions):
-        
+
         top = 2 + (action_number+5)*gap_y + action_number*size_y
         left = 2 + gap_x
         symbol_size = 12
@@ -178,7 +186,8 @@ def draw_politician(name, colour, points, era, actions):
             svg.use_symbol(
                 symbol_name[1],
                 f"left_symbol_{symbol_name[1]}_{index}_{action_number}_{name}",
-                position=[(position[0] + 5)/scale_factor, position[1]/scale_factor],
+                position=[(position[0] + 5)/scale_factor,
+                          position[1]/scale_factor],
                 additional_arguments={
                     "transform": f"scale({scale_factor})"
                 }
@@ -203,14 +212,16 @@ def draw_politician(name, colour, points, era, actions):
             svg.use_symbol(
                 symbol_name[1],
                 f"right_symbol_{symbol_name[1]}_{index}_{action_number}_{name}",
-                position=[(position[0] + 3)/scale_factor, position[1]/scale_factor],
+                position=[(position[0] + 3)/scale_factor,
+                          position[1]/scale_factor],
                 additional_arguments={
                     "transform": f"scale({scale_factor})"
                 }
             )
 
     return svg
-    
+
+
 def draw_politicians(planets):
     """
     draw all politicians
@@ -221,7 +232,8 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[1, 'time']], [[2, 'influence']]),
-                    Action(3, [[4, 'coin'], [1, 'time']], [[1, 'building_resource'], [1, 'influence']]),
+                    Action(3, [[4, 'coin'], [1, 'time']], [
+                           [1, 'building_resource'], [1, 'influence']]),
                     Action(2, [[1, 'water'], [1, 'time']], [[6, 'coin']])
                 ],
                 1,
@@ -230,7 +242,8 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[2, 'time']], [[1, 'influence']]),
-                    Action(3, [[3, 'coin'], [1, 'time']], [[1, 'building_resource']]),
+                    Action(3, [[3, 'coin'], [1, 'time']],
+                           [[1, 'building_resource']]),
                     Action(3, [[1, 'water'], [2, 'time']], [[7, 'coin']])
                 ],
                 1,
@@ -239,8 +252,10 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[2, 'time'], [2, 'coin']], [[1, 'influence']]),
-                    Action(3, [[4, 'coin'], [1, 'time']], [[1, 'building_resource']]),
-                    Action(2, [[1, 'food'], [1, 'water'], [3, 'time']], [[16, 'coin'], [1, 'influence']])
+                    Action(3, [[4, 'coin'], [1, 'time']],
+                           [[1, 'building_resource']]),
+                    Action(2, [[1, 'food'], [1, 'water'], [3, 'time']], [
+                           [16, 'coin'], [1, 'influence']])
                 ],
                 2,
                 [3]
@@ -248,17 +263,22 @@ def draw_politicians(planets):
             [
                 [
                     Action(1, [[1, 'water']], [[5, 'influence']]),
-                    Action(3, [[1, 'water'], [1, 'time']], [[1, 'building_resource'], [1, 'influence'], [2, 'coin']]),
-                    Action(2, [[1, 'water'], [1, 'red_cross'], [2, 'time']], [[15, 'coin'], [2, 'influence']])
+                    Action(3, [[1, 'water'], [1, 'time']], [
+                           [1, 'building_resource'], [1, 'influence'], [2, 'coin']]),
+                    Action(2, [[1, 'water'], [1, 'red_cross'], [2, 'time']], [
+                           [15, 'coin'], [2, 'influence']])
                 ],
                 2,
                 [3]
             ],
             [
                 [
-                    Action(3, [[1, 'water'], [1, 'red_cross'], [2, 'time']], [[1, 'building_resource'], [1, 'influence']]),
-                    Action(3, [[1, 'water'], [1, 'food'], [2, 'time']], [[6, 'coin'], [1, 'influence']]),
-                    Action(1, [[1, 'water'], [1, 'food'], [1, 'red_cross'], [2, 'time']], [[5, 'influence']])
+                    Action(3, [[1, 'water'], [1, 'red_cross'], [2, 'time']], [
+                           [1, 'building_resource'], [1, 'influence']]),
+                    Action(3, [[1, 'water'], [1, 'food'], [2, 'time']], [
+                           [6, 'coin'], [1, 'influence']]),
+                    Action(1, [[1, 'water'], [1, 'food'], [
+                           1, 'red_cross'], [2, 'time']], [[5, 'influence']])
                 ],
                 3,
                 [7, 4, 2, 1]
@@ -266,8 +286,10 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[3, 'time']], [[1, 'influence']]),
-                    Action(3, [[1, 'politician'], [1, 'time']], [[7, 'influence']]),
-                    Action(1, [[1, 'water'], [1, 'food'], [1, 'red_cross'], [4, 'coin']], [[10, 'influence']])
+                    Action(3, [[1, 'politician'], [1, 'time']],
+                           [[7, 'influence']]),
+                    Action(1, [[1, 'water'], [1, 'food'], [1, 'red_cross'], [
+                           4, 'coin']], [[10, 'influence']])
                 ],
                 3,
                 [7, 4, 2, 1]
@@ -278,7 +300,8 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[1, 'time']], [[2, 'influence']]),
-                    Action(3, [[3, 'coin'], [1, 'time']], [[1, 'food'], [1, 'influence']]),
+                    Action(3, [[3, 'coin'], [1, 'time']], [
+                           [1, 'food'], [1, 'influence']]),
                     Action(2, [[1, 'red_cross']], [[5, 'coin']])
                 ],
                 1,
@@ -297,25 +320,32 @@ def draw_politicians(planets):
                 [
                     Action(3, [[5, 'coin']], [[1, 'influence']]),
                     Action(3, [[4, 'coin'], [1, 'time']], [[1, 'food']]),
-                    Action(2, [[1, 'red_cross'], [1, 'radioactive'], [3, 'time']], [[16, 'coin'], [1, 'influence']])
+                    Action(2, [[1, 'red_cross'], [1, 'radioactive'], [
+                           3, 'time']], [[16, 'coin'], [1, 'influence']])
                 ],
                 2,
                 [3]
             ],
             [
                 [
-                    Action(1, [[1, 'red_cross']], [[2, 'influence'], [3, 'coin']]),
-                    Action(3, [[1, 'red_cross'], [2, 'time']], [[1, 'food'], [1, 'influence'], [3, 'coin']]),
-                    Action(2, [[1, 'red_cross'], [1, 'water'], [3, 'time']], [[15, 'coin'], [3, 'influence']])
+                    Action(1, [[1, 'red_cross']], [
+                           [2, 'influence'], [3, 'coin']]),
+                    Action(3, [[1, 'red_cross'], [2, 'time']], [
+                           [1, 'food'], [1, 'influence'], [3, 'coin']]),
+                    Action(2, [[1, 'red_cross'], [1, 'water'], [3, 'time']], [
+                           [15, 'coin'], [3, 'influence']])
                 ],
                 2,
                 [3]
             ],
             [
                 [
-                    Action(3, [[1, 'red_cross'], [1, 'radioactive'], [5, 'time']], [[1, 'food'], [2, 'influence']]),
-                    Action(3, [[1, 'red_cross'], [1, 'water'], [2, 'time']], [[6, 'coin'], [1, 'influence']]),
-                    Action(1, [[1, 'red_cross'], [1, 'radioactive'], [1, 'water'], [1, 'time']], [[5, 'influence']])
+                    Action(3, [[1, 'red_cross'], [1, 'radioactive'], [
+                           5, 'time']], [[1, 'food'], [2, 'influence']]),
+                    Action(3, [[1, 'red_cross'], [1, 'water'], [2, 'time']], [
+                           [6, 'coin'], [1, 'influence']]),
+                    Action(1, [[1, 'red_cross'], [1, 'radioactive'], [
+                           1, 'water'], [1, 'time']], [[5, 'influence']])
                 ],
                 3,
                 [7, 4, 2, 1]
@@ -323,8 +353,10 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[3, 'time'], [4, 'coin']], [[1, 'influence']]),
-                    Action(3, [[1, 'politician'], [1, 'time']], [[2, 'influence']]),
-                    Action(1, [[1, 'red_cross'], [1, 'radioactive'], [1, 'water']], [[2, 'influence']])
+                    Action(3, [[1, 'politician'], [1, 'time']],
+                           [[2, 'influence']]),
+                    Action(1, [[1, 'red_cross'], [1, 'radioactive'],
+                               [1, 'water']], [[2, 'influence']])
                 ],
                 3,
                 [7, 4, 2, 1]
@@ -335,8 +367,10 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[2, 'time']], [[3, 'influence']]),
-                    Action(3, [[4, 'coin'], [1, 'time']], [[1, 'radioactive'], [1, 'influence']]),
-                    Action(2, [[1, 'food'], [3, 'time']], [[6, 'coin'], [1, 'influence']])
+                    Action(3, [[4, 'coin'], [1, 'time']], [
+                           [1, 'radioactive'], [1, 'influence']]),
+                    Action(2, [[1, 'food'], [3, 'time']], [
+                           [6, 'coin'], [1, 'influence']])
                 ],
                 1,
                 [1]
@@ -344,7 +378,8 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[2, 'time']], [[1, 'influence']]),
-                    Action(3, [[3, 'coin'], [1, 'time']], [[1, 'radioactive']]),
+                    Action(3, [[3, 'coin'], [1, 'time']],
+                           [[1, 'radioactive']]),
                     Action(3, [[1, 'food'], [2, 'time']], [[7, 'coin']])
                 ],
                 1,
@@ -353,8 +388,10 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[2, 'time'], [2, 'coin']], [[1, 'influence']]),
-                    Action(3, [[4, 'coin'], [2, 'time']], [[1, 'radioactive'], [1, 'influence']]),
-                    Action(2, [[1, 'food'], [1, 'water'], [3, 'time']], [[16, 'coin'], [1, 'influence']])
+                    Action(3, [[4, 'coin'], [2, 'time']], [
+                           [1, 'radioactive'], [1, 'influence']]),
+                    Action(2, [[1, 'food'], [1, 'water'], [3, 'time']], [
+                           [16, 'coin'], [1, 'influence']])
                 ],
                 2,
                 [3]
@@ -362,17 +399,22 @@ def draw_politicians(planets):
             [
                 [
                     Action(1, [[2, 'food']], [[5, 'influence'], [6, 'coin']]),
-                    Action(3, [[1, 'food'], [1, 'time']], [[1, 'radioactive'], [1, 'influence'], [2, 'coin']]),
-                    Action(2, [[1, 'food'], [1, 'building_resource'], [2, 'time']], [[15, 'coin'], [2, 'influence']])
+                    Action(3, [[1, 'food'], [1, 'time']], [
+                           [1, 'radioactive'], [1, 'influence'], [2, 'coin']]),
+                    Action(2, [[1, 'food'], [1, 'building_resource'], [
+                           2, 'time']], [[15, 'coin'], [2, 'influence']])
                 ],
                 2,
                 [3]
             ],
             [
                 [
-                    Action(3, [[1, 'food'], [1, 'building_resource'], [2, 'time']], [[1, 'radioactive'], [1, 'influence']]),
-                    Action(3, [[1, 'food'], [1, 'water'], [2, 'time']], [[6, 'coin'], [1, 'influence']]),
-                    Action(1, [[1, 'food'], [1, 'water'], [1, 'building_resource'], [2, 'time']], [[5, 'influence']])
+                    Action(3, [[1, 'food'], [1, 'building_resource'], [2, 'time']], [
+                           [1, 'radioactive'], [1, 'influence']]),
+                    Action(3, [[1, 'food'], [1, 'water'], [2, 'time']], [
+                           [6, 'coin'], [1, 'influence']]),
+                    Action(1, [[1, 'food'], [1, 'water'], [
+                           1, 'building_resource'], [2, 'time']], [[5, 'influence']])
                 ],
                 3,
                 [7, 4, 2, 1]
@@ -380,8 +422,10 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[3, 'time']], [[1, 'influence']]),
-                    Action(3, [[1, 'politician'], [1, 'time']], [[7, 'influence']]),
-                    Action(1, [[1, 'food'], [1, 'water'], [10, 'coin']], [[10, 'influence']])
+                    Action(3, [[1, 'politician'], [1, 'time']],
+                           [[7, 'influence']]),
+                    Action(1, [[1, 'food'], [1, 'water'], [
+                           10, 'coin']], [[10, 'influence']])
                 ],
                 3,
                 [7, 4, 2, 1]
@@ -392,8 +436,10 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[2, 'time']], [[3, 'influence']]),
-                    Action(3, [[4, 'coin'], [1, 'time']], [[1, 'red_cross'], [1, 'influence']]),
-                    Action(2, [[1, 'building_resource'], [1, 'time']], [[6, 'coin']])
+                    Action(3, [[4, 'coin'], [1, 'time']], [
+                           [1, 'red_cross'], [1, 'influence']]),
+                    Action(2, [[1, 'building_resource'],
+                               [1, 'time']], [[6, 'coin']])
                 ],
                 1,
                 [1]
@@ -402,7 +448,8 @@ def draw_politicians(planets):
                 [
                     Action(3, [[2, 'time']], [[1, 'influence']]),
                     Action(3, [[4, 'coin']], [[1, 'red_cross']]),
-                    Action(3, [[1, 'building_resource'], [2, 'time']], [[7, 'coin']])
+                    Action(3, [[1, 'building_resource'],
+                               [2, 'time']], [[7, 'coin']])
                 ],
                 1,
                 [1]
@@ -411,7 +458,8 @@ def draw_politicians(planets):
                 [
                     Action(3, [[2, 'time'], [5, 'coin']], [[2, 'influence']]),
                     Action(3, [[4, 'coin'], [1, 'time']], [[1, 'red_cross']]),
-                    Action(2, [[1, 'building_resource'], [1, 'radioactive'], [1, 'time']], [[15, 'coin'], [1, 'influence']])
+                    Action(2, [[1, 'building_resource'], [1, 'radioactive'], [
+                           1, 'time']], [[15, 'coin'], [1, 'influence']])
                 ],
                 2,
                 [3]
@@ -419,17 +467,22 @@ def draw_politicians(planets):
             [
                 [
                     Action(1, [[1, 'building_resource']], [[5, 'influence']]),
-                    Action(3, [[1, 'building_resource'], [1, 'time']], [[1, 'red_cross'], [1, 'influence'], [2, 'coin']]),
-                    Action(2, [[1, 'building_resource'], [1, 'food'], [2, 'time']], [[15, 'coin'], [2, 'influence']])
+                    Action(3, [[1, 'building_resource'], [1, 'time']], [
+                           [1, 'red_cross'], [1, 'influence'], [2, 'coin']]),
+                    Action(2, [[1, 'building_resource'], [1, 'food'], [
+                           2, 'time']], [[15, 'coin'], [2, 'influence']])
                 ],
                 2,
                 [3]
             ],
             [
                 [
-                    Action(3, [[1, 'building_resource'], [1, 'radioactive'], [2, 'time']], [[1, 'red_cross'], [1, 'influence']]),
-                    Action(3, [[1, 'building_resource'], [1, 'food'], [2, 'time']], [[6, 'coin'], [1, 'influence']]),
-                    Action(1, [[1, 'building_resource'], [1, 'food'], [1, 'radioactive'], [4, 'coin']], [[5, 'influence']])
+                    Action(3, [[1, 'building_resource'], [1, 'radioactive'], [
+                           2, 'time']], [[1, 'red_cross'], [1, 'influence']]),
+                    Action(3, [[1, 'building_resource'], [1, 'food'], [
+                           2, 'time']], [[6, 'coin'], [1, 'influence']]),
+                    Action(1, [[1, 'building_resource'], [1, 'food'], [
+                           1, 'radioactive'], [4, 'coin']], [[5, 'influence']])
                 ],
                 3,
                 [7, 4, 2, 1]
@@ -438,7 +491,8 @@ def draw_politicians(planets):
                 [
                     Action(3, [[3, 'time']], [[1, 'influence']]),
                     Action(3, [[10, 'coin']], [[3, 'influence']]),
-                    Action(1, [[1, 'building_resource'], [1, 'food'], [1, 'radioactive']], [[8, 'influence']])
+                    Action(1, [[1, 'building_resource'], [1, 'food'], [
+                           1, 'radioactive']], [[8, 'influence']])
                 ],
                 3,
                 [7, 4, 2, 1]
@@ -449,8 +503,10 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[1, 'time']], [[2, 'influence']]),
-                    Action(3, [[4, 'coin'], [1, 'time']], [[1, 'water'], [1, 'influence']]),
-                    Action(2, [[1, 'radioactive'], [1, 'time']], [[5, 'coin'], [1, 'influence']])
+                    Action(3, [[4, 'coin'], [1, 'time']], [
+                           [1, 'water'], [1, 'influence']]),
+                    Action(2, [[1, 'radioactive'], [1, 'time']],
+                           [[5, 'coin'], [1, 'influence']])
                 ],
                 1,
                 [1]
@@ -468,25 +524,32 @@ def draw_politicians(planets):
                 [
                     Action(3, [[2, 'time'], [2, 'coin']], [[1, 'influence']]),
                     Action(3, [[4, 'coin'], [1, 'time']], [[1, 'water']]),
-                    Action(2, [[1, 'radioactive'], [1, 'building_resource'], [3, 'time']], [[16, 'coin'], [1, 'influence']])
+                    Action(2, [[1, 'radioactive'], [1, 'building_resource'], [
+                           3, 'time']], [[16, 'coin'], [1, 'influence']])
                 ],
                 2,
                 [3]
             ],
             [
                 [
-                    Action(2, [[1, 'radioactive']], [[3, 'influence'], [3, 'coin']]),
-                    Action(3, [[1, 'radioactive'], [1, 'time']], [[1, 'water'], [1, 'influence'], [2, 'coin']]),
-                    Action(2, [[1, 'radioactive'], [1, 'red_cross'], [2, 'time']], [[15, 'coin'], [2, 'influence']])
+                    Action(2, [[1, 'radioactive']], [
+                           [3, 'influence'], [3, 'coin']]),
+                    Action(3, [[1, 'radioactive'], [1, 'time']], [
+                           [1, 'water'], [1, 'influence'], [2, 'coin']]),
+                    Action(2, [[1, 'radioactive'], [1, 'red_cross'], [
+                           2, 'time']], [[15, 'coin'], [2, 'influence']])
                 ],
                 2,
                 [3]
             ],
             [
                 [
-                    Action(3, [[1, 'radioactive'], [1, 'red_cross'], [2, 'time']], [[1, 'water'], [1, 'influence']]),
-                    Action(3, [[1, 'radioactive'], [1, 'building_resource'], [2, 'time']], [[6, 'coin'], [1, 'influence']]),
-                    Action(1, [[1, 'radioactive'], [1, 'building_resource'], [1, 'red_cross'], [5, 'coin']], [[5, 'influence']])
+                    Action(3, [[1, 'radioactive'], [1, 'red_cross'], [
+                           2, 'time']], [[1, 'water'], [1, 'influence']]),
+                    Action(3, [[1, 'radioactive'], [1, 'building_resource'], [
+                           2, 'time']], [[6, 'coin'], [1, 'influence']]),
+                    Action(1, [[1, 'radioactive'], [1, 'building_resource'], [
+                           1, 'red_cross'], [5, 'coin']], [[5, 'influence']])
                 ],
                 3,
                 [7, 4, 2, 1]
@@ -494,8 +557,10 @@ def draw_politicians(planets):
             [
                 [
                     Action(3, [[1, 'time'], [4, 'coin']], [[1, 'influence']]),
-                    Action(3, [[1, 'politician'], [1, 'time']], [[7, 'influence']]),
-                    Action(1, [[1, 'radioactive'], [1, 'building_resource'], [1, 'red_cross'], [4, 'coin']], [[10, 'influence']])
+                    Action(3, [[1, 'politician'], [1, 'time']],
+                           [[7, 'influence']]),
+                    Action(1, [[1, 'radioactive'], [1, 'building_resource'], [
+                           1, 'red_cross'], [4, 'coin']], [[10, 'influence']])
                 ],
                 3,
                 [7, 4, 2, 1]
@@ -514,6 +579,7 @@ def draw_politicians(planets):
                 )
             )
     return svgs
+
 
 if __name__ == '__main__':
     pass

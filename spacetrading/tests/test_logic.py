@@ -10,10 +10,12 @@ from spacetrading.logic import move
 
 # Create your tests here.
 
+
 class MoveTest(TestCase):
     """
     Class for all tests of logic.move
     """
+
     def setUp(self):
         self.game = Game.objects.create_game(
             game_name="test",
@@ -59,11 +61,10 @@ class MoveTest(TestCase):
         self.players = self.game.players.all()
         self.planets = self.game.planets.all()
 
-
     def test_setup(self):
         self.assertEqual(2, self.game.planets.count())
         self.assertEqual(2, self.game.players.count())
-    
+
     def test_distance(self):
         coord1 = [1, 1]
         coord2 = [-1, -1]
@@ -81,13 +82,16 @@ class MoveTest(TestCase):
         player1.save()
         player2.save()
         self.players = self.game.players.all()
-        self.assertEqual(move.Event.PLANET_ROTATION, move.get_next_event(self.game, self.players))
+        self.assertEqual(move.Event.PLANET_ROTATION,
+                         move.get_next_event(self.game, self.players))
         self.game.planet_rotation_event_time = 20
         self.game.planet_rotation_event_move = 1
-        self.assertEqual(move.Event.PLANET_ROTATION, move.get_next_event(self.game, self.players))
+        self.assertEqual(move.Event.PLANET_ROTATION,
+                         move.get_next_event(self.game, self.players))
         self.game.planet_rotation_event_time = 40
-        self.assertEqual(move.Event.OFFER_DEMAND, move.get_next_event(self.game, self.players))
-        
+        self.assertEqual(move.Event.OFFER_DEMAND,
+                         move.get_next_event(self.game, self.players))
+
     def test_get_active_player(self):
         self.assertEqual(0, move.get_active_player(self.players).player_number)
 
@@ -131,12 +135,11 @@ class MoveTest(TestCase):
         self.assertTrue(player1.ship_position == planet1.position_of_hexes[0])
         self.assertTrue(player2.ship_position == planet2.position_of_hexes[1])
 
-
     def get_current_planet_positions(self):
         planet1 = self.planets.get(name="a")
         planet2 = self.planets.get(name="b")
         return [planet1.current_position, planet2.current_position]
-    
+
     def test_offer_demand(self):
         move.offer_demand(self.game, self.planets)
         self.assertEqual(1, self.game.next_move_number)
@@ -161,6 +164,8 @@ class MoveTest(TestCase):
         self.assertEqual(9, move.compute_points(self.game, 1))
         self.assertEqual(9, move.compute_points(self.game, 2))
         self.assertEqual(11, move.compute_points(self.game, 3))
+
+
 """
     def test_get_current_planet(self):
         self.assertFalse(True)

@@ -11,6 +11,7 @@ HEX_SIZE = 37
 WIDTH = 1200
 HEIGHT = 800
 
+
 def get_hex_coordinates(position, hex_size):
     """
     convert position to hex coordinate
@@ -65,8 +66,8 @@ def oddq_to_axial(oddq_coordinates):
     convert column row coordinates to axial coordinates
     """
     x_coord = oddq_coordinates[1]
-    z_coord = int(oddq_coordinates[0] - \
-        (oddq_coordinates[1] - (oddq_coordinates[1] & 1)) / 2)
+    z_coord = int(oddq_coordinates[0] -
+                  (oddq_coordinates[1] - (oddq_coordinates[1] & 1)) / 2)
     y_coord = -x_coord - z_coord
     return [x_coord, y_coord]
 
@@ -151,7 +152,8 @@ def draw_gameboard(bg_image):
     draw the main board
     """
     svg = Svg(width=str(WIDTH), height=str(HEIGHT), id_name="gameboard")
-    svg.create_image(bg_image, width="1200", height="876", x_pos="0", y_pos="0")
+    svg.create_image(bg_image, width="1200",
+                     height="876", x_pos="0", y_pos="0")
     draw_hex_grid(svg, [])
 
     for planet in []:
@@ -160,6 +162,7 @@ def draw_gameboard(bg_image):
     draw_sun(svg, (WIDTH, HEIGHT), HEX_SIZE)
     svg_string = svg.get_string()
     return svg_string
+
 
 def main():
     svg_string = draw_gameboard("static/auth/bg.jpeg")

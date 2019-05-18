@@ -6,6 +6,7 @@ generate the plain symbols
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg import generate_svg_symbols
 
+
 def draw_single_symbol(symbolname):
     svg = Svg(width=30, height=30, id_name="svg_{}".format(symbolname))
     if symbolname == "coin":
@@ -33,6 +34,7 @@ def draw_single_symbol(symbolname):
     )
     return svg.get_string()
 
+
 def draw_symbols():
     """
     draw the symbols and return them in a json
@@ -49,6 +51,7 @@ def draw_symbols():
     }
 
     return svgs
+
 
 if __name__ == '__main__':
     pass

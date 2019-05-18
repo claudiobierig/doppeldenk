@@ -9,6 +9,7 @@ import random
 from spacetrading.logic import gamesettings
 from spacetrading.models import Game, Player, Planet
 
+
 def create_game(data, user):
     """
     create a game with
@@ -53,7 +54,7 @@ def create_game(data, user):
         ship_offset=[0, 0],
         player_number=0
     )
-    game.players.add(player)    
+    game.players.add(player)
 
     for index, current_planet in enumerate(gamesettings.PLANETS):
         planet = Planet.objects.create_planet(
@@ -90,6 +91,7 @@ def create_game(data, user):
         for _ in range(number_of_players - 1):
             join_game(game.id, user)
 
+
 def join_game(primary_key_game, user):
     """
     join an open game
@@ -118,7 +120,8 @@ def join_game(primary_key_game, user):
         for index, current_player in enumerate(players):
             current_player.player_number = player_numbers[index]
             current_player.last_move = -current_player.player_number - 1
-            current_player.money = 10 + game.number_of_players - current_player.player_number - 1
+            current_player.money = 10 + game.number_of_players - \
+                current_player.player_number - 1
             current_player.save()
         game.game_state = 'r'
     elif number_of_joined_players > game.number_of_players - 1:
