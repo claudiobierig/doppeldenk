@@ -119,6 +119,23 @@ class Planet(models.Model):
 
     objects = PlanetManager()
 
+    def get_json(self):
+        planet_data = {
+            'name': self.name,
+            'colour': self.colour,
+            'number_of_hexes': self.number_of_hexes,
+            'position_of_hexes': self.position_of_hexes,
+            'current_position': self.current_position,
+            'buy_resources': self.buy_resources,
+            'cost_buy_resource': self.cost_buy_resource,
+            'sell_resources': self.sell_resources,
+            'cost_sell_resource': self.cost_sell_resource,
+            'radius_x': self.radius_x,
+            'radius_y': self.radius_y,
+            'offset': self.offset
+        }
+        return planet_data
+
     def __str__(self):
         return str("name: {planet.name}, "
                    "number_of_hexes: {planet.number_of_hexes}, "
@@ -194,6 +211,21 @@ class Player(models.Model):
     has_passed = models.BooleanField(default=False)
 
     objects = PlayerManager()
+
+    def get_json(self):
+        player_data = {
+            #'name': self.user.get_username(),
+            'resources': self.resources,
+            'money': self.money,
+            'ship_position': self.ship_position,
+            'last_move': self.last_move,
+            'time_spent': self.time_spent,
+            'colour': self.colour,
+            'ship_offset': self.ship_offset,
+            'player_number': self.player_number,
+            'has_passed': self.has_passed
+        }
+        return player_data
 
     def __str__(self):
         return f"User {self.user}"
@@ -313,6 +345,29 @@ class Game(models.Model):
 
     def get_active_user(self):
         return self.get_active_player().user
+
+    def get_json(self, players=None, planets=None):
+        if players is None:
+            players = self.players.all().order_by('player_number')
+        if planets is None:
+            planets = self.planets.all().order_by('number_of_hexes')
+
+        game_data = {
+            'players': [player.get_json() for player in players],
+            'planets': [planet.get_json() for planet in planets],
+            'game_name': self.game_name,
+            'number_of_players': self.number_of_players,
+            'next_move_number': self.next_move_number,
+            'planet_rotation_event_time': self.planet_rotation_event_time,
+            'planet_rotation_event_move': self.planet_rotation_event_move,
+            'offer_demand_event_time': self.offer_demand_event_time,
+            'offer_demand_event_move': self.offer_demand_event_move,
+            'resource_limit': self.resource_limit,
+            'game_state': self.game_state,
+            'planet_influence_track': self.planet_influence_track
+        }
+
+        return game_data
 
     def __str__(self):
         """String for representing the Model object."""

@@ -1,3 +1,4 @@
+import json
 import re
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -111,6 +112,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
             colour_active_planet = active_planet.colour
         user_active = active_player is not None and active_player.user == self.request.user
         symbols = generate_plain_symbols.draw_symbols()
+        context['game_data'] = json.dumps(game_instance.get_json(), indent=4)
         context['nextgame'] = models.Game.objects.next(
             self.request.user, game_instance.id)
         context['gameboard'] = generate_gameboard.draw_gameboard(

@@ -133,6 +133,8 @@ function getCurrentState()
     current_influence = current_influence + buy_influence_amount
 }
 
+const game_data = JSON.parse(document.getElementById("game_data").innerHTML)
+
 const active_player = getActivePlayer()
 const starting_money = parseInt(getAttributeFromPlayerboard(active_player, "money"))
 const starting_resources = [
