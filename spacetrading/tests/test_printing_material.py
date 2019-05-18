@@ -120,6 +120,7 @@ class GeneratePrintingMaterial(TestCase):
         politician_svg = generate_symbol_svg("politician")
         influence_svg = generate_symbol_svg("influence", scaling=1.5)
         star_svg = generate_symbol_svg("star")
+        planet_svg = generate_symbol_svg("planet")
 
         html_filename = "printing_material/symbols.html"
         with open(html_filename, "w") as html_file:
@@ -141,6 +142,7 @@ class GeneratePrintingMaterial(TestCase):
             html_file.write(politician_svg.get_string())
             html_file.write(influence_svg.get_string())
             html_file.write(star_svg.get_string())
+            html_file.write(planet_svg.get_string())
 
             html_file.write("</body>")
 
@@ -166,4 +168,22 @@ class GeneratePrintingMaterial(TestCase):
             html_file.write("</body>")
 
     def test_generate_planet_market_2(self):
-        svgs = generate_planet_market2.draw_planet_market([])
+        data = {
+            "name": "empty_gameboard",
+            "number_of_players": 0,
+            "play_all_players": False,
+            "resource_limit": 5
+        }
+        create_game(
+            data,
+            None
+        )
+        game = Game.objects.get(game_name="empty_gameboard")
+        planets = game.planets.all().order_by('number_of_hexes')
+        svgs = generate_planet_market2.draw_planet_market(planets)
+        html_filename = "printing_material/planet_market2.html"
+        with open(html_filename, "w") as html_file:
+            html_file.write("<!DOCTYPE html><body>")
+            for svg in svgs:
+                html_file.write(svg.get_string())
+            html_file.write("</body>")

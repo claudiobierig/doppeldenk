@@ -24,6 +24,21 @@ def draw_planet(svg, name, fill_colour):
     """
     actually draw the planet market
     """
+    x_shift = 30
+    y_shift = 30
+    x_offset = [0, 0, x_shift]
+    y_offset = 0
+    scale_factor = 3/2
+    for row in range(3):
+        for column in range(6):
+            svg.use_symbol(
+                get_symbol_name('0'),
+                "1_row_{}_column".format(column),
+                position=[(x_offset[row] + column*x_shift)/scale_factor, (y_offset + row*y_shift)/scale_factor],
+                additional_arguments={
+                    "transform": f"scale({scale_factor})"
+                }
+            )
 
 def draw_planet_market(planets):
     svgs = []
@@ -37,7 +52,7 @@ def draw_planet_market(planets):
         generate_svg_symbols.add_posibility_for_water(svg)
         generate_svg_symbols.add_posibility_for_building_res(svg)
         draw_planet(svg, 'planet_market_{}'.format(planet.name), planet.colour)
-        svgs.append(svg.get_string())
+        svgs.append(svg)
 
     return svgs
 

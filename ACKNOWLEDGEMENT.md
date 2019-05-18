@@ -13,6 +13,7 @@
 - [Join game icon](https://fontawesome.com/) ([MIT](https://opensource.org/licenses/MIT))
 - [Arrow icon](https://www.flaticon.com/free-icon/right-arrow_109617) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/))
 - Coin Icon
+- [Planet icon](https://www.onlinewebfonts.com/icon/33577) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/))
   
 ## Software
 
