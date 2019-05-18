@@ -52,7 +52,6 @@ def rules(request):
 
 class ActiveGameListView(LoginRequiredMixin, generic.ListView):
     model = models.Game
-    # your own name for the list as a template variable
     context_object_name = 'game_list'
     template_name = 'spacetrading/game_list.html'
     paginate_by = 10
