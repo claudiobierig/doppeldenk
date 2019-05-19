@@ -53,19 +53,31 @@ function clickHex(hex_element)
 
 function refreshChoices()
 {
-    getCurrentState()
     setViewPlayerState()
 }
 
 function setViewPlayerState()
 {
+    var player_number = active_player.player_number
+    var money = active_player.money
+    var traded = false
+    for(var resource = 0; resource <5; resource++)
+    {
+        var amount = active_player.resources[resource]
+        try{
+            var sellSelect = document.getElementById("id_sell_resource_" + (resource + 1))
+            amount = amount - parseInt(sellSelect.options[sellSelect.selectedIndex].value)
+        }
+        catch{}
+        try{
+            var buySelect = document.getElementById("id_buy_resource_" + (resource + 1))
+            amount = amount + parseInt(buySelect.options[buySelect.selectedIndex].value)
+        }
+        catch{}
+        
+        document.getElementById("resource_amount_" + (resource + 1) + "_" + player_number).innerHTML = amount
+    }
 }
-
-function getCurrentState()
-{
-}
-
-
 
 const game_data = JSON.parse(document.getElementById("game_data").innerHTML)
 

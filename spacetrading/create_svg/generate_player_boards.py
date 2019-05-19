@@ -34,6 +34,7 @@ def create_playerboard(svg, player, game, position, active):
         active {bool} -- is the player the active player
     """
     playername = player.user.get_username()
+    playernumber = str(player.player_number)
     points = move.compute_points(game, player.player_number)
     additional_arguments = {
         "active": str(active),
@@ -45,7 +46,7 @@ def create_playerboard(svg, player, game, position, active):
         "resource_5": str(player.resources[4])
     }
     subgroup = svg.create_subgroup(
-        "playerboard_" + playername,
+        "playerboard_" + playernumber,
         additional_arguments=additional_arguments
     )
     font_colour = "black"
@@ -55,7 +56,7 @@ def create_playerboard(svg, player, game, position, active):
     subgroup.create_rectangle(
         [position[0], position[1]],
         [220, 110],
-        "background_hangar_" + str(playername),
+        "background_hangar_" + str(playernumber),
         stroke_colour="black", fill_opacity="1",
         fill_colour=player.colour,
         additional_arguments={
@@ -68,7 +69,7 @@ def create_playerboard(svg, player, game, position, active):
     subgroup.create_rectangle(
         [position[0] + 10, position[1] + 10],
         [100, 95],
-        "text_background_" + playername,
+        "playerboard_text_background_" + playernumber,
         stroke_colour="black",
         fill_colour="white",
         additional_arguments={
@@ -78,7 +79,7 @@ def create_playerboard(svg, player, game, position, active):
     )
 
     subgroup.create_text(
-        "playerboard_name_" + playername,
+        "playerboard_name_" + playernumber,
         [position[0] + 20, position[1] + 20 + font_size],
         playername,
         text_anchor="start",
@@ -86,7 +87,7 @@ def create_playerboard(svg, player, game, position, active):
         font_colour=font_colour
     )
     subgroup.create_text(
-        "points_" + playername,
+        "points_" + playernumber,
         [position[0] + 20, position[1] + 50 + font_size],
         "{} points".format(points),
         text_anchor="start",
@@ -95,12 +96,12 @@ def create_playerboard(svg, player, game, position, active):
 
     subgroup.use_symbol(
         "coin",
-        "coin_" + playername,
+        "coin_" + playernumber,
         [(position[0] + 15)*2/3, (position[1] + 72.5)*2/3],
         additional_arguments={"transform": "scale(1.5 1.5)"}
     )
     subgroup.create_text(
-        "coins_" + playername,
+        "coins_" + playernumber,
         [position[0] + 50, position[1] + 70 + (35+font_size)/2],
         str(player.money),
         text_anchor="start",
@@ -112,7 +113,7 @@ def create_playerboard(svg, player, game, position, active):
         row = (index - column)/3
         subgroup.use_symbol(
             get_symbol_name(resource),
-            "resource_{}_{}".format(resource, playername),
+            "resource_{}_{}".format(resource, playernumber),
             [
                 (position[0] + 120 + column*30)*2/3,
                 (position[1] + 10 + row*50)*2/3
@@ -120,7 +121,7 @@ def create_playerboard(svg, player, game, position, active):
             additional_arguments={"transform": "scale(1.5 1.5)"}
         )
         subgroup.create_text(
-            "resource_amount_{}_{}".format(resource, playername),
+            "resource_amount_{}_{}".format(resource, playernumber),
             [
                 (position[0] + 135 + column*30),
                 (position[1] + 42 + row*50 + font_size)
