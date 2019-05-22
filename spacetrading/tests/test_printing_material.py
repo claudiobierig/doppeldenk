@@ -5,14 +5,17 @@ from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.models import Game
 from spacetrading.logic.initialize import create_game
 
+
 def generate_symbol_svg(name, scaling=None):
     svg = Svg(width=30, height=30, id_name="{}_svg".format(name))
     generate_svg_symbols.add_posibility_for_symbol(svg, name)
     additional_arguments = {}
     if scaling is not None:
         additional_arguments["transform"] = "scale({})".format(scaling)
-    svg.use_symbol(name, "{}_id".format(name), position=[0, 0], additional_arguments=additional_arguments)
+    svg.use_symbol(name, "{}_id".format(name), position=[
+                   0, 0], additional_arguments=additional_arguments)
     return svg
+
 
 class GeneratePrintingMaterial(TestCase):
     def setUp(self):
@@ -69,7 +72,8 @@ class GeneratePrintingMaterial(TestCase):
         for planet in planets:
             planet.buy_resources[0] = '0'
             planet.sell_resources[0] = '0'
-        svg_strings = generate_planet_market.draw_planet_market(game, planets, [])
+        svg_strings = generate_planet_market.draw_planet_market(
+            game, planets, [])
         svg_filename = "printing_material/planet_market_{}.svg"
         for index in range(len(planets)):
             with open(svg_filename.format(index), "w") as svg_file:
@@ -101,7 +105,8 @@ class GeneratePrintingMaterial(TestCase):
         )
         game = Game.objects.get(game_name="empty_gameboard")
         players = game.players.all()
-        svg_string = generate_printing_player_boards.draw_player_boards(players)
+        svg_string = generate_printing_player_boards.draw_player_boards(
+            players)
         svg_filename = "printing_material/player_boards.svg"
         with open(svg_filename, "w") as svg_file:
             svg_file.write(svg_string)
@@ -110,10 +115,10 @@ class GeneratePrintingMaterial(TestCase):
             html_file.write("<!DOCTYPE html><body>")
             html_file.write(svg_string)
             html_file.write("</body>")
-    
+
     def test_generate_symbols(self):
         svgs = generate_plain_symbols.draw_symbols()
-        
+
         planet_rotation_svg = generate_symbol_svg("planet_rotation")
         production_svg = generate_symbol_svg("production")
         time_svg = generate_symbol_svg("time", scaling=1.5)

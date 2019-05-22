@@ -7,6 +7,7 @@ from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg import generate_svg_symbols
 from spacetrading.logic import move
 
+
 def get_symbol_name(resource):
     if resource is '0':
         return 'resource_placeholder'
@@ -42,7 +43,8 @@ def draw_resource(svg, position, resource, direction):
     y_pos = position[1]
     svg.use_symbol(
         get_symbol_name(resource),
-        'trade_modal_{}_{}_symbol'.format(direction, get_symbol_name(resource)),
+        'trade_modal_{}_{}_symbol'.format(
+            direction, get_symbol_name(resource)),
         position=[2*x_pos/3, 2*y_pos/3],
         additional_arguments={"transform": "scale(1.5 1.5)"}
     )
@@ -71,6 +73,7 @@ def draw_resource(svg, position, resource, direction):
         }
     )
 
+
 def draw_trade_modal(players, planets):
     """
     draw the trading board
@@ -87,10 +90,10 @@ def draw_trade_modal(players, planets):
         if active_player.ship_position == planet.position_of_hexes[planet.current_position]:
             current_planet = planet
             break
-    
+
     if current_planet is None:
         return "Can't trade in middle of space."
-    
+
     svg.create_text(
         "modal_sell",
         [0, 14],
@@ -103,7 +106,7 @@ def draw_trade_modal(players, planets):
             x_pos = 20 + index*90
             y_pos = 30
             draw_resource(svg, [x_pos, y_pos], resource, "sell")
-    
+
     svg.create_text(
         "modal_buy",
         [0, 14 + 100],
@@ -116,7 +119,7 @@ def draw_trade_modal(players, planets):
             x_pos = 20 + index*90
             y_pos = 130
             draw_resource(svg, [x_pos, y_pos], resource, "buy")
-    
+
     svg.create_text(
         "modal_influence",
         [0, 14 + 200],
@@ -155,6 +158,7 @@ def draw_trade_modal(players, planets):
     svg_string = svg.get_string()
 
     return svg_string
+
 
 if __name__ == '__main__':
     pass

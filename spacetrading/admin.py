@@ -6,6 +6,7 @@ import spacetrading
 
 # Register your models here.
 
+
 class Array2dWidget(MultiWidget):
     template_name = "spacetrading/array2d_widget.html"
 
@@ -28,10 +29,11 @@ class Array2dWidget(MultiWidget):
             subresult = []
             for sub_index in range(self.inner_array_size):
                 if values[self.inner_array_size*index + sub_index]:
-                    subresult.append(values[self.inner_array_size*index + sub_index])
+                    subresult.append(
+                        values[self.inner_array_size*index + sub_index])
                 else:
                     break
-            
+
             if subresult:
                 result.append(subresult)
             else:
@@ -56,6 +58,7 @@ class GameAdminForm(forms.ModelForm):
         }
         fields = '__all__'
 
+
 class PlanetAdminForm(forms.ModelForm):
     class Meta:
         model = spacetrading.models.Planet
@@ -66,11 +69,14 @@ class PlanetAdminForm(forms.ModelForm):
         }
         fields = '__all__'
 
+
 class GameAdmin(admin.ModelAdmin):
     form = GameAdminForm
 
+
 class PlanetAdmin(admin.ModelAdmin):
     form = PlanetAdminForm
+
 
 admin.site.register(spacetrading.models.Game, GameAdmin)
 admin.site.register(spacetrading.models.Planet, PlanetAdmin)

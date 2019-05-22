@@ -6,6 +6,7 @@ generate the planet market
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg import generate_svg_symbols
 
+
 def get_symbol_name(resource):
     if resource is '0':
         return 'resource_placeholder'
@@ -19,6 +20,7 @@ def get_symbol_name(resource):
         return 'water'
     elif resource is '5':
         return 'building_resource'
+
 
 def draw_planet(svg, name, fill_colour):
     """
@@ -34,16 +36,19 @@ def draw_planet(svg, name, fill_colour):
             svg.use_symbol(
                 get_symbol_name('0'),
                 "1_row_{}_column".format(column),
-                position=[(x_offset[row] + column*x_shift)/scale_factor, (y_offset + row*y_shift)/scale_factor],
+                position=[(x_offset[row] + column*x_shift)/scale_factor,
+                          (y_offset + row*y_shift)/scale_factor],
                 additional_arguments={
                     "transform": f"scale({scale_factor})"
                 }
             )
 
+
 def draw_planet_market(planets):
     svgs = []
     for planet_number, planet in enumerate(planets):
-        svg = Svg(width=300, height=210, id_name="svg_planet_market_{}".format(planet.name))
+        svg = Svg(width=300, height=210,
+                  id_name="svg_planet_market_{}".format(planet.name))
         generate_svg_symbols.add_posibility_for_disc_3d(svg)
         generate_svg_symbols.add_posibility_for_empty_res(svg)
         generate_svg_symbols.add_posibility_for_red_cross(svg)
@@ -55,6 +60,7 @@ def draw_planet_market(planets):
         svgs.append(svg)
 
     return svgs
+
 
 if __name__ == '__main__':
     pass

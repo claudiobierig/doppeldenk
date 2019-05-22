@@ -71,7 +71,6 @@
       - Detail View: (4h + js stuff)
         - context should be simplified by a lot after moving stuff to js
       - get_* functions should all vanish after js move, otherwise move to model
-  - autopep8 (4h)
   - consistent naming (8h)
     - rename open games
     - buy/sell, offer/demand, etc.

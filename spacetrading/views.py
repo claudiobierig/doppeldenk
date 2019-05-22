@@ -1,3 +1,4 @@
+import json
 import re
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -13,6 +14,7 @@ from spacetrading import models
 from spacetrading import forms
 from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_player_boards, generate_trade_modal, generate_plain_symbols
 from spacetrading.logic import move, initialize
+
 
 @login_required
 def create_game(request):
@@ -35,6 +37,7 @@ def create_game(request):
     }
     return render(request, 'spacetrading/create_game.html', context=context)
 
+
 @login_required
 def next_game(request):
     """go to next game where user is avtive"""
@@ -43,12 +46,14 @@ def next_game(request):
         return HttpResponseRedirect(reverse('game_detail', args=[game.id]))
     return HttpResponseRedirect(reverse('active_games'))
 
+
 def rules(request):
     return render(request, 'spacetrading/rules.html')
 
+
 class ActiveGameListView(LoginRequiredMixin, generic.ListView):
     model = models.Game
-    context_object_name = 'game_list'   # your own name for the list as a template variable
+    context_object_name = 'game_list'
     template_name = 'spacetrading/game_list.html'
     paginate_by = 10
 
@@ -59,12 +64,15 @@ class ActiveGameListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        games = models.Game.objects.filter(players__user=self.request.user).distinct().filter(game_state='r').order_by('id')
+        games = models.Game.objects.filter(
+            players__user=self.request.user).distinct().filter(game_state='r').order_by('id')
         return games
+
 
 class OpenGameListView(LoginRequiredMixin, generic.ListView):
     model = models.Game
-    context_object_name = 'game_list'   # your own name for the list as a template variable
+    # your own name for the list as a template variable
+    context_object_name = 'game_list'
     template_name = 'spacetrading/game_list.html'
     paginate_by = 10
 
@@ -77,7 +85,7 @@ class OpenGameListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         games = models.Game.objects.filter(game_state='w').order_by('id')
         return games
-    
+
     def post(self, request, *args, **kwargs):
         for key, _ in request.POST.items():
             if(re.match("join_\\d+", key)):
@@ -85,6 +93,7 @@ class OpenGameListView(LoginRequiredMixin, generic.ListView):
                 initialize.join_game(primary_key_game, request.user)
 
         return HttpResponseRedirect(self.request.path_info)
+
 
 class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
     model = models.Game
@@ -103,11 +112,17 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
             colour_active_planet = active_planet.colour
         user_active = active_player is not None and active_player.user == self.request.user
         symbols = generate_plain_symbols.draw_symbols()
-        context['nextgame'] = models.Game.objects.next(self.request.user, game_instance.id)
-        context['gameboard'] = generate_gameboard.draw_gameboard(game_instance, planets, players, user_active)
-        context['planet_market'] = generate_planet_market.draw_planet_market(game_instance, planets, players)
-        context['player_boards'] = generate_player_boards.draw_player_boards(players, game_instance)
-        context['trade_modal'] = generate_trade_modal.draw_trade_modal(players, planets)
+        context['game_data'] = json.dumps(game_instance.get_json(), indent=4)
+        context['nextgame'] = models.Game.objects.next(
+            self.request.user, game_instance.id)
+        context['gameboard'] = generate_gameboard.draw_gameboard(
+            game_instance, planets, players, user_active)
+        context['planet_market'] = generate_planet_market.draw_planet_market(
+            game_instance, planets, players)
+        context['player_boards'] = generate_player_boards.draw_player_boards(
+            players, game_instance)
+        context['trade_modal'] = generate_trade_modal.draw_trade_modal(
+            players, planets)
         context['user_active'] = user_active
         context['coin'] = symbols['coin']
         context["red_cross"] = symbols["red_cross"]
@@ -122,10 +137,14 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         context["colour_active_planet"] = colour_active_planet
         context["buy_resources"] = get_trade_resources("buy", active_planet)
         context["sell_resources"] = get_trade_resources("sell", active_planet)
-        context["cost_buy_resources"] = get_cost_trade_resources("buy", active_planet)
-        context["cost_sell_resources"] = get_cost_trade_resources("sell", active_planet)
-        context["influence_so_far"] = get_influence_so_far(game_instance, planets, active_player, active_planet)
-        context["settings"] = ["Resource limit: {}".format(game_instance.resource_limit)]
+        context["cost_buy_resources"] = get_cost_trade_resources(
+            "buy", active_planet)
+        context["cost_sell_resources"] = get_cost_trade_resources(
+            "sell", active_planet)
+        context["influence_so_far"] = get_influence_so_far(
+            game_instance, planets, active_player, active_planet)
+        context["settings"] = ["Resource limit: {}".format(
+            game_instance.resource_limit)]
         return context
 
     def post(self, request, *args, **kwargs):
@@ -144,6 +163,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
 
         return HttpResponseRedirect(self.request.path_info)
 
+
 def get_trade_resources(direction, planet):
     if planet is None:
         return []
@@ -151,6 +171,7 @@ def get_trade_resources(direction, planet):
         return planet.sell_resources
     elif direction == "buy":
         return planet.buy_resources
+
 
 def get_cost_trade_resources(direction, planet):
     if planet is None:
@@ -160,6 +181,7 @@ def get_cost_trade_resources(direction, planet):
     elif direction == "buy":
         return planet.cost_buy_resource
 
+
 def get_active_planet(player, planets):
     if player is None:
         return None
@@ -167,6 +189,7 @@ def get_active_planet(player, planets):
         if player.ship_position == planet.position_of_hexes[planet.current_position]:
             return planet
     return None
+
 
 def get_influence_so_far(game, planets, active_player, active_planet):
     if active_planet is None:

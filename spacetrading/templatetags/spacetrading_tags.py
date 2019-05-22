@@ -2,6 +2,7 @@ from django import template
 
 register = template.Library()
 
+
 @register.simple_tag
 def is_active(player, players):
     for other_player in players:
@@ -9,6 +10,7 @@ def is_active(player, players):
             return False
 
     return True
+
 
 @register.simple_tag
 def can_trade_resource(resource, resources):

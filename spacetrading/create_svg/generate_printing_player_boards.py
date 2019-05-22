@@ -6,6 +6,7 @@ generate the planet market
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg import generate_svg_symbols
 
+
 def get_symbol_name(resource):
     if resource is '0':
         return 'resource_placeholder'
@@ -36,11 +37,11 @@ def create_playerboard(svg, colour, playername, position):
         stroke_colour="black", fill_opacity="1",
         fill_colour=colour,
         additional_arguments={
-            "rx" : "20",
-            "ry" : "20"
+            "rx": "20",
+            "ry": "20"
         }
     )
-    
+
     for index, resource in enumerate(['1', '2', '3', '4', '5', 'coin']):
         column = index % 3
         row = (index - column)/3
@@ -52,8 +53,8 @@ def create_playerboard(svg, colour, playername, position):
             fill_colour="#DDD",
             stroke_width=3,
             additional_arguments={
-                "rx" : "10",
-                "ry" : "10"
+                "rx": "10",
+                "ry": "10"
             }
         )
         subgroup.use_symbol(
@@ -72,7 +73,6 @@ def create_playerboard(svg, colour, playername, position):
             stroke_colour="black", fill_opacity="1",
             fill_colour="black"
         )
-
 
 
 def add_symbols(svg):
@@ -96,11 +96,13 @@ def draw_player_boards(players):
     svg = Svg(width=680, height=460, id_name="playerboards")
     add_symbols(svg)
     for index, player in enumerate(players):
-        create_playerboard(svg, player.colour, str(index), [340*(index%2), 230*int(index/2)])
+        create_playerboard(svg, player.colour, str(index), [
+                           340*(index % 2), 230*int(index/2)])
 
     svg_string = svg.get_string()
 
     return svg_string
+
 
 if __name__ == '__main__':
     pass

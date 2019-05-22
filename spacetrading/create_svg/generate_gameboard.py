@@ -24,6 +24,7 @@ PADDING_TIMEBOXES = 20
 WIDTH = NUMBER_TIMEBOXES_WIDTH * SIZE_TIMEBOX
 HEIGHT = NUMBER_TIMEBOXES_HEIGHT * SIZE_TIMEBOX
 
+
 def get_hex_coordinates(position, hex_size):
     """
     convert position to hex coordinate
@@ -78,8 +79,8 @@ def oddq_to_axial(oddq_coordinates):
     convert column row coordinates to axial coordinates
     """
     x_coord = oddq_coordinates[1]
-    z_coord = int(oddq_coordinates[0] - \
-        (oddq_coordinates[1] - (oddq_coordinates[1] & 1)) / 2)
+    z_coord = int(oddq_coordinates[0] -
+                  (oddq_coordinates[1] - (oddq_coordinates[1] & 1)) / 2)
     y_coord = -x_coord - z_coord
     return [x_coord, y_coord]
 
@@ -189,6 +190,7 @@ def draw_hex_grid(parent, planets, user_active):
             font_colour="#FFFFFF"
         )
 
+
 def draw_timebox(position, size, name, time, parent):
     """
     draw one box of the timeline
@@ -215,7 +217,6 @@ def draw_timebox(position, size, name, time, parent):
         (position_x + width / 2, position_y + height / 2 + 4),
         str(time), font_size=8
     )
-
 
 
 def draw_timeline(svg):
@@ -259,12 +260,14 @@ def draw_player_ships(svg, players):
         if player.last_move >= 0:
             hex_center = get_hex_center(player.ship_position, HEX_SIZE)
             players_group.create_rectangle(
-                [hex_center[0]+player.ship_offset[0], hex_center[1]+player.ship_offset[1]],
+                [hex_center[0]+player.ship_offset[0],
+                    hex_center[1]+player.ship_offset[1]],
                 (SHIP_WIDTH, SHIP_HEIGHT),
                 "ship_{}".format(player.user.get_username()),
                 fill_colour=player.colour,
                 stroke_colour="black"
             )
+
 
 def get_timemarker_position(time_spent, stack_position):
     """
@@ -286,6 +289,7 @@ def get_timemarker_position(time_spent, stack_position):
         y_pos = 15 + (100 - time_space) * SIZE_TIMEBOX
     y_pos = y_pos - stack_position*4
     return [x_pos, y_pos]
+
 
 def draw_timemarkers(svg, game, players):
     """
@@ -338,6 +342,7 @@ def draw_timemarkers(svg, game, players):
             position=get_timemarker_position(timemarker[0], stack_position),
             fill_colour=timemarker[2]
         )
+
 
 def draw_playerhelp(svg, position):
     """
@@ -392,7 +397,8 @@ def draw_gameboard(game, planets, players, user_active, bg_image="/static/auth/b
     svg = Svg(width=str(WIDTH), height=str(HEIGHT), id_name="gameboard")
     generate_svg_symbols.add_posibility_for_disc_3d(svg)
     generate_svg_symbols.add_posibility_for_square_3d(svg)
-    svg.create_image(bg_image, width="1200", height="876", x_pos="0", y_pos="0")
+    svg.create_image(bg_image, width="1200",
+                     height="876", x_pos="0", y_pos="0")
     draw_timeline(svg)
     draw_hex_grid(svg, planets, user_active)
 
