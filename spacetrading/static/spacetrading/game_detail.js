@@ -29,6 +29,39 @@ function getActivePlayer()
     return current_player
 }
 
+function getActivePlanet()
+{
+    if(active_player == null){
+        return null
+    }
+    for(planetnumber in game_data.planets){
+        const planet = game_data.planets[planetnumber]
+        if(active_player.ship_position[0] == planet.position_of_hexes[planet.current_position][0] &&
+            active_player.ship_position[1] == planet.position_of_hexes[planet.current_position][1]){
+            return planet
+        }
+    }
+    return null
+}
+
+function computeDistance(hex_element){
+    const destination_q = hex_element.getAttribute("coord_q")
+    const destination_r = hex_element.getAttribute("coord_r")
+    const destination_s = -destination_q -destination_r
+    const current_q = active_player.ship_position[0]
+    const current_r = active_player.ship_position[1]
+    const current_s = -current_q -current_r
+    distance = Math.max(
+        Math.abs(destination_q-current_q),
+        Math.abs(destination_r-current_r),
+        Math.abs(destination_s-current_s)
+    )
+    if(distance > 0){
+        return distance + 2
+    }
+    return 4
+}
+
 function clickHex(hex_element)
 {
     if (lastClickedHex != null){
@@ -48,12 +81,45 @@ function clickHex(hex_element)
     hex_element.style.stroke = "red"
     
     lastClickedHex = hex_element
+    var timeField = document.getElementById("id_spend_time")
+    timeField.value = computeDistance(hex_element)
 }
 
 
 function refreshChoices()
 {
     setViewPlayerState()
+}
+
+function getCost(resources, cost, resource)
+{
+    for(var i=0; i<resources.length; i++){
+        if(resource == resources[i]){
+            return cost[i]
+        }
+    }
+    return 0
+}
+
+function getCurrentInfluence()
+{
+    for(p in game_data.planets){
+        if(active_planet == game_data.planets[p]){
+            return game_data.planet_influence_track[p][active_player.player_number]
+        }
+    }
+}
+
+function getCostInfluence(traded, boughtInfluence){
+    var cost = 0
+    var currentInfluence = getCurrentInfluence()
+    if(traded && boughtInfluence > 0){
+        cost = cost + 1
+        boughtInfluence = boughtInfluence - 1
+        currentInfluence = currentInfluence + 1
+    }
+    cost = cost + (2*currentInfluence + boughtInfluence + 1)*boughtInfluence/2
+    return cost
 }
 
 function setViewPlayerState()
@@ -65,22 +131,39 @@ function setViewPlayerState()
     {
         var amount = active_player.resources[resource]
         try{
-            var sellSelect = document.getElementById("id_sell_resource_" + (resource + 1))
-            amount = amount - parseInt(sellSelect.options[sellSelect.selectedIndex].value)
+            const sellSelect = document.getElementById("id_sell_resource_" + (resource + 1))
+            const sellAmount = parseInt(sellSelect.options[sellSelect.selectedIndex].value)
+            const cost = sellAmount*getCost(active_planet.sell_resources, active_planet.cost_sell_resource, (resource + 1).toString())
+            if(sellAmount > 0){
+                traded = true
+            }
+            amount = amount - sellAmount
+            money = money + cost
         }
         catch{}
         try{
-            var buySelect = document.getElementById("id_buy_resource_" + (resource + 1))
-            amount = amount + parseInt(buySelect.options[buySelect.selectedIndex].value)
+            const buySelect = document.getElementById("id_buy_resource_" + (resource + 1))
+            const buyAmount = parseInt(buySelect.options[buySelect.selectedIndex].value)
+            const cost = buyAmount*getCost(active_planet.buy_resources, active_planet.cost_buy_resource, (resource + 1).toString())
+            if(buyAmount > 0){
+                traded = true
+            }
+            amount = amount + buyAmount
+            money = money - cost
         }
         catch{}
         
         document.getElementById("resource_amount_" + (resource + 1) + "_" + player_number).innerHTML = amount
     }
+    const influenceSelect = document.getElementById("id_buy_influence")
+    const boughtInfluence = parseInt(influenceSelect.options[influenceSelect.selectedIndex].value)
+    const costInfluence = getCostInfluence(traded, boughtInfluence)
+    money = money - costInfluence
+    document.getElementById("coins_" + player_number).innerHTML = money
 }
 
 const game_data = JSON.parse(document.getElementById("game_data").innerHTML)
-
 const active_player = getActivePlayer()
-console.log(active_player)
+const active_planet = getActivePlanet()
+
 refreshChoices()
