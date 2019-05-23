@@ -107,9 +107,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         players = game_instance.players.all().order_by('player_number')
         active_player = move.get_active_player(players)
         active_planet = get_active_planet(active_player, planets)
-        colour_active_planet = "#FFF"
-        if active_planet is not None:
-            colour_active_planet = active_planet.colour
+
         user_active = active_player is not None and active_player.user == self.request.user
         symbols = generate_plain_symbols.draw_symbols()
         context['game_data'] = json.dumps(game_instance.get_json(), indent=4)
@@ -134,17 +132,9 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         context["time"] = symbols["time"]
         context["first_move"] = active_player.last_move < 0
         context["can_trade"] = active_planet is not None
-        context["colour_active_planet"] = colour_active_planet
         context["buy_resources"] = get_trade_resources("buy", active_planet)
         context["sell_resources"] = get_trade_resources("sell", active_planet)
-        context["cost_buy_resources"] = get_cost_trade_resources(
-            "buy", active_planet)
-        context["cost_sell_resources"] = get_cost_trade_resources(
-            "sell", active_planet)
-        context["influence_so_far"] = get_influence_so_far(
-            game_instance, planets, active_player, active_planet)
-        context["settings"] = ["Resource limit: {}".format(
-            game_instance.resource_limit)]
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -189,11 +179,3 @@ def get_active_planet(player, planets):
         if player.ship_position == planet.position_of_hexes[planet.current_position]:
             return planet
     return None
-
-
-def get_influence_so_far(game, planets, active_player, active_planet):
-    if active_planet is None:
-        return ""
-    for index, planet in enumerate(planets):
-        if planet == active_planet:
-            return str(game.planet_influence_track[index][active_player.player_number])

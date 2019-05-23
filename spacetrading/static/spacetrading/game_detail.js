@@ -162,8 +162,30 @@ function setViewPlayerState()
     document.getElementById("coins_" + player_number).innerHTML = money
 }
 
+function setGameState()
+{
+    document.getElementById("resource_limit").innerHTML = "Resource limit: " + game_data.resource_limit
+    for(i in active_planet.buy_resources){
+        const resource = parseInt(active_planet.buy_resources[i])
+        if(resource != 0){
+            document.getElementById("price_buy_resource_" + resource).innerHTML = active_planet.cost_buy_resource[i]
+        }
+    }
+    for(i in active_planet.sell_resources){
+        const resource = parseInt(active_planet.sell_resources[i])
+        if(resource != 0){
+            document.getElementById("price_sell_resource_" + resource).innerHTML = active_planet.cost_sell_resource[i]
+        }
+    }
+    if(active_planet != null){
+        document.getElementById("table_head").setAttribute("style", "background-color:" + active_planet.colour)
+    }
+}
+
 const game_data = JSON.parse(document.getElementById("game_data").innerHTML)
 const active_player = getActivePlayer()
 const active_planet = getActivePlanet()
+
+setGameState()
 
 refreshChoices()
