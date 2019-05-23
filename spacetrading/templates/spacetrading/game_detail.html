@@ -146,11 +146,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if first_move %}
-                        <input type="hidden" value="0" name="{{form.spend_time.name}}" id="{{form.spend_time.auto_id}}">
-                    {% else %}
-                        {{ form.spend_time }}
-                    {% endif %}
+                    {{ form.spend_time }}
                 </td>
             </tr>
             <tr class="table-danger">

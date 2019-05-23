@@ -155,30 +155,36 @@ function setViewPlayerState()
         
         document.getElementById("resource_amount_" + (resource + 1) + "_" + player_number).innerHTML = amount
     }
-    const influenceSelect = document.getElementById("id_buy_influence")
-    const boughtInfluence = parseInt(influenceSelect.options[influenceSelect.selectedIndex].value)
-    const costInfluence = getCostInfluence(traded, boughtInfluence)
-    money = money - costInfluence
+    try{
+        const influenceSelect = document.getElementById("id_buy_influence")
+        const boughtInfluence = parseInt(influenceSelect.options[influenceSelect.selectedIndex].value)
+        const costInfluence = getCostInfluence(traded, boughtInfluence)
+        money = money - costInfluence
+    }
+    catch{}
     document.getElementById("coins_" + player_number).innerHTML = money
 }
 
 function setGameState()
 {
     document.getElementById("resource_limit").innerHTML = "Resource limit: " + game_data.resource_limit
-    for(i in active_planet.buy_resources){
-        const resource = parseInt(active_planet.buy_resources[i])
-        if(resource != 0){
-            document.getElementById("price_buy_resource_" + resource).innerHTML = active_planet.cost_buy_resource[i]
-        }
-    }
-    for(i in active_planet.sell_resources){
-        const resource = parseInt(active_planet.sell_resources[i])
-        if(resource != 0){
-            document.getElementById("price_sell_resource_" + resource).innerHTML = active_planet.cost_sell_resource[i]
-        }
-    }
     if(active_planet != null){
+        for(i in active_planet.buy_resources){
+            const resource = parseInt(active_planet.buy_resources[i])
+            if(resource != 0){
+                document.getElementById("price_buy_resource_" + resource).innerHTML = active_planet.cost_buy_resource[i]
+            }
+        }
+        for(i in active_planet.sell_resources){
+            const resource = parseInt(active_planet.sell_resources[i])
+            if(resource != 0){
+                document.getElementById("price_sell_resource_" + resource).innerHTML = active_planet.cost_sell_resource[i]
+            }
+        }
         document.getElementById("table_head").setAttribute("style", "background-color:" + active_planet.colour)
+    }
+    if(active_player != null && active_player.time_spent < 0){
+        document.getElementById("id_spend_time").setAttribute("type", "hidden")
     }
 }
 

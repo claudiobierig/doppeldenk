@@ -119,10 +119,7 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
             game_instance, planets, players)
         context['player_boards'] = generate_player_boards.draw_player_boards(
             players, game_instance)
-        context['trade_modal'] = generate_trade_modal.draw_trade_modal(
-            players, planets)
-        context['user_active'] = user_active
-        context['coin'] = symbols['coin']
+
         context["red_cross"] = symbols["red_cross"]
         context["radioactive"] = symbols["radioactive"]
         context["food"] = symbols["food"]
@@ -130,7 +127,8 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         context["building_resource"] = symbols["building_resource"]
         context["influence"] = symbols["influence"]
         context["time"] = symbols["time"]
-        context["first_move"] = active_player.last_move < 0
+
+        context['user_active'] = user_active
         context["can_trade"] = active_planet is not None
         context["buy_resources"] = get_trade_resources("buy", active_planet)
         context["sell_resources"] = get_trade_resources("sell", active_planet)
