@@ -43,45 +43,20 @@
         <tbody>
             <tr class="table-success">
                 <th style="text-align: center">Sell:</th>
-                {% can_trade_resource '1' sell_resources as can_sell_1 %}
-                {% can_trade_resource '2' sell_resources as can_sell_2 %}
-                {% can_trade_resource '3' sell_resources as can_sell_3 %}
-                {% can_trade_resource '4' sell_resources as can_sell_4 %}
-                {% can_trade_resource '5' sell_resources as can_sell_5 %}
                 <td style="text-align: center">
-                    {% if can_sell_1 %}
-                        {{ form.sell_resource_1 }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.sell_resource_1.name}}" id="{{form.sell_resource_1.auto_id}}">
-                    {% endif %}
+                    {{ form.sell_resource_1 }}
                 </td>
                 <td style="text-align: center">
-                    {% if can_sell_2 %}
-                        {{ form.sell_resource_2 }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.sell_resource_2.name}}" id="{{form.sell_resource_2.auto_id}}">
-                    {% endif %}
+                    {{ form.sell_resource_2 }}
                 </td>
                 <td style="text-align: center">
-                    {% if can_sell_3 %}
-                        {{ form.sell_resource_3 }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.sell_resource_3.name}}" id="{{form.sell_resource_3.auto_id}}">
-                    {% endif %}
+                    {{ form.sell_resource_3 }}
                 </td>
                 <td style="text-align: center">
-                    {% if can_sell_4 %}
-                        {{ form.sell_resource_4 }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.sell_resource_4.name}}" id="{{form.sell_resource_4.auto_id}}">
-                    {% endif %}
+                    {{ form.sell_resource_4 }}
                 </td>
                 <td style="text-align: center">
-                    {% if can_sell_5 %}
-                        {{ form.sell_resource_5 }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.sell_resource_5.name}}" id="{{form.sell_resource_5.auto_id}}">
-                    {% endif %}
+                    {{ form.sell_resource_5 }}
                 </td>
                 <td></td>
                 <td></td>
@@ -98,52 +73,23 @@
             </tr>
             <tr class="table-danger">
                 <th style="text-align: center">Buy:</th>
-                {% can_trade_resource '1' buy_resources as can_buy_1 %}
-                {% can_trade_resource '2' buy_resources as can_buy_2 %}
-                {% can_trade_resource '3' buy_resources as can_buy_3 %}
-                {% can_trade_resource '4' buy_resources as can_buy_4 %}
-                {% can_trade_resource '5' buy_resources as can_buy_5 %}
                 <td style="text-align: center">
-                    {% if can_buy_1 %}
-                        {{ form.buy_resource_1 }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.buy_resource_1.name}}" id="{{form.buy_resource_1.auto_id}}">
-                    {% endif %}
+                    {{ form.buy_resource_1 }}
                 </td>
                 <td style="text-align: center">
-                    {% if can_buy_2 %}
-                        {{ form.buy_resource_2 }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.buy_resource_2.name}}" id="{{form.buy_resource_2.auto_id}}">
-                    {% endif %}
+                    {{ form.buy_resource_2 }}
                 </td>
                 <td style="text-align: center">
-                    {% if can_buy_3 %}
-                        {{ form.buy_resource_3 }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.buy_resource_3.name}}" id="{{form.buy_resource_3.auto_id}}">
-                    {% endif %}
+                    {{ form.buy_resource_3 }}
                 </td>
                 <td style="text-align: center">
-                    {% if can_buy_4 %}
-                        {{ form.buy_resource_4 }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.buy_resource_4.name}}" id="{{form.buy_resource_4.auto_id}}">
-                    {% endif %}
+                    {{ form.buy_resource_4 }}
                 </td>
                 <td style="text-align: center">
-                    {% if can_buy_5 %}
-                        {{ form.buy_resource_5 }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.buy_resource_5.name}}" id="{{form.buy_resource_5.auto_id}}">
-                    {% endif %}
+                    {{ form.buy_resource_5 }}
                 </td>
                 <td style="text-align: center">
-                    {% if can_trade %}
-                        {{ form.buy_influence }}
-                    {% else %}
-                        <input type="hidden" value="0" name="{{form.buy_influence.name}}" id="{{form.buy_influence.auto_id}}">
-                    {% endif %}
+                    {{ form.buy_influence }}
                 </td>
                 <td>
                     {{ form.spend_time }}

@@ -106,7 +106,6 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         planets = game_instance.planets.all().order_by('number_of_hexes')
         players = game_instance.players.all().order_by('player_number')
         active_player = move.get_active_player(players)
-        active_planet = get_active_planet(active_player, planets)
 
         user_active = active_player is not None and active_player.user == self.request.user
         symbols = generate_plain_symbols.draw_symbols()
@@ -129,9 +128,6 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         context["time"] = symbols["time"]
 
         context['user_active'] = user_active
-        context["can_trade"] = active_planet is not None
-        context["buy_resources"] = get_trade_resources("buy", active_planet)
-        context["sell_resources"] = get_trade_resources("sell", active_planet)
 
         return context
 
@@ -150,30 +146,3 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
                     move.pass_game(game_instance)
 
         return HttpResponseRedirect(self.request.path_info)
-
-
-def get_trade_resources(direction, planet):
-    if planet is None:
-        return []
-    if direction == "sell":
-        return planet.sell_resources
-    elif direction == "buy":
-        return planet.buy_resources
-
-
-def get_cost_trade_resources(direction, planet):
-    if planet is None:
-        return []
-    if direction == "sell":
-        return planet.cost_sell_resource
-    elif direction == "buy":
-        return planet.cost_buy_resource
-
-
-def get_active_planet(player, planets):
-    if player is None:
-        return None
-    for planet in planets:
-        if player.ship_position == planet.position_of_hexes[planet.current_position]:
-            return planet
-    return None

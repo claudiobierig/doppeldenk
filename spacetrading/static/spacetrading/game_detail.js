@@ -130,38 +130,32 @@ function setViewPlayerState()
     for(var resource = 0; resource <5; resource++)
     {
         var amount = active_player.resources[resource]
-        try{
+        if(active_planet != null){
             const sellSelect = document.getElementById("id_sell_resource_" + (resource + 1))
             const sellAmount = parseInt(sellSelect.options[sellSelect.selectedIndex].value)
-            const cost = sellAmount*getCost(active_planet.sell_resources, active_planet.cost_sell_resource, (resource + 1).toString())
             if(sellAmount > 0){
+                const cost = sellAmount*getCost(active_planet.sell_resources, active_planet.cost_sell_resource, (resource + 1).toString())
+                amount = amount - sellAmount
+                money = money + cost
                 traded = true
             }
-            amount = amount - sellAmount
-            money = money + cost
-        }
-        catch{}
-        try{
             const buySelect = document.getElementById("id_buy_resource_" + (resource + 1))
             const buyAmount = parseInt(buySelect.options[buySelect.selectedIndex].value)
-            const cost = buyAmount*getCost(active_planet.buy_resources, active_planet.cost_buy_resource, (resource + 1).toString())
             if(buyAmount > 0){
+                const cost = buyAmount*getCost(active_planet.buy_resources, active_planet.cost_buy_resource, (resource + 1).toString())
                 traded = true
+                amount = amount + buyAmount
+                money = money - cost
             }
-            amount = amount + buyAmount
-            money = money - cost
         }
-        catch{}
-        
         document.getElementById("resource_amount_" + (resource + 1) + "_" + player_number).innerHTML = amount
     }
-    try{
+    if(active_planet != null){
         const influenceSelect = document.getElementById("id_buy_influence")
         const boughtInfluence = parseInt(influenceSelect.options[influenceSelect.selectedIndex].value)
         const costInfluence = getCostInfluence(traded, boughtInfluence)
         money = money - costInfluence
     }
-    catch{}
     document.getElementById("coins_" + player_number).innerHTML = money
 }
 
@@ -185,6 +179,17 @@ function setGameState()
     }
     if(active_player != null && active_player.time_spent < 0){
         document.getElementById("id_spend_time").setAttribute("type", "hidden")
+    }
+    for(var i=1;i<=5;i++){
+        if(active_planet == null || !active_planet.sell_resources.includes(i.toString())){
+            document.getElementById("id_sell_resource_" + i).style.visibility = 'hidden'
+        }
+        if(active_planet == null || !active_planet.buy_resources.includes(i.toString())){
+            document.getElementById("id_buy_resource_" + i).style.visibility = 'hidden'
+        }
+    }
+    if(active_planet == null){
+        document.getElementById("id_buy_influence").style.visibility = 'hidden'
     }
 }
 
