@@ -129,7 +129,7 @@ class GameDisplay(generic.DetailView, LoginRequiredMixin):
         context["time"] = symbols["time"]
 
         context['user_active'] = user_active
-        context['form'] = forms.Move({"hello": "world"})
+        context['form'] = forms.Move({"sell_resources": [1]})
 
         return context
 
@@ -156,7 +156,6 @@ class GameMove(generic.detail.SingleObjectMixin, generic.FormView, LoginRequired
                     move.pass_game(game_instance)
 
         return HttpResponseRedirect(self.request.path_info)
-
 
 class GameDetailView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):

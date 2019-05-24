@@ -39,11 +39,6 @@ class Move(forms.Form):
     """
     Form to make a move
     """
-    def __init__(self, *args, **kwargs):
-        print(args)
-        print(kwargs)
-        super(Move, self).__init__(*args, **kwargs)
-
     coord_q = forms.IntegerField(
         label="Coordinate q", min_value=-20, max_value=20,
         widget=forms.HiddenInput(), initial=0
@@ -195,3 +190,8 @@ class Move(forms.Form):
             attrs={'class': 'form-control form-control-sm'}),
         initial=0
     )
+
+    def __init__(self, *args, **kwargs):
+        sell_resources = args[0]["sell_resources"]
+        self.base_fields["sell_resource_1"].widget = forms.HiddenInput()
+        super(Move, self).__init__(*args, **kwargs)
