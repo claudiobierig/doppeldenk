@@ -2,10 +2,12 @@ import json
 import re
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views import generic
+from django.views import View
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
@@ -95,9 +97,8 @@ class OpenGameListView(LoginRequiredMixin, generic.ListView):
         return HttpResponseRedirect(self.request.path_info)
 
 
-class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
+class GameDisplay(generic.DetailView, LoginRequiredMixin):
     model = models.Game
-    form_class = forms.Move
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -128,10 +129,19 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         context["time"] = symbols["time"]
 
         context['user_active'] = user_active
+        context['form'] = forms.Move({"hello": "world"})
 
         return context
 
+class GameMove(generic.detail.SingleObjectMixin, generic.FormView, LoginRequiredMixin):
+    template_name = 'spacetrading/game_detail.html'
+    form_class = forms.Move
+    model = models.Game
+
     def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+
         form = forms.Move(request.POST)
         if form.is_valid():
             game_instance = super().get_object()
@@ -146,3 +156,13 @@ class GameDetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
                     move.pass_game(game_instance)
 
         return HttpResponseRedirect(self.request.path_info)
+
+
+class GameDetailView(View, LoginRequiredMixin):
+    def get(self, request, *args, **kwargs):
+        view = GameDisplay.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        view = GameMove.as_view()
+        return view(request, *args, **kwargs)

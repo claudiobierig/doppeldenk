@@ -39,6 +39,11 @@ class Move(forms.Form):
     """
     Form to make a move
     """
+    def __init__(self, *args, **kwargs):
+        print(args)
+        print(kwargs)
+        super(Move, self).__init__(*args, **kwargs)
+
     coord_q = forms.IntegerField(
         label="Coordinate q", min_value=-20, max_value=20,
         widget=forms.HiddenInput(), initial=0

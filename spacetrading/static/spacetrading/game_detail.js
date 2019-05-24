@@ -177,6 +177,7 @@ function setGameState()
         }
         document.getElementById("table_head").setAttribute("style", "background-color:" + active_planet.colour)
     }
+    /*
     if(active_player != null && active_player.time_spent < 0){
         document.getElementById("id_spend_time").setAttribute("type", "hidden")
     }
@@ -190,7 +191,7 @@ function setGameState()
     }
     if(active_planet == null){
         document.getElementById("id_buy_influence").style.visibility = 'hidden'
-    }
+    }*/
 }
 
 const game_data = JSON.parse(document.getElementById("game_data").innerHTML)
