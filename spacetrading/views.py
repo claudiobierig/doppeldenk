@@ -160,6 +160,8 @@ class GameMove(generic.detail.SingleObjectMixin, generic.FormView, LoginRequired
 
 class GameDetailView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
+        if request.user.is_anonymous:
+            return HttpResponseForbidden()
         view = GameDisplay.as_view()
         return view(request, *args, **kwargs)
 
