@@ -131,22 +131,26 @@ function setViewPlayerState()
     {
         var amount = active_player.resources[resource]
         if(active_planet != null){
-            const sellSelect = document.getElementById("id_sell_resource_" + (resource + 1))
-            const sellAmount = parseInt(sellSelect.options[sellSelect.selectedIndex].value)
-            if(sellAmount > 0){
-                const cost = sellAmount*getCost(active_planet.sell_resources, active_planet.cost_sell_resource, (resource + 1).toString())
-                amount = amount - sellAmount
-                money = money + cost
-                traded = true
-            }
-            const buySelect = document.getElementById("id_buy_resource_" + (resource + 1))
-            const buyAmount = parseInt(buySelect.options[buySelect.selectedIndex].value)
-            if(buyAmount > 0){
-                const cost = buyAmount*getCost(active_planet.buy_resources, active_planet.cost_buy_resource, (resource + 1).toString())
-                traded = true
-                amount = amount + buyAmount
-                money = money - cost
-            }
+            try{
+                const sellSelect = document.getElementById("id_sell_resource_" + (resource + 1))
+                const sellAmount = parseInt(sellSelect.options[sellSelect.selectedIndex].value)
+                if(sellAmount > 0){
+                    const cost = sellAmount*getCost(active_planet.sell_resources, active_planet.cost_sell_resource, (resource + 1).toString())
+                    amount = amount - sellAmount
+                    money = money + cost
+                    traded = true
+                }
+            }catch{}
+            try{
+                const buySelect = document.getElementById("id_buy_resource_" + (resource + 1))
+                const buyAmount = parseInt(buySelect.options[buySelect.selectedIndex].value)
+                if(buyAmount > 0){
+                    const cost = buyAmount*getCost(active_planet.buy_resources, active_planet.cost_buy_resource, (resource + 1).toString())
+                    traded = true
+                    amount = amount + buyAmount
+                    money = money - cost
+                }
+            }catch{}
         }
         document.getElementById("resource_amount_" + (resource + 1) + "_" + player_number).innerHTML = amount
     }
@@ -177,21 +181,6 @@ function setGameState()
         }
         document.getElementById("table_head").setAttribute("style", "background-color:" + active_planet.colour)
     }
-    /*
-    if(active_player != null && active_player.time_spent < 0){
-        document.getElementById("id_spend_time").setAttribute("type", "hidden")
-    }
-    for(var i=1;i<=5;i++){
-        if(active_planet == null || !active_planet.sell_resources.includes(i.toString())){
-            document.getElementById("id_sell_resource_" + i).style.visibility = 'hidden'
-        }
-        if(active_planet == null || !active_planet.buy_resources.includes(i.toString())){
-            document.getElementById("id_buy_resource_" + i).style.visibility = 'hidden'
-        }
-    }
-    if(active_planet == null){
-        document.getElementById("id_buy_influence").style.visibility = 'hidden'
-    }*/
 }
 
 const game_data = JSON.parse(document.getElementById("game_data").innerHTML)

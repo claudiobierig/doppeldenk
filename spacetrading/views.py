@@ -107,6 +107,10 @@ class GameDisplay(generic.DetailView, LoginRequiredMixin):
         planets = game_instance.planets.all().order_by('number_of_hexes')
         players = game_instance.players.all().order_by('player_number')
         active_player = move.get_active_player(players)
+        if active_player is None:
+            active_planet = None
+        else:
+            [active_planet, _] = move.get_active_planet(active_player.ship_position, planets)
 
         user_active = active_player is not None and active_player.user == self.request.user
         symbols = generate_plain_symbols.draw_symbols()
@@ -129,7 +133,12 @@ class GameDisplay(generic.DetailView, LoginRequiredMixin):
         context["time"] = symbols["time"]
 
         context['user_active'] = user_active
-        context['form'] = forms.Move({"hello": "world"})
+        context['form'] = forms.Move(
+            {
+                "active_planet": active_planet,
+                "active_player": active_player
+            }
+        )
 
         return context
 
