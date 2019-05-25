@@ -7,6 +7,10 @@ from enum import Enum
 from spacetrading.logic import gamesettings
 
 
+BUY_MAPPING = {str(i) : "buy_resource_{}".format(i) for i in range(1, 6)}
+SELL_MAPPING = {str(i) : "sell_resource_{}".format(i) for i in range(1, 6)}
+
+
 class Event(Enum):
     """
     Enum of all Events
@@ -52,7 +56,8 @@ def move(game, data):
         active_player, active_planet, planet_number, game, data
     )
     change_active_player(
-        active_player, game.next_move_number, data, trade_balance)
+        active_player, active_planet, game.next_move_number, data, trade_balance
+    )
     change_active_planet(active_planet, data)
     change_game(game, players, planets, planet_number,
                 active_player.player_number, data)
@@ -78,63 +83,43 @@ def get_trade_balance_or_raise(active_player, active_planet, planet_number, game
         raise MoveError("no active player")
     if [data['coord_q'], data['coord_r']] == [0, 0]:
         raise MoveError("You didn't choose where to fly.")
-    distance = compute_distance(active_player.ship_position, [
-                                data['coord_q'], data['coord_r']])
+    distance = compute_distance(
+        active_player.ship_position,
+        [data['coord_q'], data['coord_r']]
+    )
     if distance > data['spend_time'] and active_player.last_move >= 0:
-        raise MoveError("You want to spend {} time, but the distance to you destination is {}".format(
-            data['spend_time'], distance))
-
-    buy_mapping = [
-        ["buy_resource_1", '1'],
-        ["buy_resource_2", '2'],
-        ["buy_resource_3", '3'],
-        ["buy_resource_4", '4'],
-        ["buy_resource_5", '5']
-    ]
-    sell_mapping = [
-        ["sell_resource_1", '1'],
-        ["sell_resource_2", '2'],
-        ["sell_resource_3", '3'],
-        ["sell_resource_4", '4'],
-        ["sell_resource_5", '5']
-    ]
+        raise MoveError(
+            "You want to spend {} time, but the distance to you destination is {}".format(
+                data['spend_time'], distance)
+        )
 
     trade_balance = 0
     traded = False
 
-    for key, value in buy_mapping:
-        if data[key] != 0:
-            if active_planet is None:
-                raise MoveError("You cannot trade, if you are not at a planet")
-            if value not in active_planet.buy_resources:
-                raise MoveError(
-                    "You cannot trade the resources you selected at the planet you are")
-            if data[key] + active_player.resources[int(value) - 1] > game.resource_limit:
+    if active_planet is None:
+        return trade_balance
+
+    for resource in active_planet.buy_resources:
+        if resource != '0':
+            if data[BUY_MAPPING[resource]] + active_player.resources[int(resource) - 1] > game.resource_limit:
                 raise MoveError(
                     "You cannot hold more than {} of one resource".format(game.resource_limit))
-            trade_balance = trade_balance - \
-                data[key] * \
-                active_planet.cost_buy_resource[active_planet.buy_resources.index(
-                    value)]
-            traded = True
+            if data[BUY_MAPPING[resource]] > 0:
+                trade_balance = trade_balance - \
+                    data[BUY_MAPPING[resource]] * \
+                        active_planet.cost_buy_resource[active_planet.buy_resources.index(resource)]
+                traded = True
 
-    for key, value in sell_mapping:
-        if data[key] != 0:
-            if active_planet is None:
-                raise MoveError("You cannot trade, if you are not at a planet")
-            if value not in active_planet.sell_resources:
-                raise MoveError(
-                    "You cannot trade the resources you selected at the planet you are")
-            if data[key] > active_player.resources[int(value) - 1]:
+    for resource in active_planet.sell_resources:
+        if resource != '0':
+            if data[SELL_MAPPING[resource]] > active_player.resources[int(resource) - 1]:
                 raise MoveError(
                     "You tried to sell more resources than you have")
-            trade_balance = trade_balance + \
-                data[key] * \
-                active_planet.cost_sell_resource[active_planet.sell_resources.index(
-                    value)]
-            traded = True
-    if active_planet is None and data["buy_influence"] != 0:
-        raise MoveError("You cannot trade, if you are not at a planet")
+            if data[SELL_MAPPING[resource]] > 0:
+                trade_balance = trade_balance + \
+                    data[SELL_MAPPING[resource]] * \
+                        active_planet.cost_sell_resource[active_planet.sell_resources.index(resource)]
+                traded = True
 
     trade_balance = trade_balance - get_cost_influence(
         traded, data["buy_influence"], game.planet_influence_track[planet_number][active_player.player_number])
@@ -171,7 +156,7 @@ def get_cost_influence(did_we_trade, amount_influence, current_influence):
     return cost + (2*current_influence + amount_influence + 1)*amount_influence/2
 
 
-def change_active_player(active_player, next_move_number, data, trade_balance):
+def change_active_player(active_player, active_planet, next_move_number, data, trade_balance):
     """
     performs changes on active_player
     """
@@ -183,16 +168,14 @@ def change_active_player(active_player, next_move_number, data, trade_balance):
     active_player.last_move = next_move_number
     active_player.ship_position = [data['coord_q'], data['coord_r']]
     active_player.money = active_player.money + trade_balance
-    active_player.resources[0] = active_player.resources[0] + \
-        data["buy_resource_1"] - data["sell_resource_1"]
-    active_player.resources[1] = active_player.resources[1] + \
-        data["buy_resource_2"] - data["sell_resource_2"]
-    active_player.resources[2] = active_player.resources[2] + \
-        data["buy_resource_3"] - data["sell_resource_3"]
-    active_player.resources[3] = active_player.resources[3] + \
-        data["buy_resource_4"] - data["sell_resource_4"]
-    active_player.resources[4] = active_player.resources[4] + \
-        data["buy_resource_5"] - data["sell_resource_5"]
+    if active_planet is not None:
+        for resource in active_planet.buy_resources:
+            if resource != "0":
+                active_player.resources[int(resource) - 1] += data[BUY_MAPPING[resource]]
+        for resource in active_planet.sell_resources:
+            if resource != "0":
+                active_player.resources[int(resource) - 1] -= data[SELL_MAPPING[resource]]
+
     active_player.save()
 
 
@@ -203,14 +186,12 @@ def change_active_planet(active_planet, data):
     if active_planet is None:
         return
     for resource in active_planet.buy_resources:
-        key = "buy_resource_{}".format(resource)
-        if resource != '0' and data[key] != 0:
+        if resource != '0' and data[BUY_MAPPING[resource]] != 0:
             index = active_planet.buy_resources.index(resource)
             active_planet.cost_buy_resource[index] = min(
                 active_planet.cost_buy_resource[index] + 1, 8)
     for resource in active_planet.sell_resources:
-        key = "sell_resource_{}".format(resource)
-        if resource != '0' and data[key] != 0:
+        if resource != '0' and data[SELL_MAPPING[resource]] != 0:
             index = active_planet.sell_resources.index(resource)
             active_planet.cost_sell_resource[index] = max(
                 active_planet.cost_sell_resource[index] - 1, 2)
@@ -229,8 +210,9 @@ def change_game(game, players, planets, active_planet_number, active_player_numb
         elif next_event == Event.OFFER_DEMAND:
             offer_demand(game, planets)
         next_event = get_next_event(game, players)
-    game.planet_influence_track[active_planet_number][active_player_number] = game.planet_influence_track[
-        active_planet_number][active_player_number] + data["buy_influence"]
+    if active_planet_number != -1:
+        game.planet_influence_track[active_planet_number][active_player_number] = game.planet_influence_track[
+            active_planet_number][active_player_number] + data["buy_influence"]
     game.save()
 
 
