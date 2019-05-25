@@ -3,6 +3,7 @@ forms needed to play spacetrading
 """
 
 from django import forms
+from django.utils.safestring import mark_safe
 from spacetrading.logic import move
 
 
@@ -49,6 +50,13 @@ class Move(forms.Form):
         widget=forms.HiddenInput(), initial=0
     )
 
+    RESOURCE_TO_SYMBOL = {
+        "1": "red_cross",
+        "2": "radioactive",
+        "3": "food",
+        "4": "water",
+        "5": "building_resource"
+    }
     CHOICES = (
         ('0', 0),
         ('1', 1),
@@ -61,138 +69,61 @@ class Move(forms.Form):
         ('8', 8),
         ('9', 9),
     )
-    sell_resource_1 = forms.IntegerField(
-        label="Sell resource 1", max_value=9, min_value=0,
-        widget=forms.Select(
-            choices=CHOICES,
-            attrs={
-                'onchange': 'refreshChoices()',
-                'class': "form-control form-control-sm"
-            }
-        ),
-        initial=0
-    )
-    sell_resource_2 = forms.IntegerField(
-        label="Sell resource 2", max_value=9, min_value=0,
-        widget=forms.Select(
-            choices=CHOICES,
-            attrs={
-                'onchange': 'refreshChoices()',
-                'class': "form-control form-control-sm"
-            }
-        ),
-        initial=0
-    )
-    sell_resource_3 = forms.IntegerField(
-        label="Sell resource 3", max_value=9, min_value=0,
-        widget=forms.Select(
-            choices=CHOICES,
-            attrs={
-                'onchange': 'refreshChoices()',
-                'class': "form-control form-control-sm"
-            }
-        ),
-        initial=0
-    )
-    sell_resource_4 = forms.IntegerField(
-        label="Sell resource 4", max_value=9, min_value=0,
-        widget=forms.Select(
-            choices=CHOICES,
-            attrs={
-                'onchange': 'refreshChoices()',
-                'class': "form-control form-control-sm"
-            }
-        ),
-        initial=0
-    )
-    sell_resource_5 = forms.IntegerField(
-        label="Sell resource 5", max_value=9, min_value=0,
-        widget=forms.Select(
-            choices=CHOICES,
-            attrs={
-                'onchange': 'refreshChoices()',
-                'class': "form-control form-control-sm"
-            }
-        ),
-        initial=0
-    )
-
-    buy_resource_1 = forms.IntegerField(
-        label="Buy resource 1", max_value=9, min_value=0,
-        widget=forms.Select(
-            choices=CHOICES,
-            attrs={
-                'onchange': 'refreshChoices()',
-                'class': "form-control form-control-sm"
-            }
-        ),
-        initial=0
-    )
-    buy_resource_2 = forms.IntegerField(
-        label="Buy resource 2", max_value=9, min_value=0,
-        widget=forms.Select(
-            choices=CHOICES,
-            attrs={
-                'onchange': 'refreshChoices()',
-                'class': "form-control form-control-sm"
-            }
-        ),
-        initial=0
-    )
-    buy_resource_3 = forms.IntegerField(
-        label="Buy resource 3", max_value=9, min_value=0,
-        widget=forms.Select(
-            choices=CHOICES,
-            attrs={
-                'onchange': 'refreshChoices()',
-                'class': "form-control form-control-sm"
-            }
-        ),
-        initial=0
-    )
-    buy_resource_4 = forms.IntegerField(
-        label="Buy resource 4", max_value=9, min_value=0,
-        widget=forms.Select(
-            choices=CHOICES,
-            attrs={
-                'onchange': 'refreshChoices()',
-                'class': "form-control form-control-sm"
-            }
-        ),
-        initial=0
-    )
-    buy_resource_5 = forms.IntegerField(
-        label="Buy resource 5", max_value=9, min_value=0,
-        widget=forms.Select(
-            choices=CHOICES,
-            attrs={
-                'onchange': 'refreshChoices()',
-                'class': "form-control form-control-sm"
-            }
-        ),
-        initial=0
-    )
 
     def __init__(self, *args, **kwargs):
         active_planet = args[0].get("active_planet", None)
         active_player = args[0].get("active_player", None)
+        symbols = args[0].get("symbols", None)
         if active_planet is None:
             sell_resources = []
             buy_resources = []
+            cost_sell_resources = []
+            cost_buy_resources = []
             influence = False
         else:
             sell_resources = active_planet.sell_resources
             buy_resources = active_planet.buy_resources
+            cost_sell_resources = active_planet.cost_sell_resource
+            cost_buy_resources = active_planet.cost_buy_resource
             influence = True
 
         if active_player is None or active_player.time_spent < 0:
             time = False
         else:
             time = True
+        
+        for direction, mapping, resources, cost in [
+                ("Sell", move.SELL_MAPPING, sell_resources, cost_sell_resources),
+                ("Buy", move.BUY_MAPPING, buy_resources, cost_buy_resources)
+            ]:
+            for resource in range(1, 6):
+                fieldname = mapping[str(resource)]
+                if str(resource) in resources:
+                    self.base_fields[fieldname] = forms.IntegerField(
+                        label=mark_safe("{} {}".format(direction, symbols[self.RESOURCE_TO_SYMBOL[str(resource)]])),#label="{} resource {}".format(direction, resource),
+                        max_value=9, min_value=0,
+                        widget=forms.Select(
+                            choices=self.CHOICES,
+                            attrs={
+                                'onchange': 'refreshChoices()',
+                                'class': "form-control form-control-sm"
+                            }
+                        ),
+                        initial=0,
+                        help_text="{}".format(cost[resources.index(str(resource))])
+                    )
+                else:
+                    self.base_fields[fieldname] = forms.IntegerField(
+                        widget=forms.HiddenInput(),
+                        required=False,
+                        initial=0
+                    )
+
 
         if influence:
             self.base_fields["buy_influence"] = forms.IntegerField(
-                label="Buy influence", min_value=0, max_value=99,
+                label=mark_safe("Buy {}".format(symbols["influence"])),
+                min_value=0, max_value=99,
                 widget=forms.Select(
                     choices=self.CHOICES,
                     attrs={
@@ -211,7 +142,8 @@ class Move(forms.Form):
         
         if time:
             self.base_fields["spend_time"] = forms.IntegerField(
-                label="Spend time", min_value=0, max_value=100,
+                label=mark_safe("Spend {}".format(symbols["time"])),
+                min_value=0, max_value=100,
                 widget=forms.NumberInput(
                     attrs={'class': 'form-control form-control-sm'}),
                 initial=0
@@ -222,30 +154,6 @@ class Move(forms.Form):
                 required=False,
                 initial=0
             )
-        
-        for direction, mapping, resources in [
-                ("Buy", move.BUY_MAPPING, buy_resources),
-                ("Sell", move.SELL_MAPPING, sell_resources)
-            ]:
-            for resource in range(1, 6):
-                fieldname = mapping[str(resource)]
-                if str(resource) in resources:
-                    self.base_fields[fieldname] = forms.IntegerField(
-                        label="{} resource {}".format(direction, resource), max_value=9, min_value=0,
-                        widget=forms.Select(
-                            choices=self.CHOICES,
-                            attrs={
-                                'onchange': 'refreshChoices()',
-                                'class': "form-control form-control-sm"
-                            }
-                        ),
-                        initial=0
-                    )
-                else:
-                    self.base_fields[fieldname] = forms.IntegerField(
-                        widget=forms.HiddenInput(),
-                        required=False,
-                        initial=0
-                    )
+
 
         super(Move, self).__init__(*args, **kwargs)

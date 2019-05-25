@@ -124,19 +124,12 @@ class GameDisplay(generic.DetailView, LoginRequiredMixin):
         context['player_boards'] = generate_player_boards.draw_player_boards(
             players, game_instance)
 
-        context["red_cross"] = symbols["red_cross"]
-        context["radioactive"] = symbols["radioactive"]
-        context["food"] = symbols["food"]
-        context["water"] = symbols["water"]
-        context["building_resource"] = symbols["building_resource"]
-        context["influence"] = symbols["influence"]
-        context["time"] = symbols["time"]
-
         context['user_active'] = user_active
         context['form'] = forms.Move(
             {
                 "active_planet": active_planet,
-                "active_player": active_player
+                "active_player": active_player,
+                "symbols": symbols
             }
         )
 
