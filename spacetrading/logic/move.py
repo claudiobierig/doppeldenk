@@ -81,17 +81,21 @@ def get_trade_balance_or_raise(active_player, active_planet, planet_number, game
     if active_player is None:
         finish_game(game)
         raise MoveError("no active player")
-    if [data['coord_q'], data['coord_r']] == [0, 0]:
+    if [data['coord_q'], data['coord_r']] == [0, 0] or \
+        data.get('coord_q', None) is None or \
+        data.get('coord_r', None) is None:
         raise MoveError("You didn't choose where to fly.")
     distance = compute_distance(
         active_player.ship_position,
         [data['coord_q'], data['coord_r']]
     )
-    if active_player.last_move >= 0 and distance > data['spend_time']:
+    if active_player.last_move >= 0 and data.get('spend_time') is not None and distance > data.get('spend_time', 0):
         raise MoveError(
             "You want to spend {} time, but the distance to you destination is {}".format(
-                data['spend_time'], distance)
+                data.get('spend_time', 0), distance)
         )
+    if data.get('spend_time') is None:
+        raise MoveError("You need to specify a time you want to spend.")
 
     trade_balance = 0
     traded = False

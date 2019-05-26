@@ -43,11 +43,13 @@ class Move(forms.Form):
     """
     coord_q = forms.IntegerField(
         label="Coordinate q", min_value=-20, max_value=20,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.HiddenInput(), initial=0,
+        required=False
     )
     coord_r = forms.IntegerField(
         label="Coordinate r", min_value=-20, max_value=20,
-        widget=forms.HiddenInput(), initial=0
+        widget=forms.HiddenInput(), initial=0,
+        required=False
     )
 
     RESOURCE_TO_SYMBOL = {
@@ -139,14 +141,15 @@ class Move(forms.Form):
                 required=False,
                 initial=0
             )
-        
+
         if time:
             self.base_fields["spend_time"] = forms.IntegerField(
                 label=mark_safe("Spend {}".format(symbols["time"])),
                 min_value=0, max_value=100,
                 widget=forms.NumberInput(
                     attrs={'class': 'form-control form-control-sm'}),
-                initial=0
+                initial=0,
+                required=False
             )
         else:
             self.base_fields["spend_time"] = forms.IntegerField(
