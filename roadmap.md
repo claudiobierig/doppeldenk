@@ -47,30 +47,24 @@
 - Licensing (4h)
 - Make repo public (one click, but needs to be cleaned before)
   
-## Improve Code Quality (~130h)
+## Improve Code Quality (~110h)
 
 - Testcases (10h)
   - Move logic (8h)
   - Create/Join logic (4h)
-- Refactoring (~120h)
+- Refactoring (~100h)
   - Groundwork to add EuroCrisis (10h)
     - Move lists, etc. to doppeldenk (4h)
       - Check how to present multiple lists in one view
     - Dropdown for rules (2h)
     - Create game: Dropdown -> different forms depending on choice (4h)
-  - Clear seperation of MVC (~70h)
-    - move stuff to js (~60h)
-      - Add game model data so it can be read by js (4h)
+  - Clear seperation of MVC (~60h)
+    - move stuff to js (50h)
       - create current view via js and game_detail.html will be fixed not using safe tags (4h)
       - Setup automatic generation of game_detail.html (6h)
-      - get rid of templatetags (0h)
       - move stuff from generate_svg to js (40h)
-    - views.py (6h + js stuff)
-      - rules: check if we really need this for template (1h)
+    - views.py (6h)
       - List views: Move querysets to model (1h)
-      - Detail View: (4h + js stuff)
-        - context should be simplified by a lot after moving stuff to js
-      - get_* functions should all vanish after js move, otherwise move to model
   - consistent naming (8h)
     - rename open games
     - buy/sell, offer/demand, etc.

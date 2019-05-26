@@ -1,6 +1,12 @@
 # Worklog
 
-## Refactor next gae 1/1h (16.05.2019)
+## Move stuff to JS 7/8h (18., 19. 22.-25.05.2019)
+
+- Same functionality, now all data in JS available
+
+**Tags:** Refactoring
+
+## Refactor next game 1/1h (16.05.2019)
 
 - Combine functions and move from view to model
 
