@@ -15,61 +15,65 @@
 {{ game_data }}
 </p>
 <div class="row">
-<div class="col-3">
-<div class="card mt-3">
-<div class="card-body">
-<h4 class="card-title">Settings</h4>
-<ul>
-    <li id="resource_limit"></li>
-</ul>
-</div></div>
+<table border="0" cellpadding="10">
+<tr>
+    <td>
+        <div class="card mt-3">
+        <div class="card-body">
+        <h4 class="card-title">Settings</h4>
+        <ul>
+            <li id="resource_limit"></li>
+        </ul>
+        </div></div>
 
-{% if user_active %}
-    <form action="" method="post">
-    {% csrf_token %}
-   
-    <table class="table table-bordered table-sm">
-        <thead id="table_head">
-            <tr>
-                    <th></th>
-                    <th></th>
-                    <th>Cost</th>
-            </tr>
-        </thead>
-        {% for field in form.visible_fields %}
-        <tr class="{% get_class field.label_tag %}">
-            <th>{{ field.label_tag }}</th>
-            <td>
-            {{ field }}
-            </td>
-            <td>
-            {{ field.help_text }}{{ field.hello }}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-danger">{{ message|safe }}</div>
-        {% endfor %}
-    {% endif %}
-    {{ form.coord_q }}
-    {{ form.coord_r }}
-    <p style="text-align:left;">
-        <input class="btn btn-primary" type="submit" value="Finish Move" name="Regular">
-        <span style="float:right;"><input class="btn btn-danger" style="background-color:red" type="submit" value="Pass" name="Pass"></span>
-    </p>
-    
-    
-    </form><br>
+        {% if user_active %}
+            <form action="" method="post">
+            {% csrf_token %}
+        
+            <table class="table table-bordered table-sm">
+                <thead id="table_head">
+                    <tr>
+                            <th></th>
+                            <th></th>
+                            <th>Cost</th>
+                    </tr>
+                </thead>
+                {% for field in form.visible_fields %}
+                <tr class="{% get_class field.label_tag %}">
+                    <th>{{ field.label_tag }}</th>
+                    <td>
+                    {{ field }}
+                    </td>
+                    <td>
+                    {{ field.help_text }}{{ field.hello }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger">{{ message|safe }}</div>
+                {% endfor %}
+            {% endif %}
+            {{ form.coord_q }}
+            {{ form.coord_r }}
+            <p style="text-align:left;">
+                <input class="btn btn-primary" type="submit" value="Finish Move" name="Regular">
+                <span style="float:right;"><input class="btn btn-danger" style="background-color:red" type="submit" value="Pass" name="Pass"></span>
+            </p>
+            
+            
+            </form><br>
 
 
-{% endif %}
-{{ player_boards |safe }}
-</div>
-<div class="col-9">
-{{ gameboard |safe }}
-</div>
+        {% endif %}
+        {{ player_boards |safe }}
+    </td>
+    <td>
+        {{ gameboard |safe }}
+    </td>
+</tr>
+</table>
 </div>
 
 {% for planet in planet_market %}

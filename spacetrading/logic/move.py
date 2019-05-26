@@ -87,7 +87,7 @@ def get_trade_balance_or_raise(active_player, active_planet, planet_number, game
         active_player.ship_position,
         [data['coord_q'], data['coord_r']]
     )
-    if distance > data['spend_time'] and active_player.last_move >= 0:
+    if active_player.last_move >= 0 and distance > data['spend_time']:
         raise MoveError(
             "You want to spend {} time, but the distance to you destination is {}".format(
                 data['spend_time'], distance)

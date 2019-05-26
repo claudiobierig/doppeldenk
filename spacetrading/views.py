@@ -119,8 +119,7 @@ class GameDisplay(generic.DetailView, LoginRequiredMixin):
             self.request.user, game_instance.id)
         context['gameboard'] = generate_gameboard.draw_gameboard(
             game_instance, planets, players, user_active)
-        context['planet_market'] = generate_planet_market.draw_planet_market(
-            game_instance, planets, players)
+        context['planet_market'] = generate_planet_market.draw_planet_market(planets)
         context['player_boards'] = generate_player_boards.draw_player_boards(
             players, game_instance)
 

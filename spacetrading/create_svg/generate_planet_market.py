@@ -3,7 +3,7 @@
 generate the planet market
 """
 
-from spacetrading.create_svg.svg_commands import Svg, get_position
+from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg import generate_svg_symbols
 
 
@@ -22,98 +22,120 @@ def get_symbol_name(resource):
         return 'building_resource'
 
 
-def get_rel_buy_position(price):
-    x_pos = 30 * price + 30
-    y_pos = 112
-    return [x_pos, y_pos]
-
-
-def get_rel_sell_position(price):
-    x_pos = 270 - (30*price)
-    y_pos = 67
-    return [x_pos, y_pos]
-
-
-def draw_planet(svg, name, fill_colour):
+def draw_planet(svg, planet, name, fill_colour):
     """
     actually draw the planet market
     """
-    svg.create_rectangle([30, 30], [240, 35], "top_of_planet_market_{}".format(
-        name), fill_colour=fill_colour)
-    svg.create_rectangle([30, 145], [240, 35], "bottom_of_planet_market_{}".format(
-        name), fill_colour=fill_colour)
-    svg.create_rectangle([59, 65], [2, 80], "0_sep_of_planet_market_{}".format(
-        name), fill_colour="black")
-    svg.create_rectangle([89, 65], [2, 80], "1st_sep_of_planet_market_{}".format(
-        name), fill_colour="black")
-    svg.create_rectangle([119, 65], [2, 80], "2nd_sep_of_planet_market_{}".format(
-        name), fill_colour="black")
-    svg.create_rectangle([149, 65], [2, 80], "3rd_sep_of_planet_market_{}".format(
-        name), fill_colour="black")
-    svg.create_rectangle([179, 65], [2, 80], "4th_sep_of_planet_market_{}".format(
-        name), fill_colour="black")
-    svg.create_rectangle([209, 65], [2, 80], "5th_sep_of_planet_market_{}".format(
-        name), fill_colour="black")
-    svg.create_rectangle([239, 65], [2, 80], "7th_sep_of_planet_market_{}".format(
-        name), fill_colour="black")
-    svg.create_rectangle([30, 30], [30, 150], "left_of_planet_market_{}".format(
-        name), fill_colour=fill_colour)
-    svg.create_rectangle([240, 30], [30, 150], "right_of_planet_market_{}".format(
-        name), fill_colour=fill_colour)
-    svg.create_rectangle([30, 100], [240, 10], "middle_of_planet_market_{}".format(
-        name), fill_colour=fill_colour)
+    x_shift = 30
+    y_shift = [0, 30, 80]
+    x_offset = [1.5*x_shift, 1.5*x_shift, x_shift/2]
+    y_offset = 30
+    scale_factor = 3/2
+    font_size_price = 12
+    font_size_header = 11
 
-    buy_values = [1, 2, 3, 4, 5, 6]
-    sell_values = [7, 6, 5, 4, 3, 2]
-    font_size = 12
-    for index, value in enumerate(sell_values):
+    left = x_offset[2]/2
+    right = 1.5*x_offset[2] + 7*x_shift
+    top = y_offset - 10
+    bottom = y_offset + y_shift[1] + y_shift[2] + 10
+    vertical_middle = y_offset + y_shift[1] + (y_shift[1]-y_shift[0]) + \
+        (y_shift[2] - (2*y_shift[1]-y_shift[0]))/2
+    horizontal_middle = 120
+
+    svg.create_path(
+        (
+            "M {left},{top} V {bottom} " +
+            "C {left_2},{bottom_2} {right_2},{bottom_2} {right},{bottom} " +
+            "V {top} C {right_2},{top_2} {left_2},{top_2} {left},{top}").format(
+                left=left, right=right, top=top, bottom=bottom,
+                left_2=left+20, right_2=right-20, bottom_2=bottom+20, top_2=top-20
+            ),
+        stroke_colour="black",
+        fill_colour=fill_colour,
+        id_name="box_{}".format(name)
+    )
+    #svg.create_path("M {left},{middle} H {right}".format(left=left, middle=middle, right=right), stroke_colour="black")
+    for i in range(1, 8):
         svg.create_text(
-            'sell_value_{}_{}'.format(name, value),
-            [index * 30 + 75, 56],
-            str(value),
-            font_size=font_size,
-            font_colour="black"
+            "{}_pricetext_{}".format(name, i),
+            [x_offset[2] + (i-0.5)*x_shift, vertical_middle + font_size_price/2],
+            str(i),
+            font_size=font_size_price,
+            text_align="center",
+            text_anchor="middle",
+            font_weight="bold"
         )
 
-    for index, value in enumerate(buy_values):
-        svg.create_text(
-            'buy_value_{}_{}'.format(name, value),
-            [index * 30 + 75, 166],
-            str(value),
-            font_size=font_size,
-            font_colour="black"
-        )
-
-    svg.create_scoring_track(
-        30,
-        "influence_track_{}".format(name),
-        9,
-        6,
-        5,
-        fill_colour=fill_colour
+    size_ellipse = [80, 10]
+    offset_border_ellipse = 9
+    svg.create_ellipse(
+        size_ellipse,
+        [horizontal_middle, top - offset_border_ellipse],
+        "black",
+        "ellipse_top_{}".format(name),
+        fill="white",
+        stroke_width="1",
+        stroke_opacity="1",
+        opacity="1"
+    )
+    svg.create_text(
+        "demand_text_{}".format(name),
+        [horizontal_middle, top - offset_border_ellipse + font_size_header/2],
+        "Demand",
+        font_size=font_size_header,
+        text_align="center",
+        text_anchor="middle",
+        font_weight="bold"
     )
 
+    svg.create_ellipse(
+        size_ellipse,
+        [horizontal_middle, bottom + offset_border_ellipse],
+        "black",
+        "ellipse_bottom_{}".format(name),
+        fill="white",
+        stroke_width="1",
+        stroke_opacity="1",
+        opacity="1"
+    )
+    svg.create_text(
+        "supply_text_{}".format(name),
+        [horizontal_middle, bottom + offset_border_ellipse + font_size_header/2],
+        "Supply",
+        font_size=font_size_header,
+        text_align="center",
+        text_anchor="middle",
+        font_weight="bold"
+    )
 
-def draw_influence_tokens(svg, points, players, planetname):
-    planet_points = []
-    for player in players:
-        player_points = points[player.player_number]
-        stack_position = planet_points.count(player_points)
-        planet_points.append(player_points)
-        position = get_position(30, 9, 6, player_points, stack_position)
-        svg.use_symbol(
-            'disc_3d',
-            'influence_marker_{}_{}'.format(
-                player.user.get_username(), planetname),
-            position=position,
-            fill_colour=player.colour
-        )
+    resources = [planet.sell_resources[1], planet.sell_resources[0], planet.buy_resources[0]]
+    prices = [planet.cost_sell_resource[1], planet.cost_sell_resource[0], planet.cost_buy_resource[0]]
+    for row in range(3):
+        for column in range(6):
+            if row is 2:
+                price = column + 1
+            else:
+                price = column + 2
+            
+            if price is prices[row]:
+                symbolname = get_symbol_name(resources[row])
+            else:
+                symbolname = get_symbol_name('0')
+            svg.use_symbol(
+                symbolname,
+                "{}_name_{}_row_{}_column".format(name, row, column),
+                position=[(x_offset[row] + column*x_shift)/scale_factor,
+                          (y_offset + y_shift[row])/scale_factor],
+                additional_arguments={
+                    "transform": f"scale({scale_factor})"
+                }
+            )
 
 
-def draw_planet_market(game, planets, players):
+def draw_planet_market(planets):
     svgs = []
-    for planet_number, planet in enumerate(planets):
-        svg = Svg(width=300, height=210,
+    for planet in planets:
+        svg = Svg(width=240, height=170,
                   id_name="svg_planet_market_{}".format(planet.name))
         generate_svg_symbols.add_posibility_for_disc_3d(svg)
         generate_svg_symbols.add_posibility_for_empty_res(svg)
@@ -122,34 +144,8 @@ def draw_planet_market(game, planets, players):
         generate_svg_symbols.add_posibility_for_food(svg)
         generate_svg_symbols.add_posibility_for_water(svg)
         generate_svg_symbols.add_posibility_for_building_res(svg)
-        draw_planet(svg, 'planet_market_{}'.format(planet.name), planet.colour)
-        draw_influence_tokens(
-            svg, game.planet_influence_track[planet_number], players, planet.name)
-
-        for price, resource in zip(planet.cost_buy_resource, planet.buy_resources):
-            if resource is not '0':
-                [x_pos, y_pos] = get_rel_buy_position(price)
-                x_pos = x_pos
-                symbol_name = get_symbol_name(resource)
-                svg.use_symbol(
-                    symbol_name,
-                    'planet_{}_buy_resource'.format(planet.name),
-                    position=[x_pos*2/3, y_pos*2/3],
-                    additional_arguments={"transform": "scale(1.5)"}
-                )
-
-        for price, resource in zip(planet.cost_sell_resource, planet.sell_resources):
-            if resource is not '0':
-                [x_pos, y_pos] = get_rel_sell_position(price)
-                x_pos = x_pos
-                symbol_name = get_symbol_name(resource)
-                svg.use_symbol(
-                    symbol_name,
-                    'planet_{}_buy_resource'.format(planet.name),
-                    position=[x_pos*2/3, y_pos*2/3],
-                    additional_arguments={"transform": "scale(1.5)"}
-                )
-        svgs.append(svg.get_string())
+        draw_planet(svg, planet, 'planet_market_{}'.format(planet.name), planet.colour)
+        svgs.append(svg)
 
     return svgs
 
