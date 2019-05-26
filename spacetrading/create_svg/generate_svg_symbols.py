@@ -105,7 +105,7 @@ def add_posibility_for_empty_res(svg):
                                    }))
     symbol.create_circle(
         [10, 10],
-        8,
+        9,
         "resource_placeholder_circle",
         fill_colour="white",
         additional_arguments={'stroke': 'black'}
@@ -174,7 +174,7 @@ def add_posibility_for_red_cross(svg):
                                    }))
     symbol.create_circle(
         [10, 10],
-        8,
+        9,
         "red_cross_circle",
         fill_colour="white",
         additional_arguments={'stroke': 'black'}
