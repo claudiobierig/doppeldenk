@@ -150,7 +150,8 @@ class Svg(object):
             font_size=8,
             font_colour="#000000",
             text_align="center",
-            text_anchor="middle"):
+            text_anchor="middle",
+            font_weight="normal"):
         """
         Create a text in root and return it
         """
@@ -165,6 +166,7 @@ class Svg(object):
             'x': str(position_x),
             'y': str(position_y),
             'fill': font_colour,
+            'font-weight': font_weight,
             'id': id_name
         }
 
