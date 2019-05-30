@@ -213,6 +213,8 @@ def change_game(game, players, planets, active_planet, active_player_number, dat
             planet_rotation(game, players, planets)
         elif next_event == Event.OFFER_DEMAND:
             offer_demand(game, planets)
+        elif next_event == Event.MIDGAME_SCORING:
+            midgame_scoring(game, players)
         next_event = get_next_event(game, players)
     if active_planet is not None:
         active_planet_number = active_planet.planet_number
@@ -326,6 +328,10 @@ def midgame_scoring(game, players):
     1 point for 2nd
     both only if scored at all
     """
+    game.midgame_scoring_event_time = 100
+    game.midgame_scoring_event_move = game.next_move_number
+    game.next_move_number = game.next_move_number + 1
+    game.save()
     for player in players:
         points = compute_points(game, player, [2, 1])
         player.points = points

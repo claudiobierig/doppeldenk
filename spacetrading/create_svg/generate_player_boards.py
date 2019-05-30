@@ -36,6 +36,12 @@ def create_playerboard(svg, player, game, position, active):
     playername = player.user.get_username()
     playernumber = str(player.player_number)
     points = move.compute_points(game, player)
+    if game.midgame_scoring:
+        if game.midgame_scoring_event_time == 50:
+            points = points + move.compute_points(game, player, [2, 1])
+        else:
+            points = "{} ({})".format(points, player.points)
+
     additional_arguments = {
         "active": str(active),
         "money": str(player.money),
