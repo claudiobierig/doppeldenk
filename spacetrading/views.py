@@ -110,7 +110,7 @@ class GameDisplay(generic.DetailView, LoginRequiredMixin):
         if active_player is None:
             active_planet = None
         else:
-            [active_planet, _] = move.get_active_planet(active_player.ship_position, planets)
+            active_planet = move.get_active_planet(active_player.ship_position, planets)
 
         user_active = active_player is not None and active_player.user == self.request.user
         symbols = generate_plain_symbols.draw_symbols()

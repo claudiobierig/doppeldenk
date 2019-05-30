@@ -35,7 +35,11 @@ class NewGame(forms.Form):
         min_value=5,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
-
+    midgame_scoring = forms.BooleanField(
+        label="Midgame scoring",
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
 
 class Move(forms.Form):
     """

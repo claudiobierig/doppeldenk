@@ -32,6 +32,7 @@ class PlanetManager(models.Manager):
             sell_resources=None,
             cost_sell_resource=None,
             position_of_hexes=None,
+            planet_number=0
     ):
         if buy_resources is None:
             buy_resources = ['0', '0', '0', '0', '0']
@@ -57,7 +58,8 @@ class PlanetManager(models.Manager):
             position_of_hexes=position_of_hexes,
             radius_x=radius_x,
             radius_y=radius_y,
-            offset=offset
+            offset=offset,
+            planet_number=planet_number
         )
         return planet
 
@@ -117,6 +119,8 @@ class Planet(models.Model):
     radius_y = models.IntegerField()
     offset = models.FloatField()
 
+    planet_number = models.IntegerField(default=0)
+
     objects = PlanetManager()
 
     def get_json(self):
@@ -132,7 +136,8 @@ class Planet(models.Model):
             'cost_sell_resource': self.cost_sell_resource,
             'radius_x': self.radius_x,
             'radius_y': self.radius_y,
-            'offset': self.offset
+            'offset': self.offset,
+            'planet_number': self.planet_number
         }
         return planet_data
 
@@ -158,7 +163,8 @@ class PlayerManager(models.Manager):
             colour="white",
             ship_offset=None,
             player_number=0,
-            has_passed=False
+            has_passed=False,
+            points=0
     ):
         if ship_position is None:
             ship_position = [0, 0]
@@ -176,7 +182,8 @@ class PlayerManager(models.Manager):
             colour=colour,
             ship_offset=ship_offset,
             player_number=player_number,
-            has_passed=has_passed
+            has_passed=has_passed,
+            points=points
         )
         return player
 
@@ -209,6 +216,7 @@ class Player(models.Model):
     )
     player_number = models.IntegerField()
     has_passed = models.BooleanField(default=False)
+    points = models.IntegerField(default=0)
 
     objects = PlayerManager()
 
@@ -223,7 +231,8 @@ class Player(models.Model):
             'colour': self.colour,
             'ship_offset': self.ship_offset,
             'player_number': self.player_number,
-            'has_passed': self.has_passed
+            'has_passed': self.has_passed,
+            'points': self.points
         }
         return player_data
 
@@ -243,7 +252,10 @@ class GameManager(models.Manager):
             offer_demand_event_time=gamesettings.OFFER_DEMAND_EVENT_TIMES[0],
             offer_demand_event_move=0,
             planet_influence_track=None,
-            resource_limit=9
+            resource_limit=9,
+            midgame_scoring=False,
+            midgame_scoring_event_time=50,
+            midgame_scoring_event_move=-10
     ):
         if planet_influence_track is None:
             planet_influence_track = [
@@ -263,7 +275,10 @@ class GameManager(models.Manager):
             offer_demand_event_time=offer_demand_event_time,
             offer_demand_event_move=offer_demand_event_move,
             planet_influence_track=planet_influence_track,
-            resource_limit=resource_limit
+            resource_limit=resource_limit,
+            midgame_scoring=midgame_scoring,
+            midgame_scoring_event_move=midgame_scoring_event_move,
+            midgame_scoring_event_time=midgame_scoring_event_time
         )
         return game
 
@@ -323,6 +338,10 @@ class Game(models.Model):
 
     resource_limit = models.IntegerField(default=9)
 
+    midgame_scoring = models.BooleanField(default=False)
+    midgame_scoring_event_time = models.IntegerField(default=50)
+    midgame_scoring_event_move = models.IntegerField(default=-10)
+
     objects = GameManager()
 
     def get_absolute_url(self):
@@ -350,7 +369,7 @@ class Game(models.Model):
         if players is None:
             players = self.players.all().order_by('player_number')
         if planets is None:
-            planets = self.planets.all().order_by('number_of_hexes')
+            planets = self.planets.all().order_by('planet_number')
 
         game_data = {
             'players': [player.get_json() for player in players],
@@ -364,7 +383,10 @@ class Game(models.Model):
             'offer_demand_event_move': self.offer_demand_event_move,
             'resource_limit': self.resource_limit,
             'game_state': self.game_state,
-            'planet_influence_track': self.planet_influence_track
+            'planet_influence_track': self.planet_influence_track,
+            'midgame_scoring': self.midgame_scoring,
+            'midgame_scoring_event_move': self.midgame_scoring_event_move,
+            'midgame_scoring_event_time': self.midgame_scoring_event_time
         }
 
         return game_data

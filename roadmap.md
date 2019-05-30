@@ -8,7 +8,7 @@
 - Add Event midgame scoring
 - Refactoring
 
-## Planed Features (~80h + Refactoring + ~80h Eurocrisis)
+## Planed Features (~50h + Refactoring + ~80h Eurocrisis)
 
 - List of finished games (2h)
 - Option to change PW (16h)
@@ -23,23 +23,19 @@
   - Add event to add demand resources (8h)
   - Change cost influence (4h)
   - Add event mid game scoring (8h)
+    - Add event in move logic
+    - Add display in generate_gameboard
+    - Display of points in generate_playerboards: Total if nothing changes (Fixed)
   - Rulebook update (2h)
-  - Adjust offer/demand times
-- Improve UI and UX (30h)
-  - Planet market (16h)
-    - Split planet market and influence track
-    - How to display multiple demand resources in planet market
-    - Change direction of one resource
-    - How to make clear offer/demand difference
-    - Maybe put resources on planet board (2h)
+- Improve UI and UX (2h)
   - Different resource symbols, building resource -> oil barrel (2h)
-  - Fit on screen (8h)
 - Update Printing Material (8h)
 - Add EuroCrisis (80h + refactoring)
 
 ## Open Bugs (4h)
 
-- Pass is not handled correctly (4h)
+- Pass is not handled correctly (2h)
+- When passed wrong player is shown active in list (2h)
 
 ## Operations (8h)
 

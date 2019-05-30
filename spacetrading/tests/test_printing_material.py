@@ -33,7 +33,7 @@ class GeneratePrintingMaterial(TestCase):
             None
         )
         game = Game.objects.get(game_name="empty_gameboard")
-        planets = game.planets.all().order_by('number_of_hexes')
+        planets = game.planets.all().order_by('planet_number')
         for planet in planets:
             planet.current_position = -1
 
@@ -68,7 +68,7 @@ class GeneratePrintingMaterial(TestCase):
             None
         )
         game = Game.objects.get(game_name="empty_gameboard")
-        planets = game.planets.all().order_by('number_of_hexes')
+        planets = game.planets.all().order_by('planet_number')
         for planet in planets:
             planet.buy_resources[0] = '0'
             planet.sell_resources[0] = '0'
@@ -163,7 +163,7 @@ class GeneratePrintingMaterial(TestCase):
             None
         )
         game = Game.objects.get(game_name="empty_gameboard")
-        planets = game.planets.all().order_by('number_of_hexes')
+        planets = game.planets.all().order_by('planet_number')
         svgs = generate_politician_cards.draw_politicians(planets)
         html_filename = "printing_material/politicians.html"
         with open(html_filename, "w") as html_file:
@@ -184,7 +184,7 @@ class GeneratePrintingMaterial(TestCase):
             None
         )
         game = Game.objects.get(game_name="empty_gameboard")
-        planets = game.planets.all().order_by('number_of_hexes')
+        planets = game.planets.all().order_by('planet_number')
         svgs = generate_planet_market2.draw_planet_market(planets)
         html_filename = "printing_material/planet_market2.html"
         with open(html_filename, "w") as html_file:

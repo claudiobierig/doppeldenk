@@ -1,6 +1,6 @@
 # Worklog
 
-## Move stuff to JS 7/8h (18., 19. 22.-25.05.2019)
+## Move stuff to JS 8h (18., 19. 22.-27.05.2019)
 
 - Same functionality, now all data in JS available
 

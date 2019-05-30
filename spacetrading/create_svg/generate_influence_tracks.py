@@ -19,7 +19,8 @@ def draw_influence_tracks(game, planets, players):
         id_name="planet_influence_tracks"
     )
     generate_svg_symbols.add_posibility_for_disc_3d(planet_tracks_svg)
-    for planet_number, planet in enumerate(planets):
+    for planet in planets:
+        planet_number = planet.planet_number
         for field in range(0, 21):
             x_pos = planet_number*SIZE_TIMEBOX
             y_pos = HEIGHT - (field + 1)*SIZE_TIMEBOX

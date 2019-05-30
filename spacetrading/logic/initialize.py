@@ -23,11 +23,13 @@ def create_game(data, user):
     number_of_players = data['number_of_players']
     play_all_players = data['play_all_players']
     resource_limit = data['resource_limit']
+    midgame_scoring = data['midgame_scoring']
     game = Game.objects.create_game(
         game_name=name,
         number_of_players=number_of_players,
         offer_demand_event_time=gamesettings.OFFER_DEMAND_EVENT_TIMES[number_of_players-1],
-        resource_limit=resource_limit
+        resource_limit=resource_limit,
+        midgame_scoring=midgame_scoring
     )
     b_resources = ['1', '2', '3', '4', '5']
     remaining_s_resources = ['1', '2', '3', '4', '5']
@@ -79,7 +81,8 @@ def create_game(data, user):
             position_of_hexes=current_planet[3],
             radius_x=current_planet[4][0],
             radius_y=current_planet[4][1],
-            offset=current_planet[5]
+            offset=current_planet[5],
+            planet_number=index
         )
         game.planets.add(planet)
 

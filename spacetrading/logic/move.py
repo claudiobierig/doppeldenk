@@ -47,19 +47,17 @@ def move(game, data):
     """
     players = game.players.all()
     active_player = get_active_player(players)
-    planets = game.planets.all().order_by('number_of_hexes')
-    active_planet_with_number = get_active_planet(
+    planets = game.planets.all().order_by('planet_number')
+    active_planet = get_active_planet(
         active_player.ship_position, planets)
-    active_planet = active_planet_with_number[0]
-    planet_number = active_planet_with_number[1]
     trade_balance = get_trade_balance_or_raise(
-        active_player, active_planet, planet_number, game, data
+        active_player, active_planet, game, data
     )
     change_active_player(
         active_player, active_planet, game.next_move_number, data, trade_balance
     )
     change_active_planet(active_planet, data)
-    change_game(game, players, planets, planet_number,
+    change_game(game, players, planets, active_planet,
                 active_player.player_number, data)
     players = game.players.all()
     active_player = get_active_player(players)
@@ -73,7 +71,7 @@ class MoveError(Exception):
     """
 
 
-def get_trade_balance_or_raise(active_player, active_planet, planet_number, game, data):
+def get_trade_balance_or_raise(active_player, active_planet, game, data):
     """
     returns value smaller than -active_player.money if move is not valid
     trading balance otherwise
@@ -89,13 +87,14 @@ def get_trade_balance_or_raise(active_player, active_planet, planet_number, game
         active_player.ship_position,
         [data['coord_q'], data['coord_r']]
     )
-    if active_player.last_move >= 0 and data.get('spend_time') is not None and distance > data.get('spend_time', 0):
-        raise MoveError(
-            "You want to spend {} time, but the distance to you destination is {}".format(
-                data.get('spend_time', 0), distance)
-        )
-    if data.get('spend_time') is None:
-        raise MoveError("You need to specify a time you want to spend.")
+    if active_player.last_move >= 0:
+        if data.get('spend_time') is not None and distance > data.get('spend_time', 0):
+            raise MoveError(
+                "You want to spend {} time, but the distance to you destination is {}".format(
+                    data.get('spend_time', 0), distance)
+            )
+        if data.get('spend_time') is None:
+            raise MoveError("You need to specify a time you want to spend.")
 
     trade_balance = 0
     traded = False
@@ -126,7 +125,7 @@ def get_trade_balance_or_raise(active_player, active_planet, planet_number, game
                 traded = True
 
     trade_balance = trade_balance - get_cost_influence(
-        traded, data["buy_influence"], game.planet_influence_track[planet_number][active_player.player_number])
+        traded, data["buy_influence"], game.planet_influence_track[active_planet.planet_number][active_player.player_number])
     if trade_balance + active_player.money < 0:
         raise MoveError("You have not enough money")
     return trade_balance
@@ -139,10 +138,10 @@ def get_active_planet(ship_position, planets):
     returns [planet, #indexOfPlanet] if at a planet
     returns [None, -1] otherwise
     """
-    for index, planet in enumerate(planets):
+    for planet in planets:
         if ship_position == planet.position_of_hexes[planet.current_position]:
-            return [planet, index]
-    return [None, -1]
+            return planet
+    return None
 
 
 def get_cost_influence(did_we_trade, amount_influence, current_influence):
@@ -202,7 +201,7 @@ def change_active_planet(active_planet, data):
     active_planet.save()
 
 
-def change_game(game, players, planets, active_planet_number, active_player_number, data):
+def change_game(game, players, planets, active_planet, active_player_number, data):
     """
     performs changes on game
     """
@@ -214,7 +213,8 @@ def change_game(game, players, planets, active_planet_number, active_player_numb
         elif next_event == Event.OFFER_DEMAND:
             offer_demand(game, planets)
         next_event = get_next_event(game, players)
-    if active_planet_number != -1:
+    if active_planet is not None:
+        active_planet_number = active_planet.planet_number
         game.planet_influence_track[active_planet_number][active_player_number] = game.planet_influence_track[
             active_planet_number][active_player_number] + data["buy_influence"]
     game.save()
