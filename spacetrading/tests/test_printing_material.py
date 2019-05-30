@@ -1,5 +1,5 @@
 from django.test import TestCase
-from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_planet_market2, generate_printing_player_boards, generate_plain_symbols, generate_svg_symbols
+from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_printing_player_boards, generate_plain_symbols, generate_svg_symbols
 from spacetrading.create_svg import generate_politician_cards
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.models import Game
@@ -72,8 +72,7 @@ class GeneratePrintingMaterial(TestCase):
         for planet in planets:
             planet.buy_resources[0] = '0'
             planet.sell_resources[0] = '0'
-        svg_strings = generate_planet_market.draw_planet_market(
-            game, planets, [])
+        svg_strings = [str(svg) for svg in generate_planet_market.draw_planet_market(planets)]
         svg_filename = "printing_material/planet_market_{}.svg"
         for index in range(len(planets)):
             with open(svg_filename.format(index), "w") as svg_file:
@@ -166,27 +165,6 @@ class GeneratePrintingMaterial(TestCase):
         planets = game.planets.all().order_by('planet_number')
         svgs = generate_politician_cards.draw_politicians(planets)
         html_filename = "printing_material/politicians.html"
-        with open(html_filename, "w") as html_file:
-            html_file.write("<!DOCTYPE html><body>")
-            for svg in svgs:
-                html_file.write(svg.get_string())
-            html_file.write("</body>")
-
-    def test_generate_planet_market_2(self):
-        data = {
-            "name": "empty_gameboard",
-            "number_of_players": 0,
-            "play_all_players": False,
-            "resource_limit": 5
-        }
-        create_game(
-            data,
-            None
-        )
-        game = Game.objects.get(game_name="empty_gameboard")
-        planets = game.planets.all().order_by('planet_number')
-        svgs = generate_planet_market2.draw_planet_market(planets)
-        html_filename = "printing_material/planet_market2.html"
         with open(html_filename, "w") as html_file:
             html_file.write("<!DOCTYPE html><body>")
             for svg in svgs:

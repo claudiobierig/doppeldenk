@@ -23,7 +23,7 @@ def create_game(data, user):
     number_of_players = data['number_of_players']
     play_all_players = data['play_all_players']
     resource_limit = data['resource_limit']
-    midgame_scoring = data['midgame_scoring']
+    midgame_scoring = data.get('midgame_scoring', False)
     game = Game.objects.create_game(
         game_name=name,
         number_of_players=number_of_players,

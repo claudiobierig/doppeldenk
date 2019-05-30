@@ -160,10 +160,22 @@ class MoveTest(TestCase):
             [2, 1, 1, 1],
             [1, 1, 0, 0]
         ]
-        self.assertEqual(10, move.compute_points(self.game, 0))
-        self.assertEqual(9, move.compute_points(self.game, 1))
-        self.assertEqual(9, move.compute_points(self.game, 2))
-        self.assertEqual(11, move.compute_points(self.game, 3))
+        player1 = self.players.get(player_number=0)
+        player2 = self.players.get(player_number=1)
+        player3 = Player.objects.create_player(
+            player_number=2,
+            last_move=-1,
+            time_spent=0
+        )
+        player4 = Player.objects.create_player(
+            player_number=3,
+            last_move=-1,
+            time_spent=0
+        )
+        self.assertEqual(10, move.compute_points(self.game, player1))
+        self.assertEqual(9, move.compute_points(self.game, player2))
+        self.assertEqual(9, move.compute_points(self.game, player3))
+        self.assertEqual(11, move.compute_points(self.game, player4))
 
 
 """

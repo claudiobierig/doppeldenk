@@ -17,6 +17,7 @@ class Event(Enum):
     """
     PLANET_ROTATION = 1
     OFFER_DEMAND = 2
+    MIDGAME_SCORING = 3
 
 
 def pass_game(game):
@@ -248,21 +249,31 @@ def get_next_event(game, players):
     return None if a player has to move before the next event
     otherwise return the corresponding Event enum entry
     """
-    planet_rotation_event = [
-        game.planet_rotation_event_time, game.planet_rotation_event_move]
-    offer_demand_event = [game.offer_demand_event_time,
-                          game.offer_demand_event_move]
     active_player = get_active_player(players)
     if active_player is None:
         return None
-    if is_before(planet_rotation_event, offer_demand_event):
-        if is_before(planet_rotation_event, [active_player.time_spent, active_player.last_move]):
-            return Event.PLANET_ROTATION
-    else:
-        if is_before(offer_demand_event, [active_player.time_spent, active_player.last_move]):
-            return Event.OFFER_DEMAND
 
-    return None
+    planet_rotation_event = (
+        game.planet_rotation_event_time, game.planet_rotation_event_move, Event.PLANET_ROTATION)
+    offer_demand_event = (game.offer_demand_event_time,
+                          game.offer_demand_event_move, Event.OFFER_DEMAND)
+    no_event = (active_player.time_spent, active_player.last_move, None)
+    events = [planet_rotation_event, offer_demand_event, no_event]
+
+    if game.midgame_scoring:
+        midgame_scoring_event = (game.midgame_scoring_event_time, game.midgame_scoring_event_move, Event.MIDGAME_SCORING)
+        events.append(midgame_scoring_event)
+    result = next_turn(events)
+    print(sorted(events, key=lambda tup: (tup[0], -tup[1])))
+
+    return result
+
+def next_turn(events):
+    """
+    list of (turn, move, returnvalue)
+    return returnvalue where turn is smallest, on tie move is largest
+    """
+    return sorted(events, key=lambda tup: (tup[0], -tup[1]))[0][2]
 
 
 def planet_rotation(game, players, planets):
@@ -309,6 +320,18 @@ def offer_demand(game, planets):
         planet.save()
 
 
+def midgame_scoring(game, players):
+    """
+    score 2 points for 1st player in a planet,
+    1 point for 2nd
+    both only if scored at all
+    """
+    for player in players:
+        points = compute_points(game, player, [2, 1])
+        player.points = points
+        player.save()
+
+
 def get_active_player(players):
     """
     returns the active_player or None (not considering events)
@@ -346,14 +369,15 @@ def is_before(one, two):
     return False
 
 
-def compute_points(game, player_number):
+def compute_points(game, player, planet_points=None):
     """
     compute the points in game of the player with player_number
     """
     result = 0
-    planet_points = [5, 3, 2, 1]
+    if planet_points is None:
+        planet_points = [5, 3, 2, 1]
     for planet_influence in game.planet_influence_track:
-        current_player_influence = planet_influence[player_number]
+        current_player_influence = planet_influence[player.player_number]
         if current_player_influence == 0:
             continue
         rated_higher = sum(
@@ -364,4 +388,4 @@ def compute_points(game, player_number):
             int(sum(
                 planet_points[rated_higher: rated_higher + rated_same])/rated_same)
 
-    return result
+    return result + player.points

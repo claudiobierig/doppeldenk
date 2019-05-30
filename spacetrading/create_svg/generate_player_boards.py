@@ -35,7 +35,7 @@ def create_playerboard(svg, player, game, position, active):
     """
     playername = player.user.get_username()
     playernumber = str(player.player_number)
-    points = move.compute_points(game, player.player_number)
+    points = move.compute_points(game, player)
     additional_arguments = {
         "active": str(active),
         "money": str(player.money),
