@@ -106,7 +106,7 @@ class Move(forms.Form):
                 fieldname = mapping[str(resource)]
                 if str(resource) in resources:
                     self.base_fields[fieldname] = forms.IntegerField(
-                        label=mark_safe("{} {}".format(direction, symbols[self.RESOURCE_TO_SYMBOL[str(resource)]])),#label="{} resource {}".format(direction, resource),
+                        label=mark_safe("{} {}".format(direction, symbols[self.RESOURCE_TO_SYMBOL[str(resource)]])),
                         max_value=9, min_value=0,
                         widget=forms.Select(
                             choices=self.CHOICES,
