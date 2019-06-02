@@ -266,7 +266,6 @@ def get_next_event(game, players):
         midgame_scoring_event = (game.midgame_scoring_event_time, game.midgame_scoring_event_move, Event.MIDGAME_SCORING)
         events.append(midgame_scoring_event)
     result = next_turn(events)
-    print(sorted(events, key=lambda tup: (tup[0], -tup[1])))
 
     return result
 

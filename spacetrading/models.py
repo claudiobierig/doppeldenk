@@ -245,17 +245,17 @@ class GameManager(models.Manager):
             self,
             game_name="",
             number_of_players=1,
-            next_move_number=1,
+            next_move_number=gamesettings.FIRST_MOVE_NUMBER,
             game_state='w',
             planet_rotation_event_time=gamesettings.PLANET_ROTATION_TIME,
-            planet_rotation_event_move=-5,
+            planet_rotation_event_move=gamesettings.PLANET_ROTATION_MOVE,
             offer_demand_event_time=gamesettings.OFFER_DEMAND_EVENT_TIMES[0],
-            offer_demand_event_move=-6,
+            offer_demand_event_move=gamesettings.OFFER_DEMAND_EVENT_MOVE,
             planet_influence_track=None,
             resource_limit=9,
             midgame_scoring=False,
-            midgame_scoring_event_time=50,
-            midgame_scoring_event_move=-7
+            midgame_scoring_event_time=gamesettings.MIDGAME_SCORING_TIME,
+            midgame_scoring_event_move=gamesettings.MIDGAME_SCORING_MOVE
     ):
         if planet_influence_track is None:
             planet_influence_track = [

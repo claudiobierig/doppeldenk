@@ -104,7 +104,7 @@ class GameDisplay(generic.DetailView, LoginRequiredMixin):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         game_instance = super().get_object()
-        planets = game_instance.planets.all().order_by('number_of_hexes')
+        planets = game_instance.planets.all().order_by('planet_number')
         players = game_instance.players.all().order_by('player_number')
         active_player = move.get_active_player(players)
         if active_player is None:
