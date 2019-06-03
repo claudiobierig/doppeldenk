@@ -85,7 +85,23 @@ class MoveTest(TestCase):
         self.assertEqual(None, move.get_next_event(self.game, self.players))
 
     def test_get_active_player(self):
-        pass
+        self.assertEqual(move.get_active_player(self.players), self.players[0])
+        for player in self.players:
+            player.time_spent = 0
+            player.last_move = player.player_number + 1
+        self.assertEqual(move.get_active_player(self.players), self.players[3])
+        self.players[3].time_spent = 4
+        self.assertEqual(move.get_active_player(self.players), self.players[2])
+        for player in self.players:
+            player.time_spent = 100
+        self.assertEqual(move.get_active_player(self.players), self.players[3])
+        self.players[3].time_spent = 101
+        self.assertEqual(move.get_active_player(self.players), self.players[2])
+        self.players[2].has_passed = True
+        self.assertEqual(move.get_active_player(self.players), self.players[1])
+        self.players[1].has_passed = True
+        self.players[0].has_passed = True
+        self.assertEqual(move.get_active_player(self.players), None)
 
     def test_is_before(self):
         self.assertTrue(move.is_before([0, 2], [10, 3]))
@@ -94,7 +110,28 @@ class MoveTest(TestCase):
         self.assertFalse(move.is_before([10, 3], [10, 4]))
 
     def test_player_is_before(self):
-        pass
+        player1 = self.players[0]
+        player2 = self.players[1]
+        self.assertTrue(move.player_is_before(player1, player2))
+        self.assertFalse(move.player_is_before(player2, player1))
+        player1.time_spent = 0
+        player1.last_move = 1
+        self.assertTrue(move.player_is_before(player2, player1))
+        self.assertFalse(move.player_is_before(player1, player2))
+        player2.time_spent = 0
+        player2.last_move = 2
+        self.assertTrue(move.player_is_before(player2, player1))
+        self.assertFalse(move.player_is_before(player1, player2))
+        player2.time_spent = 4
+        player2.last_move = 3
+        self.assertTrue(move.player_is_before(player1, player2))
+        self.assertFalse(move.player_is_before(player2, player1))
+        player1.has_passed = True
+        self.assertTrue(move.player_is_before(player2, player1))
+        self.assertFalse(move.player_is_before(player1, player2))
+        player2.has_passed = True
+        self.assertFalse(move.player_is_before(player1, player2))
+        self.assertFalse(move.player_is_before(player2, player1))
 
     def test_planet_rotation(self):
         pass
