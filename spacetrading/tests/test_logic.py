@@ -134,7 +134,21 @@ class MoveTest(TestCase):
         self.assertFalse(move.player_is_before(player2, player1))
 
     def test_planet_rotation(self):
-        pass
+        starting_position = []
+        for planet in self.planets:
+            starting_position.append(planet.current_position)
+        player1 = self.players[0]
+        player1.ship_position = self.planets[0].position_of_hexes[self.planets[0].current_position]
+        player1.save()
+        player2 = self.players[1]
+        player2.ship_position = [0, 0]
+        player2.save()
+        for i in range(14):
+            move.planet_rotation(self.game, self.players, self.planets)
+            self.assertEqual(self.planets[0].position_of_hexes[self.planets[0].current_position], self.players[0].ship_position)
+            self.assertEqual([0, 0], self.players[1].ship_position)
+            for planet in self.planets:
+                self.assertEqual(planet.current_position, (starting_position[planet.planet_number] + i + 1) % planet.number_of_hexes)
 
     def test_offer_demand(self):
         pass
