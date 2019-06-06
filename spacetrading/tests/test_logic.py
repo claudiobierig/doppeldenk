@@ -150,11 +150,56 @@ class MoveTest(TestCase):
             for planet in self.planets:
                 self.assertEqual(planet.current_position, (starting_position[planet.planet_number] + i + 1) % planet.number_of_hexes)
 
+    def get_prices(self, planets):
+        return {
+            planet.name : (planet.cost_buy_resource[0], planet.cost_sell_resource[0])
+                for planet in planets
+        }
+
     def test_offer_demand(self):
-        pass
+        old_prices = self.get_prices(self.planets)
+        for i in range(5):
+            move.offer_demand(self.game, self.planets)
+            new_prices = self.get_prices(self.planets)
+            for key, (buy_price, sell_price) in old_prices.items():
+                self.assertEqual(new_prices[key][0], max(buy_price - 1, 1))
+                self.assertEqual(new_prices[key][1], min(sell_price + 1, 7))
+            old_prices = new_prices
+            self.assertEqual(self.game.offer_demand_event_move, i+1)
+            self.assertEqual(self.game.offer_demand_event_time, (i+2)*gamesettings.OFFER_DEMAND_EVENT_TIMES[self.game.number_of_players - 1])
+
+    def test_midgame_scoring(self):
+        self.game.planet_influence_track = [
+            [0, 0, 0, 0],
+            [1, 0, 0, 0],
+            [1, 1, 0, 0],
+            [1, 1, 1, 0],
+            [3, 1, 1, 0]
+        ]
+        move.midgame_scoring(self.game, self.players)
+        self.assertEqual(self.players[0].points, 6)
+        self.assertEqual(self.players[1].points, 2)
+        self.assertEqual(self.players[2].points, 1)
+        self.assertEqual(self.players[3].points, 0)
+        self.assertEqual(self.game.midgame_scoring_event_move, 1)
+        self.assertEqual(self.game.midgame_scoring_event_time, 2*gamesettings.MIDGAME_SCORING_TIME)
 
     def test_compute_points(self):
-        pass
+        self.game.planet_influence_track = [
+            [0, 0, 0, 0],
+            [1, 0, 0, 0],
+            [1, 1, 0, 0],
+            [1, 1, 1, 0],
+            [3, 1, 1, 0]
+        ]
+        points = [move.compute_points(self.game, player) for player in self.players]
+        self.assertEqual(points, [17, 9, 5, 0])
+        for player in self.players:
+            player.points = 1
+        points = [move.compute_points(self.game, player) for player in self.players]
+        self.assertEqual(points, [18, 10, 6, 1])
+        points = [move.compute_points(self.game, player, [2, 1]) for player in self.players]
+        self.assertEqual(points, [7, 3, 2, 1])
 
     def test_get_current_planet(self):
         pass
