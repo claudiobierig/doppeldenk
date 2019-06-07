@@ -80,9 +80,9 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
     if active_player is None:
         finish_game(game)
         raise MoveError("no active player")
-    if [data['coord_q'], data['coord_r']] == [0, 0] or \
-        data.get('coord_q', None) is None or \
-        data.get('coord_r', None) is None:
+    if data.get('coord_q', None) is None or \
+        data.get('coord_r', None) is None or \
+        [data['coord_q'], data['coord_r']] == [0, 0]:
         raise MoveError("You didn't choose where to fly.")
     distance = compute_distance(
         active_player.ship_position,

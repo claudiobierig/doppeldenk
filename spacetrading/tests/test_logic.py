@@ -206,9 +206,52 @@ class MoveTest(TestCase):
         for position, planet in planet_positions:
             self.assertEqual(planet, move.get_active_planet(position, self.planets))
         self.assertEqual(None, move.get_active_planet([0, 0], self.planets))
-
+    
     def test_get_trade_balance_or_raise(self):
-        pass
+        data = {
+            'coord_q': 0,
+            'coord_r': 0
+        }
+        active_player = move.get_active_player(self.players)
+        active_planet = move.get_active_planet(active_player.ship_position, self.planets)
+        with self.assertRaises(move.MoveError):
+            move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
+        with self.assertRaises(move.MoveError):
+            move.get_trade_balance_or_raise(active_player, active_planet, self.game, {})
+        data = {
+            'coord_q': 1,
+            'coord_r': 1
+        }
+        self.assertEqual(0, move.get_trade_balance_or_raise(active_player, active_planet, self.game, data))
+        for i, _ in enumerate(self.players):
+            active_player = move.get_active_player(self.players)
+            active_planet = move.get_active_planet(active_player.ship_position, self.planets)
+            data = {
+                'coord_q': self.planets[i].position_of_hexes[self.planets[i].current_position][0],
+                'coord_r': self.planets[i].position_of_hexes[self.planets[i].current_position][1]
+            }
+            move.move(self.game, data)
+            self.players = self.game.players.all().order_by('player_number')
+            self.planets = self.game.planets.all().order_by('planet_number')
+
+        active_player = move.get_active_player(self.players)
+        active_planet = move.get_active_planet(active_player.ship_position, self.planets)
+        data = {
+            'coord_q': active_player.ship_position[0],
+            'coord_r': active_player.ship_position[1]
+        }
+        
+        with self.assertRaises(move.MoveError):
+            move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
+        data['spend_time'] = 3
+        with self.assertRaises(move.MoveError):
+            move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
+        data['spend_time'] = 4
+        self.assertEqual(0, move.get_trade_balance_or_raise(active_player, active_planet, self.game, data))
+
+        with self.assertRaises(move.MoveError):
+            move.get_trade_balance_or_raise(None, None, self.game, {})
+        self.assertEqual('f', self.game.game_state)
 
     def test_change_active_player(self):
         pass
