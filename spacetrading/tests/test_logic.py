@@ -201,13 +201,13 @@ class MoveTest(TestCase):
         points = [move.compute_points(self.game, player, [2, 1]) for player in self.players]
         self.assertEqual(points, [7, 3, 2, 1])
 
-    def test_get_current_planet(self):
-        pass
+    def test_get_active_planet(self):
+        planet_positions = [(planet.position_of_hexes[planet.current_position], planet) for planet in self.planets]
+        for position, planet in planet_positions:
+            self.assertEqual(planet, move.get_active_planet(position, self.planets))
+        self.assertEqual(None, move.get_active_planet([0, 0], self.planets))
 
-    def test_is_move_valid(self):
-        pass
-
-    def test_compute_trade_balance(self):
+    def test_get_trade_balance_or_raise(self):
         pass
 
     def test_change_active_player(self):
