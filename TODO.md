@@ -43,11 +43,8 @@
 - Licensing (4h)
 - Make repo public (one click, but needs to be cleaned before)
   
-## Improve Code Quality (~110h)
+## Improve Code Quality (~100h)
 
-- Testcases (10h)
-  - Move logic (8h)
-  - Create/Join logic (4h)
 - Refactoring (~100h)
   - Groundwork to add EuroCrisis (10h)
     - Move lists, etc. to doppeldenk (4h)
