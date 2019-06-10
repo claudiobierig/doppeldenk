@@ -166,6 +166,15 @@ function setViewPlayerState()
 function setGameState()
 {
     document.getElementById("resource_limit").innerHTML = "Resource limit: " + game_data.resource_limit
+    if(game_data.midgame_scoring)
+    {
+        document.getElementById("midgame_scoring").innerHTML = "Midgame scoring (2, 1)"
+    }
+    else
+    {
+        document.getElementById("midgame_scoring").innerHTML = "No midgame scoring"
+    }
+    
     if(active_planet != null){
         document.getElementById("table_head").setAttribute("style", "background-color:" + active_planet.colour)
     }

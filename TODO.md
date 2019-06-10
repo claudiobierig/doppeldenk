@@ -2,10 +2,8 @@
 
 ## Prio
 
-- Change UI/UX of planet market
 - Create printing material
 - Add Event additional resource
-- Add Event midgame scoring
 - Refactoring
 
 ## Planed Features (~50h + Refactoring + ~80h Eurocrisis)
@@ -25,7 +23,7 @@
   - Rulebook update (2h)
 - Improve UI and UX (2h)
   - Different resource symbols, building resource -> oil barrel (2h)
-- Fix supply resource to planet
+- Fix supply resource to planet (only demand is random)
 - Update Printing Material (8h)
 - Add EuroCrisis (80h + refactoring)
 
@@ -45,7 +43,7 @@
       - Check how to present multiple lists in one view
     - Dropdown for rules (2h)
     - Create game: Dropdown -> different forms depending on choice (4h)
-  - Clear seperation of MVC (~60h)
+  - Clear seperation of MVC (50h)
     - move stuff to js (50h)
       - create current view via js and game_detail.html will be fixed not using safe tags (4h)
       - Setup automatic generation of game_detail.html (6h)
