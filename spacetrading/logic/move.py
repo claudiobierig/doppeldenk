@@ -177,12 +177,12 @@ def change_active_planet(active_planet, data):
         if resource != '0' and data[PLANET_DEMAND_MAPPING[resource]] != 0:
             index = active_planet.planet_demand_resources.index(resource)
             active_planet.planet_demand_resources_price[index] = min(
-                active_planet.planet_demand_resources_price[index] + 1, 6)
+                active_planet.planet_demand_resources_price[index] + 1, gamesettings.PLANET_DEMAND_MAX_PRICE)
     for resource in active_planet.planet_supply_resources:
         if resource != '0' and data[PLANET_SUPPLY_MAPPING[resource]] != 0:
             index = active_planet.planet_supply_resources.index(resource)
             active_planet.planet_supply_resources_price[index] = max(
-                active_planet.planet_supply_resources_price[index] - 1, 2)
+                active_planet.planet_supply_resources_price[index] - 1, gamesettings.PLANET_SUPPLY_MIN_PRICE)
     active_planet.save()
 
 
@@ -299,9 +299,9 @@ def offer_demand(game, planets):
     game.save()
     for planet in planets:
         for index, price in enumerate(planet.planet_demand_resources_price):
-            planet.planet_demand_resources_price[index] = max(1, price - 1)
+            planet.planet_demand_resources_price[index] = max(gamesettings.PLANET_DEMAND_MIN_PRICE, price - 1)
         for index, price in enumerate(planet.planet_supply_resources_price):
-            planet.planet_supply_resources_price[index] = min(7, price + 1)
+            planet.planet_supply_resources_price[index] = min(gamesettings.PLANET_SUPPLY_MAX_PRICE, price + 1)
         planet.save()
 
 
