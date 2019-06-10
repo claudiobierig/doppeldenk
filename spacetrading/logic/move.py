@@ -219,7 +219,7 @@ def change_game(game, players, planets, active_planet, active_player_number, dat
     if active_planet is not None:
         active_planet_number = active_planet.planet_number
         game.planet_influence_track[active_planet_number][active_player_number] = game.planet_influence_track[
-            active_planet_number][active_player_number] + data["buy_influence"]
+            active_planet_number][active_player_number] + data.get("buy_influence", 0)
     game.save()
 
 

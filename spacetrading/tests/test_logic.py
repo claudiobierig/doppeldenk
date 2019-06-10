@@ -6,8 +6,6 @@ import itertools
 from django.contrib.auth.models import User
 from django.test import TestCase
 from spacetrading.models import Game
-from spacetrading.models import Player
-from spacetrading.models import Planet
 from spacetrading.logic import gamesettings
 from spacetrading.logic import initialize
 from spacetrading.logic import move
@@ -356,7 +354,32 @@ class MoveTest(TestCase):
             old_prices = new_prices
             
     def test_change_game(self):
-        pass
+        move.change_game(self.game, self.players, self.planets, None, 0, {})
+        self.assertEqual(self.game.next_move_number, 2)
+        for i, _ in enumerate(self.players):
+            data = {
+                'coord_q': self.planets[i].position_of_hexes[self.planets[i].current_position][0],
+                'coord_r': self.planets[i].position_of_hexes[self.planets[i].current_position][1]
+            }
+            move.move(self.game, data)
+            self.planets = self.game.planets.all().order_by('planet_number')
+        self.players = self.game.players.all().order_by('player_number')
+
+        active_player = move.get_active_player(self.players)
+        active_planet = move.get_active_planet(active_player.ship_position, self.planets)
+        data = {'buy_influence': 5}
+        move.change_game(self.game, self.players, self.planets, active_planet, active_player.player_number, data)
+        self.assertEqual(self.game.next_move_number, 7)
+        self.assertEqual(self.game.planet_influence_track[active_planet.planet_number][active_player.player_number], 5)
+        for player in self.players:
+            player.time_spent = 11
+        move.change_game(self.game, self.players, self.planets, active_planet, active_player.player_number, data)
+        self.assertEqual(self.game.next_move_number, 10)
+        self.assertEqual(self.game.planet_influence_track[active_planet.planet_number][active_player.player_number], 10)
+        self.assertEqual(self.game.planet_rotation_event_time, 20)
+        self.assertEqual(self.game.planet_rotation_event_move, 8)
+        self.assertEqual(self.game.offer_demand_event_time, 20)
+        self.assertEqual(self.game.offer_demand_event_move, 9)
 
 class InitializeTest(TestCase):
     """
