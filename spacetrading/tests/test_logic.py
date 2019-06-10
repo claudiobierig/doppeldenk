@@ -207,6 +207,17 @@ class MoveTest(TestCase):
             self.assertEqual(planet, move.get_active_planet(position, self.planets))
         self.assertEqual(None, move.get_active_planet([0, 0], self.planets))
     
+    def test_get_cost_influence(self):
+        self.assertEqual(0, move.get_cost_influence(True, 0, 0))
+        self.assertEqual(0, move.get_cost_influence(False, 0, 0))
+        self.assertEqual(0, move.get_cost_influence(True, 0, 10))
+        self.assertEqual(1, move.get_cost_influence(True, 1, 5))
+        self.assertEqual(6, move.get_cost_influence(False, 1, 5))
+        self.assertEqual(8, move.get_cost_influence(True, 2, 5))
+        self.assertEqual(13, move.get_cost_influence(False, 2, 5))
+        self.assertEqual(16, move.get_cost_influence(True, 3, 5))
+        self.assertEqual(21, move.get_cost_influence(False, 3, 5))
+
     def test_get_trade_balance_or_raise(self):
         data = {
             'coord_q': 0,
@@ -240,7 +251,7 @@ class MoveTest(TestCase):
             'coord_q': active_player.ship_position[0],
             'coord_r': active_player.ship_position[1]
         }
-        
+
         with self.assertRaises(move.MoveError):
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
         data['spend_time'] = 3
@@ -248,7 +259,23 @@ class MoveTest(TestCase):
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
         data['spend_time'] = 4
         self.assertEqual(0, move.get_trade_balance_or_raise(active_player, active_planet, self.game, data))
-
+        data[move.BUY_MAPPING[active_planet.buy_resources[0]]] = self.game.resource_limit + 1
+        with self.assertRaises(move.MoveError):
+            move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
+        data[move.BUY_MAPPING[active_planet.buy_resources[0]]] = 1
+        self.assertEqual(-active_planet.cost_buy_resource[0], move.get_trade_balance_or_raise(active_player, active_planet, self.game, data))
+        data['buy_influence'] = 1
+        self.assertEqual(-active_planet.cost_buy_resource[0] - 1, move.get_trade_balance_or_raise(active_player, active_planet, self.game, data))
+        data['buy_influence'] = 5
+        with self.assertRaises(move.MoveError):
+            move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
+        data['buy_influence'] = 0
+        data[move.SELL_MAPPING[active_planet.sell_resources[0]]] = 2
+        with self.assertRaises(move.MoveError):
+            move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
+        active_player.resources[int(active_planet.sell_resources[0]) - 1] = 2
+        self.assertEqual(-active_planet.cost_buy_resource[0] + 2*active_planet.cost_sell_resource[0], \
+            move.get_trade_balance_or_raise(active_player, active_planet, self.game, data))
         with self.assertRaises(move.MoveError):
             move.get_trade_balance_or_raise(None, None, self.game, {})
         self.assertEqual('f', self.game.game_state)
