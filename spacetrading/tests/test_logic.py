@@ -328,8 +328,33 @@ class MoveTest(TestCase):
         self.assertEqual(player.money, 10 + trade_balance)
 
     def test_change_active_planet(self):
-        pass
+        for i, _ in enumerate(self.players):
+            active_player = move.get_active_player(self.players)
+            active_planet = move.get_active_planet(active_player.ship_position, self.planets)
+            data = {
+                'coord_q': self.planets[i].position_of_hexes[self.planets[i].current_position][0],
+                'coord_r': self.planets[i].position_of_hexes[self.planets[i].current_position][1]
+            }
+            move.move(self.game, data)
+            self.players = self.game.players.all().order_by('player_number')
+            self.planets = self.game.planets.all().order_by('planet_number')
+        
+        active_player = move.get_active_player(self.players)
+        active_planet = move.get_active_planet(active_player.ship_position, self.planets)
+        old_prices = self.get_prices([active_planet])
 
+        for i in range(5):
+            data = {
+                move.BUY_MAPPING[active_planet.buy_resources[0]]: 1,
+                move.SELL_MAPPING[active_planet.sell_resources[0]]: 1
+            }
+            move.change_active_planet(active_planet, data)
+            new_prices = self.get_prices([active_planet])
+            for key, (buy_price, sell_price) in old_prices.items():
+                self.assertEqual(new_prices[key][0], min(buy_price + 1, 6))
+                self.assertEqual(new_prices[key][1], max(sell_price - 1, 2))
+            old_prices = new_prices
+            
     def test_change_game(self):
         pass
 

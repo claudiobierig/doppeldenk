@@ -193,7 +193,7 @@ def change_active_planet(active_planet, data):
         if resource != '0' and data[BUY_MAPPING[resource]] != 0:
             index = active_planet.buy_resources.index(resource)
             active_planet.cost_buy_resource[index] = min(
-                active_planet.cost_buy_resource[index] + 1, 8)
+                active_planet.cost_buy_resource[index] + 1, 6)
     for resource in active_planet.sell_resources:
         if resource != '0' and data[SELL_MAPPING[resource]] != 0:
             index = active_planet.sell_resources.index(resource)
