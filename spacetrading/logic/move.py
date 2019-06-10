@@ -20,27 +20,6 @@ class Event(Enum):
     MIDGAME_SCORING = 3
 
 
-def pass_game(game):
-    """
-    logic of the active player passing
-    TODO: needs to be migrated with move
-    """
-    players = game.players.all()
-    active_player = get_active_player(players)
-    if active_player is None:
-        finish_game(game)
-        return
-
-    active_player.has_passed = True
-    active_player.save()
-
-    players = game.players.all()
-    active_player = get_active_player(players)
-    if active_player is None:
-        finish_game(game)
-        return
-
-
 def move(game, data):
     """
     logic of changing the game by data representing a move
@@ -80,22 +59,23 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
     if active_player is None:
         finish_game(game)
         raise MoveError("no active player")
-    if data.get('coord_q', None) is None or \
-        data.get('coord_r', None) is None or \
-        [data['coord_q'], data['coord_r']] == [0, 0]:
-        raise MoveError("You didn't choose where to fly.")
-    distance = compute_distance(
-        active_player.ship_position,
-        [data['coord_q'], data['coord_r']]
-    )
-    if active_player.last_move >= 0:
-        if data.get('spend_time') is not None and distance > data.get('spend_time', 0):
-            raise MoveError(
-                "You want to spend {} time, but the distance to you destination is {}".format(
-                    data.get('spend_time', 0), distance)
-            )
-        if data.get('spend_time') is None:
-            raise MoveError("You need to specify a time you want to spend.")
+    if data.get('move_type', 'Regular') is 'Regular':
+        if data.get('coord_q', None) is None or \
+            data.get('coord_r', None) is None or \
+            [data['coord_q'], data['coord_r']] == [0, 0]:
+            raise MoveError("You didn't choose where to fly.")
+        distance = compute_distance(
+            active_player.ship_position,
+            [data['coord_q'], data['coord_r']]
+        )
+        if active_player.last_move >= 0:
+            if data.get('spend_time') is not None and distance > data.get('spend_time', 0):
+                raise MoveError(
+                    "You want to spend {} time, but the distance to you destination is {}".format(
+                        data.get('spend_time', 0), distance)
+                )
+            if data.get('spend_time') is None:
+                raise MoveError("You need to specify a time you want to spend.")
 
     trade_balance = 0
     traded = False
@@ -164,13 +144,17 @@ def change_active_player(active_player, active_planet, next_move_number, data, t
     """
     performs changes on active_player
     """
-    if active_player.last_move < 0:
-        active_player.time_spent = 0
-    else:
-        active_player.time_spent = active_player.time_spent + \
-            data['spend_time']
-    active_player.last_move = next_move_number
-    active_player.ship_position = [data['coord_q'], data['coord_r']]
+    if data.get('move_type', 'Regular') is 'Regular':
+        if active_player.last_move < 0:
+            active_player.time_spent = 0
+        else:
+            active_player.time_spent = active_player.time_spent + \
+                data['spend_time']
+        active_player.last_move = next_move_number
+        active_player.ship_position = [data['coord_q'], data['coord_r']]
+    elif data.get('move_type', 'Regular') is 'Pass':
+        active_player.has_passed = True
+
     if active_planet is not None:
         active_player.money = active_player.money + trade_balance
         for resource in active_planet.buy_resources:

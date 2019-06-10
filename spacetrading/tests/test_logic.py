@@ -316,14 +316,26 @@ class MoveTest(TestCase):
         trade_balance = 17
         next_move = 18
         move.change_active_player(active_player, active_planet, next_move, data, trade_balance)
-        self.players = self.game.players.all().order_by('player_number')
-        
+        self.players = self.game.players.all().order_by('player_number')        
         player = self.players[3]
         self.assertEqual(player.ship_position, [1, 1])
         self.assertEqual(player.time_spent, 50)
         self.assertEqual(player.last_move, next_move)
         self.assertEqual(player.resources[int(active_planet.buy_resources[0]) - 1], 1)
         self.assertEqual(player.money, 10 + trade_balance)
+        self.assertFalse(player.has_passed)
+        data['move_type'] = 'Pass'
+        data['coord_q'] = 2
+        data['coord_r'] = 2
+        move.change_active_player(active_player, active_planet, next_move, data, trade_balance)
+        self.players = self.game.players.all().order_by('player_number')        
+        player = self.players[3]
+        self.assertEqual(player.ship_position, [1, 1])
+        self.assertEqual(player.time_spent, 50)
+        self.assertEqual(player.last_move, next_move)
+        self.assertEqual(player.resources[int(active_planet.buy_resources[0]) - 1], 2)
+        self.assertEqual(player.money, 10 + 2*trade_balance)
+        self.assertTrue(player.has_passed)
 
     def test_change_active_planet(self):
         for i, _ in enumerate(self.players):

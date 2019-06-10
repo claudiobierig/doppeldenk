@@ -150,12 +150,18 @@ class GameMove(generic.detail.SingleObjectMixin, generic.FormView, LoginRequired
             active_player = game_instance.get_active_player()
             if request.user == active_player.user:
                 if 'Regular' in form.data:
-                    try:
-                        move.move(game_instance, form.cleaned_data)
-                    except move.MoveError as exception:
-                        messages.error(request, 'Error: {}.'.format(exception))
+                    form.cleaned_data['move_type'] = 'Regular'
                 elif 'Pass' in form.data:
-                    move.pass_game(game_instance)
+                    form.cleaned_data['move_type'] = 'Pass'
+                else:
+                    messages.error(request, 'Error: Neither performed a regular move nor passed.')
+                    return HttpResponseRedirect(self.request.path_info)
+                
+                print(form.cleaned_data)
+                try:
+                    move.move(game_instance, form.cleaned_data)
+                except move.MoveError as exception:
+                    messages.error(request, 'Error: {}.'.format(exception))
 
         return HttpResponseRedirect(self.request.path_info)
 

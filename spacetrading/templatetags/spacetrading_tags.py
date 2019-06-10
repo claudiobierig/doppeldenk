@@ -1,4 +1,5 @@
 from django import template
+from spacetrading.logic import move
 
 register = template.Library()
 
@@ -14,8 +15,5 @@ def get_class(label):
 
 @register.simple_tag
 def is_active(player, players):
-    for other_player in players:
-        if other_player.time_spent < player.time_spent or other_player.time_spent == player.time_spent and other_player.last_move > player.last_move:
-            return False
-
-    return True
+    active_player = move.get_active_player(players)
+    return player is active_player

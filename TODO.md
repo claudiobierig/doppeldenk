@@ -29,10 +29,7 @@
 - Update Printing Material (8h)
 - Add EuroCrisis (80h + refactoring)
 
-## Open Bugs (4h)
-
-- Pass is not handled correctly (2h)
-- When passed wrong player is shown active in list (2h)
+## Open Bugs
 
 ## Operations (8h)
 
