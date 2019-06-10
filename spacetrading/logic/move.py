@@ -171,14 +171,14 @@ def change_active_player(active_player, active_planet, next_move_number, data, t
             data['spend_time']
     active_player.last_move = next_move_number
     active_player.ship_position = [data['coord_q'], data['coord_r']]
-    active_player.money = active_player.money + trade_balance
     if active_planet is not None:
+        active_player.money = active_player.money + trade_balance
         for resource in active_planet.buy_resources:
             if resource != "0":
-                active_player.resources[int(resource) - 1] += data[BUY_MAPPING[resource]]
+                active_player.resources[int(resource) - 1] += data.get(BUY_MAPPING[resource], 0)
         for resource in active_planet.sell_resources:
             if resource != "0":
-                active_player.resources[int(resource) - 1] -= data[SELL_MAPPING[resource]]
+                active_player.resources[int(resource) - 1] -= data.get(SELL_MAPPING[resource], 0)
 
     active_player.save()
 

@@ -280,8 +280,52 @@ class MoveTest(TestCase):
             move.get_trade_balance_or_raise(None, None, self.game, {})
         self.assertEqual('f', self.game.game_state)
 
-    def test_change_active_player(self):
-        pass
+    def test_change_active_player_startup(self):
+        active_player = move.get_active_player(self.players)
+        active_planet = move.get_active_planet(active_player.ship_position, self.planets)
+        data = {
+            'coord_q': 1,
+            'coord_r': 1
+        }
+        move.change_active_player(active_player, active_planet, 1, data, 0)
+        self.players = self.game.players.all().order_by('player_number')
+        player = self.players[0]
+        self.assertEqual(player.ship_position, [1, 1])
+        self.assertEqual(player.time_spent, 0)
+        self.assertEqual(player.last_move, 1)
+
+    def test_change_active_player_normal_move(self):
+        for i, _ in enumerate(self.players):
+            active_player = move.get_active_player(self.players)
+            active_planet = move.get_active_planet(active_player.ship_position, self.planets)
+            data = {
+                'coord_q': self.planets[i].position_of_hexes[self.planets[i].current_position][0],
+                'coord_r': self.planets[i].position_of_hexes[self.planets[i].current_position][1]
+            }
+            move.move(self.game, data)
+            self.players = self.game.players.all().order_by('player_number')
+            self.planets = self.game.planets.all().order_by('planet_number')
+        
+        active_player = move.get_active_player(self.players)
+        active_planet = move.get_active_planet(active_player.ship_position, self.planets)
+        data = {
+            'coord_q': 1,
+            'coord_r': 1,
+            'spend_time': 50,
+            move.BUY_MAPPING[active_planet.buy_resources[0]]: 1,
+            move.BUY_MAPPING[active_planet.sell_resources[0]]: 0
+        }
+        trade_balance = 17
+        next_move = 18
+        move.change_active_player(active_player, active_planet, next_move, data, trade_balance)
+        self.players = self.game.players.all().order_by('player_number')
+        
+        player = self.players[3]
+        self.assertEqual(player.ship_position, [1, 1])
+        self.assertEqual(player.time_spent, 50)
+        self.assertEqual(player.last_move, next_move)
+        self.assertEqual(player.resources[int(active_planet.buy_resources[0]) - 1], 1)
+        self.assertEqual(player.money, 10 + trade_balance)
 
     def test_change_active_planet(self):
         pass
