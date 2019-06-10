@@ -81,16 +81,16 @@ class Move(forms.Form):
         active_player = args[0].get("active_player", None)
         symbols = args[0].get("symbols", None)
         if active_planet is None:
-            sell_resources = []
-            buy_resources = []
-            cost_sell_resources = []
-            cost_buy_resources = []
+            planet_supply_resources = []
+            planet_demand_resources = []
+            planet_supply_resources_price = []
+            planet_demand_resources_price = []
             influence = False
         else:
-            sell_resources = active_planet.sell_resources
-            buy_resources = active_planet.buy_resources
-            cost_sell_resources = active_planet.cost_sell_resource
-            cost_buy_resources = active_planet.cost_buy_resource
+            planet_supply_resources = active_planet.planet_supply_resources
+            planet_demand_resources = active_planet.planet_demand_resources
+            planet_supply_resources_price = active_planet.planet_supply_resources_price
+            planet_demand_resources_price = active_planet.planet_demand_resources_price
             influence = True
 
         if active_player is None or active_player.time_spent < 0:
@@ -99,8 +99,8 @@ class Move(forms.Form):
             time = True
         
         for direction, mapping, resources, cost in [
-                ("Sell", move.SELL_MAPPING, sell_resources, cost_sell_resources),
-                ("Buy", move.BUY_MAPPING, buy_resources, cost_buy_resources)
+                ("Sell", move.PLANET_SUPPLY_MAPPING, planet_supply_resources, planet_supply_resources_price),
+                ("Buy", move.PLANET_DEMAND_MAPPING, planet_demand_resources, planet_demand_resources_price)
             ]:
             for resource in range(1, 6):
                 fieldname = mapping[str(resource)]

@@ -7,8 +7,8 @@ from enum import Enum
 from spacetrading.logic import gamesettings
 
 
-BUY_MAPPING = {str(i) : "buy_resource_{}".format(i) for i in range(1, 6)}
-SELL_MAPPING = {str(i) : "sell_resource_{}".format(i) for i in range(1, 6)}
+PLANET_DEMAND_MAPPING = {str(i) : "planet_demand_resource_{}".format(i) for i in range(1, 6)}
+PLANET_SUPPLY_MAPPING = {str(i) : "planet_supply_resource_{}".format(i) for i in range(1, 6)}
 
 
 class Event(Enum):
@@ -83,26 +83,26 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
     if active_planet is None:
         return trade_balance
 
-    for resource in active_planet.buy_resources:
+    for resource in active_planet.planet_demand_resources:
         if resource != '0':
-            if data.get(BUY_MAPPING[resource], 0) + active_player.resources[int(resource) - 1] > game.resource_limit:
+            if data.get(PLANET_DEMAND_MAPPING[resource], 0) + active_player.resources[int(resource) - 1] > game.resource_limit:
                 raise MoveError(
                     "You cannot hold more than {} of one resource".format(game.resource_limit))
-            if data.get(BUY_MAPPING[resource], 0) > 0:
+            if data.get(PLANET_DEMAND_MAPPING[resource], 0) > 0:
                 trade_balance = trade_balance - \
-                    data[BUY_MAPPING[resource]] * \
-                        active_planet.cost_buy_resource[active_planet.buy_resources.index(resource)]
+                    data[PLANET_DEMAND_MAPPING[resource]] * \
+                        active_planet.planet_demand_resources_price[active_planet.planet_demand_resources.index(resource)]
                 traded = True
 
-    for resource in active_planet.sell_resources:
+    for resource in active_planet.planet_supply_resources:
         if resource != '0':
-            if data.get(SELL_MAPPING[resource], 0) > active_player.resources[int(resource) - 1]:
+            if data.get(PLANET_SUPPLY_MAPPING[resource], 0) > active_player.resources[int(resource) - 1]:
                 raise MoveError(
                     "You tried to sell more resources than you have")
-            if data.get(SELL_MAPPING[resource], 0) > 0:
+            if data.get(PLANET_SUPPLY_MAPPING[resource], 0) > 0:
                 trade_balance = trade_balance + \
-                    data[SELL_MAPPING[resource]] * \
-                        active_planet.cost_sell_resource[active_planet.sell_resources.index(resource)]
+                    data[PLANET_SUPPLY_MAPPING[resource]] * \
+                        active_planet.planet_supply_resources_price[active_planet.planet_supply_resources.index(resource)]
                 traded = True
 
     trade_balance = trade_balance - get_cost_influence(
@@ -157,12 +157,12 @@ def change_active_player(active_player, active_planet, next_move_number, data, t
 
     if active_planet is not None:
         active_player.money = active_player.money + trade_balance
-        for resource in active_planet.buy_resources:
+        for resource in active_planet.planet_demand_resources:
             if resource != "0":
-                active_player.resources[int(resource) - 1] += data.get(BUY_MAPPING[resource], 0)
-        for resource in active_planet.sell_resources:
+                active_player.resources[int(resource) - 1] += data.get(PLANET_DEMAND_MAPPING[resource], 0)
+        for resource in active_planet.planet_supply_resources:
             if resource != "0":
-                active_player.resources[int(resource) - 1] -= data.get(SELL_MAPPING[resource], 0)
+                active_player.resources[int(resource) - 1] -= data.get(PLANET_SUPPLY_MAPPING[resource], 0)
 
     active_player.save()
 
@@ -173,16 +173,16 @@ def change_active_planet(active_planet, data):
     """
     if active_planet is None:
         return
-    for resource in active_planet.buy_resources:
-        if resource != '0' and data[BUY_MAPPING[resource]] != 0:
-            index = active_planet.buy_resources.index(resource)
-            active_planet.cost_buy_resource[index] = min(
-                active_planet.cost_buy_resource[index] + 1, 6)
-    for resource in active_planet.sell_resources:
-        if resource != '0' and data[SELL_MAPPING[resource]] != 0:
-            index = active_planet.sell_resources.index(resource)
-            active_planet.cost_sell_resource[index] = max(
-                active_planet.cost_sell_resource[index] - 1, 2)
+    for resource in active_planet.planet_demand_resources:
+        if resource != '0' and data[PLANET_DEMAND_MAPPING[resource]] != 0:
+            index = active_planet.planet_demand_resources.index(resource)
+            active_planet.planet_demand_resources_price[index] = min(
+                active_planet.planet_demand_resources_price[index] + 1, 6)
+    for resource in active_planet.planet_supply_resources:
+        if resource != '0' and data[PLANET_SUPPLY_MAPPING[resource]] != 0:
+            index = active_planet.planet_supply_resources.index(resource)
+            active_planet.planet_supply_resources_price[index] = max(
+                active_planet.planet_supply_resources_price[index] - 1, 2)
     active_planet.save()
 
 
@@ -298,10 +298,10 @@ def offer_demand(game, planets):
     game.next_move_number = game.next_move_number + 1
     game.save()
     for planet in planets:
-        for index, price in enumerate(planet.cost_buy_resource):
-            planet.cost_buy_resource[index] = max(1, price - 1)
-        for index, price in enumerate(planet.cost_sell_resource):
-            planet.cost_sell_resource[index] = min(7, price + 1)
+        for index, price in enumerate(planet.planet_demand_resources_price):
+            planet.planet_demand_resources_price[index] = max(1, price - 1)
+        for index, price in enumerate(planet.planet_supply_resources_price):
+            planet.planet_supply_resources_price[index] = min(7, price + 1)
         planet.save()
 
 

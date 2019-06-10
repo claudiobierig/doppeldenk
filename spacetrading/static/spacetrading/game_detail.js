@@ -132,22 +132,22 @@ function setViewPlayerState()
         var amount = active_player.resources[resource]
         if(active_planet != null){
             try{
-                const sellSelect = document.getElementById("id_sell_resource_" + (resource + 1))
-                const sellAmount = parseInt(sellSelect.options[sellSelect.selectedIndex].value)
-                if(sellAmount > 0){
-                    const cost = sellAmount*getCost(active_planet.sell_resources, active_planet.cost_sell_resource, (resource + 1).toString())
-                    amount = amount - sellAmount
+                const supplySelect = document.getElementById("id_planet_supply_resource_" + (resource + 1))
+                const supplyAmount = parseInt(supplySelect.options[supplySelect.selectedIndex].value)
+                if(supplyAmount > 0){
+                    const cost = supplyAmount*getCost(active_planet.planet_supply_resources, active_planet.planet_supply_resources_price, (resource + 1).toString())
+                    amount = amount - supplyAmount
                     money = money + cost
                     traded = true
                 }
             }catch{}
             try{
-                const buySelect = document.getElementById("id_buy_resource_" + (resource + 1))
-                const buyAmount = parseInt(buySelect.options[buySelect.selectedIndex].value)
-                if(buyAmount > 0){
-                    const cost = buyAmount*getCost(active_planet.buy_resources, active_planet.cost_buy_resource, (resource + 1).toString())
+                const demandSelect = document.getElementById("id_planet_demand_resource_" + (resource + 1))
+                const demandAmount = parseInt(demandSelect.options[demandSelect.selectedIndex].value)
+                if(demandAmount > 0){
+                    const cost = demandAmount*getCost(active_planet.planet_demand_resources, active_planet.planet_demand_resources_price, (resource + 1).toString())
                     traded = true
-                    amount = amount + buyAmount
+                    amount = amount + demandAmount
                     money = money - cost
                 }
             }catch{}

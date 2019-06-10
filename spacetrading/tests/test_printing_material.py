@@ -70,8 +70,8 @@ class GeneratePrintingMaterial(TestCase):
         game = Game.objects.get(game_name="empty_gameboard")
         planets = game.planets.all().order_by('planet_number')
         for planet in planets:
-            planet.buy_resources[0] = '0'
-            planet.sell_resources[0] = '0'
+            planet.planet_demand_resources[0] = '0'
+            planet.planet_supply_resources[0] = '0'
         svg_strings = [str(svg) for svg in generate_planet_market.draw_planet_market(planets)]
         svg_filename = "printing_material/planet_market_{}.svg"
         for index in range(len(planets)):

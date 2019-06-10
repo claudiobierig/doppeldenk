@@ -64,18 +64,18 @@ def create_game(data, user):
             colour=current_planet[2],
             number_of_hexes=current_planet[1],
             current_position=random.randint(0, current_planet[1] - 1),
-            buy_resources=[b_resources[index], '0', '0', '0', '0'],
-            cost_buy_resource=[
+            planet_demand_resources=[b_resources[index], '0', '0', '0', '0'],
+            planet_demand_resources_price=[
                 random.randint(
-                    gamesettings.SETUP_BUY_PRICE[0],
-                    gamesettings.SETUP_BUY_PRICE[1]
+                    gamesettings.SETUP_PLANET_DEMAND_PRICE[0],
+                    gamesettings.SETUP_PLANET_DEMAND_PRICE[1]
                 ), 0, 0, 0, 0
             ],
-            sell_resources=[s_resources[index], '0', '0', '0', '0'],
-            cost_sell_resource=[
+            planet_supply_resources=[s_resources[index], '0', '0', '0', '0'],
+            planet_supply_resources_price=[
                 random.randint(
-                    gamesettings.SETUP_SELL_PRICE[0],
-                    gamesettings.SETUP_SELL_PRICE[1]
+                    gamesettings.SETUP_PLANET_SUPPLY_PRICE[0],
+                    gamesettings.SETUP_PLANET_SUPPLY_PRICE[1]
                 ), 0, 0, 0, 0
             ],
             position_of_hexes=current_planet[3],

@@ -108,8 +108,8 @@ def draw_planet(svg, planet, name, fill_colour):
         font_weight="bold"
     )
 
-    resources = [planet.sell_resources[1], planet.sell_resources[0], planet.buy_resources[0]]
-    prices = [planet.cost_sell_resource[1], planet.cost_sell_resource[0], planet.cost_buy_resource[0]]
+    resources = [planet.planet_supply_resources[1], planet.planet_supply_resources[0], planet.planet_demand_resources[0]]
+    prices = [planet.planet_supply_resources_price[1], planet.planet_supply_resources_price[0], planet.planet_demand_resources_price[0]]
     for row in range(3):
         for column in range(6):
             if row is 2:
