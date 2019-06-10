@@ -105,10 +105,10 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
 
     for resource in active_planet.buy_resources:
         if resource != '0':
-            if data[BUY_MAPPING[resource]] + active_player.resources[int(resource) - 1] > game.resource_limit:
+            if data.get(BUY_MAPPING[resource], 0) + active_player.resources[int(resource) - 1] > game.resource_limit:
                 raise MoveError(
                     "You cannot hold more than {} of one resource".format(game.resource_limit))
-            if data[BUY_MAPPING[resource]] > 0:
+            if data.get(BUY_MAPPING[resource], 0) > 0:
                 trade_balance = trade_balance - \
                     data[BUY_MAPPING[resource]] * \
                         active_planet.cost_buy_resource[active_planet.buy_resources.index(resource)]
@@ -116,17 +116,17 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
 
     for resource in active_planet.sell_resources:
         if resource != '0':
-            if data[SELL_MAPPING[resource]] > active_player.resources[int(resource) - 1]:
+            if data.get(SELL_MAPPING[resource], 0) > active_player.resources[int(resource) - 1]:
                 raise MoveError(
                     "You tried to sell more resources than you have")
-            if data[SELL_MAPPING[resource]] > 0:
+            if data.get(SELL_MAPPING[resource], 0) > 0:
                 trade_balance = trade_balance + \
                     data[SELL_MAPPING[resource]] * \
                         active_planet.cost_sell_resource[active_planet.sell_resources.index(resource)]
                 traded = True
 
     trade_balance = trade_balance - get_cost_influence(
-        traded, data["buy_influence"], game.planet_influence_track[active_planet.planet_number][active_player.player_number])
+        traded, data.get("buy_influence", 0), game.planet_influence_track[active_planet.planet_number][active_player.player_number])
     if trade_balance + active_player.money < 0:
         raise MoveError("You have not enough money")
     return trade_balance
