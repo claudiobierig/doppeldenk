@@ -136,8 +136,8 @@ function setViewPlayerState()
                 const supplyAmount = parseInt(supplySelect.options[supplySelect.selectedIndex].value)
                 if(supplyAmount > 0){
                     const cost = supplyAmount*getCost(active_planet.planet_supply_resources, active_planet.planet_supply_resources_price, (resource + 1).toString())
-                    amount = amount - supplyAmount
-                    money = money + cost
+                    amount = amount + supplyAmount
+                    money = money - cost
                     traded = true
                 }
             }catch{}
@@ -147,8 +147,8 @@ function setViewPlayerState()
                 if(demandAmount > 0){
                     const cost = demandAmount*getCost(active_planet.planet_demand_resources, active_planet.planet_demand_resources_price, (resource + 1).toString())
                     traded = true
-                    amount = amount + demandAmount
-                    money = money - cost
+                    amount = amount - demandAmount
+                    money = money + cost
                 }
             }catch{}
         }

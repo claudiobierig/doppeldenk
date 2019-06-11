@@ -31,24 +31,25 @@ def create_game(data, user):
         resource_limit=resource_limit,
         midgame_scoring=midgame_scoring
     )
-    b_resources = ['1', '2', '3', '4', '5']
-    remaining_s_resources = ['1', '2', '3', '4', '5']
-    s_resources = []
-    random.shuffle(b_resources)
-
+    supply_resources = ['2', '5', '1', '3', '4']
+    remaining_demand_resources = ['1', '2', '3', '4', '5']
+    random.shuffle(remaining_demand_resources)
+    demand_resources = []
     for i in range(3):
-        shuffle_resources = remaining_s_resources.copy()
-        if b_resources[i] in shuffle_resources:
-            shuffle_resources.remove(b_resources[i])
-        random.shuffle(shuffle_resources)
-        s_resources.append(shuffle_resources[0])
-        remaining_s_resources.remove(shuffle_resources[0])
-    if b_resources[3] == remaining_s_resources[0] or b_resources[4] == remaining_s_resources[1]:
-        s_resources.append(remaining_s_resources[1])
-        s_resources.append(remaining_s_resources[0])
+        if supply_resources[i] is remaining_demand_resources[0]:
+            demand_resources.append(remaining_demand_resources[1])
+            remaining_demand_resources.remove(remaining_demand_resources[1])
+            random.shuffle(remaining_demand_resources)
+        else:
+            demand_resources.append(remaining_demand_resources[0])
+            remaining_demand_resources.remove(remaining_demand_resources[0])
+            
+    if supply_resources[3] is remaining_demand_resources[0] or supply_resources[4] is remaining_demand_resources[1]:
+        demand_resources.append(remaining_demand_resources[1])
+        demand_resources.append(remaining_demand_resources[0])
     else:
-        s_resources.append(remaining_s_resources[0])
-        s_resources.append(remaining_s_resources[1])
+        demand_resources.append(remaining_demand_resources[0])
+        demand_resources.append(remaining_demand_resources[1])
 
     player = Player.objects.create_player(
         user=user,
@@ -64,14 +65,14 @@ def create_game(data, user):
             colour=current_planet[2],
             number_of_hexes=current_planet[1],
             current_position=random.randint(0, current_planet[1] - 1),
-            planet_demand_resources=[b_resources[index], '0', '0', '0', '0'],
+            planet_demand_resources=[demand_resources[index], '0', '0', '0', '0'],
             planet_demand_resources_price=[
                 random.randint(
                     gamesettings.SETUP_PLANET_DEMAND_PRICE[0],
                     gamesettings.SETUP_PLANET_DEMAND_PRICE[1]
                 ), 0, 0, 0, 0
             ],
-            planet_supply_resources=[s_resources[index], '0', '0', '0', '0'],
+            planet_supply_resources=[supply_resources[index], '0', '0', '0', '0'],
             planet_supply_resources_price=[
                 random.randint(
                     gamesettings.SETUP_PLANET_SUPPLY_PRICE[0],

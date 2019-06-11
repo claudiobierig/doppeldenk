@@ -33,6 +33,7 @@ class NewGame(forms.Form):
         label="Maximal number of one resource",
         max_value=15,
         min_value=5,
+        initial=5,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
     midgame_scoring = forms.BooleanField(
@@ -99,8 +100,9 @@ class Move(forms.Form):
             time = True
         
         for direction, mapping, resources, cost in [
-                ("Sell", move.PLANET_SUPPLY_MAPPING, planet_supply_resources, planet_supply_resources_price),
-                ("Buy", move.PLANET_DEMAND_MAPPING, planet_demand_resources, planet_demand_resources_price)
+                ("Sell", move.PLANET_DEMAND_MAPPING, planet_demand_resources, planet_demand_resources_price),
+                ("Buy", move.PLANET_SUPPLY_MAPPING, planet_supply_resources, planet_supply_resources_price)
+                
             ]:
             for resource in range(1, 6):
                 fieldname = mapping[str(resource)]
