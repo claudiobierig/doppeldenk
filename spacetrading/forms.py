@@ -41,6 +41,11 @@ class NewGame(forms.Form):
         required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
+    add_demand = forms.BooleanField(
+        label="Add demand resources throughout the game",
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
 
 class Move(forms.Form):
     """

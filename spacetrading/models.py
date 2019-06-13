@@ -274,7 +274,10 @@ class GameManager(models.Manager):
             resource_limit=9,
             midgame_scoring=False,
             midgame_scoring_event_time=gamesettings.MIDGAME_SCORING_TIME,
-            midgame_scoring_event_move=gamesettings.MIDGAME_SCORING_MOVE
+            midgame_scoring_event_move=gamesettings.MIDGAME_SCORING_MOVE,
+            add_demand=False,
+            add_demand_event_time=gamesettings.ADD_DEMAND_TIME,
+            add_demand_event_move=gamesettings.ADD_DEMAND_MOVE
     ):
         if planet_influence_track is None:
             planet_influence_track = [
@@ -297,7 +300,10 @@ class GameManager(models.Manager):
             resource_limit=resource_limit,
             midgame_scoring=midgame_scoring,
             midgame_scoring_event_move=midgame_scoring_event_move,
-            midgame_scoring_event_time=midgame_scoring_event_time
+            midgame_scoring_event_time=midgame_scoring_event_time,
+            add_demand=add_demand,
+            add_demand_event_time=add_demand_event_time,
+            add_demand_event_move=add_demand_event_move
         )
         return game
 

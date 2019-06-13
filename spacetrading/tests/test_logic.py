@@ -489,13 +489,13 @@ class InitializeTest(TestCase):
                 self.assertGreaterEqual(planet.current_position, 0)
 
                 self.assertGreaterEqual(planet.planet_demand_resources_price[0], gamesettings.SETUP_PLANET_DEMAND_PRICE[0])
-                self.assertLessEqual(planet.planet_demand_resources_price[0], gamesettings.SETUP_PLANET_DEMAND_PRICE[1])
+                self.assertLessEqual(planet.planet_demand_resources_price[0], gamesettings.SETUP_PLANET_DEMAND_PRICE[-1])
                 
                 planet_demand_resources.append(planet.planet_demand_resources[0])
                 planet_supply_resources.append(planet.planet_supply_resources[0])
                 self.assertNotEqual(planet.planet_demand_resources[0], planet.planet_supply_resources[0])
                 self.assertGreaterEqual(planet.planet_supply_resources_price[0], gamesettings.SETUP_PLANET_SUPPLY_PRICE[0])
-                self.assertLessEqual(planet.planet_supply_resources_price[0], gamesettings.SETUP_PLANET_SUPPLY_PRICE[1])
+                self.assertLessEqual(planet.planet_supply_resources_price[0], gamesettings.SETUP_PLANET_SUPPLY_PRICE[-1])
                 for i in range(1, 5):
                     self.assertEqual(planet.planet_demand_resources[i], '0')
                     self.assertEqual(planet.planet_supply_resources[i], '0')
