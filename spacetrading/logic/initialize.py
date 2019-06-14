@@ -37,7 +37,7 @@ def create_game(data, user):
     remaining_demand_resources = {'1', '2', '3', '4', '5'}
     remaining_add_demand_resources = {'1', '2', '3', '4', '5'}
     demand_resources = []
-    add_demand_resources = []
+    add_demand_resources = ['0', '0', '0', '0', '0']
     for i in range(3):
         demand_resource = random.sample(remaining_demand_resources - set(supply_resources[i]), 1)[0]
         remaining_demand_resources.remove(demand_resource)
@@ -52,13 +52,26 @@ def create_game(data, user):
         demand_resources.append(remaining_demand_resources[0])
         demand_resources.append(remaining_demand_resources[1])
 
-    for i in range(2):
-        add_demand_resource = random.sample(
-            remaining_add_demand_resources - {supply_resources[i], demand_resources[i]},
-            1
-        )[0]
-        add_demand_resources.append(add_demand_resource)
-        remaining_add_demand_resources.remove(add_demand_resource)
+    traded_resources = [[{supply_resources[i], demand_resources[i]}, i, 2] for i in range(5)]
+    random.shuffle(traded_resources)
+    for i in range(5):
+        remaining_counted = [
+            (
+                resource,
+                sum([resource in s[0] for s in traded_resources])
+            ) for resource in remaining_add_demand_resources
+        ]
+        remaining_counted.sort(key=lambda tup: (-tup[1]))
+        first = remaining_counted[0][0]
+        traded_resources.sort(key=lambda tup: (-tup[2]))
+        for element in traded_resources:
+            if not first in element[0]:
+                add_demand_resources[element[1]] = first
+                remaining_add_demand_resources.remove(first)
+                traded_resources.remove(element)
+                for leftover in traded_resources:
+                    leftover[2] = len(leftover[0] & remaining_add_demand_resources)
+                break
 
     player = Player.objects.create_player(
         user=user,
@@ -98,7 +111,7 @@ def create_game(data, user):
             radius_y=current_planet[4][1],
             offset=current_planet[5],
             planet_number=index,
-            add_demand_resource='0',
+            add_demand_resource=add_demand_resources[index],
             add_demand_resource_price=demand_prices[2*index + 1],
             add_demand_resource_time=add_demand_resource_time[index]
         )

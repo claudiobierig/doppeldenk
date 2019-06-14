@@ -409,24 +409,28 @@ class InitializeTest(TestCase):
             "number_of_players": range(1, 5),
             "play_all_players": [False, True],
             "resource_limit": [5, 9],
-            "midgame_scoring": [False, True]
+            "midgame_scoring": [False, True],
+            "add_demand": [False, True]
         }
         combined_possibilities = itertools.product(
             possibilities["number_of_players"],
             possibilities["play_all_players"],
             possibilities["resource_limit"],
-            possibilities["midgame_scoring"]
+            possibilities["midgame_scoring"],
+            possibilities["add_demand"]
         )
 
-        for index, (number_of_players, play_all_players, resource_limit, midgame_scoring) in \
+        for index, (number_of_players, play_all_players, resource_limit, midgame_scoring, add_demand) in \
             enumerate(combined_possibilities):
+            print(f"Settings: {number_of_players}, {play_all_players}, {resource_limit}, {midgame_scoring}, {add_demand}")
             game_name = "test_{}".format(index)
             data = {
                 "name": game_name,
                 "number_of_players": number_of_players,
                 "play_all_players": play_all_players,
                 "resource_limit": resource_limit,
-                "midgame_scoring": midgame_scoring
+                "midgame_scoring": midgame_scoring,
+                "add_demand": add_demand
             }
             initialize.create_game(data, self.user1)
             games = Game.objects.filter(game_name=game_name)
@@ -459,9 +463,14 @@ class InitializeTest(TestCase):
 
             self.assertEqual(game.resource_limit, resource_limit)
             self.assertEqual(game.midgame_scoring, midgame_scoring)
+            self.assertEqual(game.add_demand, add_demand)
             if midgame_scoring:
                 self.assertEqual(game.midgame_scoring_event_move, gamesettings.MIDGAME_SCORING_MOVE)
                 self.assertEqual(game.midgame_scoring_event_time, gamesettings.MIDGAME_SCORING_TIME)
+
+            if add_demand:
+                self.assertEqual(game.add_demand_event_move, gamesettings.ADD_DEMAND_MOVE)
+                self.assertEqual(game.add_demand_event_time, gamesettings.ADD_DEMAND_TIME)
 
             self.assertEqual(game.planet_rotation_event_move, gamesettings.PLANET_ROTATION_MOVE)
             self.assertEqual(game.planet_rotation_event_time, gamesettings.PLANET_ROTATION_TIME)
@@ -479,6 +488,7 @@ class InitializeTest(TestCase):
 
             planet_demand_resources = []
             planet_supply_resources = []
+            planet_add_demand_resources = []
             for index_planet, planet in enumerate(planets):
                 self.assertEqual(index_planet, planet.planet_number)
                 self.assertEqual(planet.name, gamesettings.PLANETS[planet.planet_number][0])
@@ -493,7 +503,8 @@ class InitializeTest(TestCase):
                 
                 planet_demand_resources.append(planet.planet_demand_resources[0])
                 planet_supply_resources.append(planet.planet_supply_resources[0])
-                self.assertNotEqual(planet.planet_demand_resources[0], planet.planet_supply_resources[0])
+                planet_add_demand_resources.append(planet.add_demand_resource)
+                self.assertEqual(len({planet.planet_demand_resources[0], planet.planet_supply_resources[0], planet.add_demand_resource}), 3)
                 self.assertGreaterEqual(planet.planet_supply_resources_price[0], gamesettings.SETUP_PLANET_SUPPLY_PRICE[0])
                 self.assertLessEqual(planet.planet_supply_resources_price[0], gamesettings.SETUP_PLANET_SUPPLY_PRICE[-1])
                 for i in range(1, 5):
@@ -502,3 +513,4 @@ class InitializeTest(TestCase):
 
             self.assertEqual(sorted(planet_demand_resources), ['1', '2', '3', '4', '5'])
             self.assertEqual(sorted(planet_supply_resources), ['1', '2', '3', '4', '5'])
+            self.assertEqual(sorted(planet_add_demand_resources), ['1', '2', '3', '4', '5'])
