@@ -24,7 +24,8 @@ class MoveTest(TestCase):
             "number_of_players": number_of_players,
             "play_all_players": True,
             "resource_limit": 5,
-            "midgame_scoring": True
+            "midgame_scoring": True,
+            "add_demand": True
         }
         initialize.create_game(data, self.user1)
         games = Game.objects.filter(game_name=game_name)
@@ -57,6 +58,8 @@ class MoveTest(TestCase):
         self.assertEqual(None, move.get_next_event(self.game, self.players))
         for player in self.players:
             player.time_spent = 21
+        self.assertEqual(move.Event.ADD_DEMAND, move.get_next_event(self.game, self.players))
+        move.add_demand(self.game, self.planets)
         self.assertEqual(move.Event.OFFER_DEMAND, move.get_next_event(self.game, self.players))
         move.offer_demand(self.game, self.planets)
         self.assertEqual(move.Event.PLANET_ROTATION, move.get_next_event(self.game, self.players))
@@ -69,6 +72,9 @@ class MoveTest(TestCase):
         self.assertEqual(move.Event.OFFER_DEMAND, move.get_next_event(self.game, self.players))
         move.offer_demand(self.game, self.planets)
         
+        self.assertEqual(move.Event.ADD_DEMAND, move.get_next_event(self.game, self.players))
+        move.add_demand(self.game, self.planets)
+
         self.assertEqual(move.Event.OFFER_DEMAND, move.get_next_event(self.game, self.players))
         move.offer_demand(self.game, self.planets)
         self.assertEqual(move.Event.PLANET_ROTATION, move.get_next_event(self.game, self.players))
@@ -80,6 +86,10 @@ class MoveTest(TestCase):
         move.offer_demand(self.game, self.planets)
         self.assertEqual(move.Event.MIDGAME_SCORING, move.get_next_event(self.game, self.players))
         move.midgame_scoring(self.game, self.players)
+
+        self.assertEqual(move.Event.ADD_DEMAND, move.get_next_event(self.game, self.players))
+        move.add_demand(self.game, self.planets)
+
         self.assertEqual(None, move.get_next_event(self.game, self.players))
 
     def test_get_active_player(self):
