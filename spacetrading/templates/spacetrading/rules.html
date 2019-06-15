@@ -13,12 +13,13 @@ The game ends, when all players have spent more than 100 time units or have pass
 <div class="card mt-3">
 <div class="card-body">
 <h5 class="card-title">2-4 players</h5>
-Each planet in the solar system sends 11 politicians to the merchant councile.<br>
+Each planet in the solar system sends 11+3 politicians to the merchant councile.<br>
 During the game the players can pay bribes to the politicians.
 <ul>
-    <li>The player who has paid the most sends 5 politicians, 2nd 3, 3rd 2 and 4th 1.</li>
+    <li>At the end of the game the player who has paid the most sends 5 politicians, 2nd 3, 3rd 2 and 4th 1.</li>
     <li>If a player paid no bribe, no politician will be send.</li>
     <li>If multiple players tie, the number is split and rounded down.</li>
+    <li>In the middle of the game there is an intermediate scoring where 1st 2, 2nd 1 politicians are send.</li>
 </ul>
 Tiebreakers are in this order:
 <ul>
@@ -40,8 +41,16 @@ TODO
 <h5 class="card-title">Planet Setup:</h5>
 <ul>
     <li>Planets are set random on one field of their planet track.</li>
-    <li>Each planet has one random resource it buys and one random resource it sells.</li>
-    <li>The prices are random: 2-4 for buying, 4-6 for selling.</li>
+    <li>Each planet has one resource it supplies: Uranium, Building, Medicin, Food and Water it supplies (from red to blue).</li>
+    <li>The price for the resources are drawn from the 6 supply price markers (2,2,3,3,4,4)</li>
+    <li>Each planet has one random demand resource, which isn't the resource it supplies. Each resource is demanded exactly once.</li>
+    <li>The price for the resources are drawn from the 12 demand price markers (4x4, 4x5, 4x6)</li>
+    <li>
+        Each planet has an additional demand resource, which will be placed on the planet market at the later point in the game.
+        The resource is neither the supply nor the demand resource of the planet. Each resource is added exactly once during the game.
+    </li>
+    <li>The prices are drawn from the remaining demand price markers.</li>
+    <li>The order in which the additional demand resources will come into play is determined randomly.</li>
     <li>Each resource is bought once and sold once.</li>
 </ul>
 </div></div>
@@ -62,6 +71,8 @@ TODO
 <ul>
     <li>The planet movement event timemarker is placed on the 10 spot.</li>
     <li>The offer and demant timemarker is placed on the 40, 20, 15, 10 spot for 1, 2, 3, 4 players respectively.</li>
+    <li>The midgame scoring event timemarker is placed on the 50 spot.</li>
+    <li>The add demand resource timemarker is placed on the 17 spot.</li>
 </ul>
 </div></div>
 <hr>
@@ -85,7 +96,7 @@ The cost of each resource, which was bought/sold at least once is decreased/incr
 <div class="card mt-3">
 <div class="card-body">
 <h4 class="card-title">c) Bribe</h4>
-If the player traded at least one resource, he may pay one money to increase his influence on the politians on this planet by one.
+If the player sold at least one of each resource the planet demanded, he may pay one money to increase his influence on the politicians on this planet by one.
 For each additional space that a player wishes to move along the influence track, he must pay the value shown on the space he moves to.
 </div></div>
 <div class="card mt-3">
@@ -106,6 +117,10 @@ Afterwards the marker is moved forward by 10 spots.
 <h5>e**) Adjust offer and demant</h5>
 All planet market boards are moved to the right by one spot, i.e. the price for the offered resources decreases by one and for the demanded resources increases by one.
 Afterwards the marker is moved forward by 40, 20, 15, 10 spot for 1, 2, 3, 4 players respectively.
+<h5>e***) Midgame scoring</h5>
+As endgame scoring, only the player with the highest bribe sends 2 politicians and the 2nd one 1. All other players send none.
+<h5>e****) Add demand resource</h5>
+The next (according to the order determined in the setup) additional demand resource is placed on its planetboard at its setup price.
 </div></div>
 <hr>
 <h2>5. Open Ideas</h2>
@@ -113,8 +128,6 @@ Afterwards the marker is moved forward by 40, 20, 15, 10 spot for 1, 2, 3, 4 pla
 <div class="card-body">
 <h4 class="card-title">a) Additional events</h4>
 <ul>
-    <li>Settlement: Add new demand tokens to a planet</li>
-    <li>Midgame scoring (2/1)</li>
     <li>Political event cards</li>
     <li>Additional ship</li>
 </ul>
@@ -131,9 +144,7 @@ Afterwards the marker is moved forward by 40, 20, 15, 10 spot for 1, 2, 3, 4 pla
 <div class="card-body">
 <h4 class="card-title">c) Alternative trading</h4>
 <ul>
-    <li>Influence is only cheaper if all demanded resources were sold.</li>
     <li>Prices are somehow managed by actually placing/taking resources from the market.</li>
-    <li>No selling on planets. Instead one politician can be bribed represented by a card. The bribe costs money, resources, time and gives you VPs, money, resources or anything else that may come along.</li>
 </ul>
 </div></div>
 </div>
