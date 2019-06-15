@@ -16,9 +16,9 @@
     - Add planet changes to ? (if new_demand)
     - Add game changes to game_board (if new_demand)
   - Logic Changes:
-    - Initialize:
-      - game constant (resp. get from data)
-      - planet, need to make sure one of the remaining 3
+    * Initialize:
+      * game constant (resp. get from data)
+      * planet, need to make sure one of the remaining 3
     - Move:
       - Cost Influence needs to be adapted
       - Add new_demand event

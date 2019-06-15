@@ -500,6 +500,8 @@ class InitializeTest(TestCase):
 
                 self.assertGreaterEqual(planet.planet_demand_resources_price[0], gamesettings.SETUP_PLANET_DEMAND_PRICE[0])
                 self.assertLessEqual(planet.planet_demand_resources_price[0], gamesettings.SETUP_PLANET_DEMAND_PRICE[-1])
+                self.assertGreaterEqual(planet.add_demand_resource_price, gamesettings.SETUP_PLANET_DEMAND_PRICE[0])
+                self.assertLessEqual(planet.add_demand_resource_price, gamesettings.SETUP_PLANET_DEMAND_PRICE[-1])
                 
                 planet_demand_resources.append(planet.planet_demand_resources[0])
                 planet_supply_resources.append(planet.planet_supply_resources[0])
