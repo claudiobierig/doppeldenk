@@ -36,7 +36,7 @@
                     <tr>
                             <th></th>
                             <th></th>
-                            <th>Cost</th>
+                            <th>Price</th>
                     </tr>
                 </thead>
                 {% for field in form.visible_fields %}
@@ -83,7 +83,9 @@
 {% for planet in planet_market %}
     {{ planet |safe }}
 {% endfor %}
-
+{% if add_demand %}
+    {{ add_demand_resources |safe }}
+{% endif %}
 
 
 

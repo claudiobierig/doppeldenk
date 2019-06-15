@@ -8,6 +8,20 @@ from lxml import etree
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg.svg_commands import json_to_style
 
+def get_symbol_name(resource):
+    if resource is '0':
+        return 'resource_placeholder'
+    elif resource is '1':
+        return 'red_cross'
+    elif resource is '2':
+        return 'radioactive'
+    elif resource is '3':
+        return 'food'
+    elif resource is '4':
+        return 'water'
+    elif resource is '5':
+        return 'building_resource'
+    return resource
 
 def add_posibility_for_square_3d(svg):
     """

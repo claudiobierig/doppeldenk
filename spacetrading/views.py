@@ -14,7 +14,7 @@ from django.contrib import messages
 from spacetrading import models
 #from create_svg import generate_player_board
 from spacetrading import forms
-from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_player_boards, generate_plain_symbols, generate_influence_tracks
+from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_player_boards, generate_plain_symbols, generate_influence_tracks, generate_additional_resource_board
 from spacetrading.logic import move, initialize
 
 
@@ -123,7 +123,8 @@ class GameDisplay(generic.DetailView, LoginRequiredMixin):
         context['player_boards'] = generate_player_boards.draw_player_boards(
             players, game_instance)
         context['influence_tracks'] = generate_influence_tracks.draw_influence_tracks(game_instance, planets, players)
-
+        context['add_demand'] = game_instance.add_demand
+        context['add_demand_resources'] = generate_additional_resource_board.draw_additional_resource_board(game_instance, planets)
         context['user_active'] = user_active
         context['form'] = forms.Move(
             {

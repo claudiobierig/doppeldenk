@@ -27,6 +27,12 @@
   </div>
   <div class="form-group">
     <div class="form-check">
+      {{ form.add_demand }}
+      <label for="{{ form.add_demand.auto_id }}" class="form-check-label" >{{ form.add_demand.label }}</label>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="form-check">
       {{ form.play_all_players }}
       <label for="{{ form.play_all_players.auto_id }}" class="form-check-label" >{{ form.play_all_players.label }}</label>
     </div>

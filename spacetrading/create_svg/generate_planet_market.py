@@ -7,21 +7,6 @@ from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg import generate_svg_symbols
 
 
-def get_symbol_name(resource):
-    if resource is '0':
-        return 'resource_placeholder'
-    elif resource is '1':
-        return 'red_cross'
-    elif resource is '2':
-        return 'radioactive'
-    elif resource is '3':
-        return 'food'
-    elif resource is '4':
-        return 'water'
-    elif resource is '5':
-        return 'building_resource'
-
-
 def draw_planet(svg, planet, name, fill_colour):
     """
     actually draw the planet market
@@ -118,9 +103,9 @@ def draw_planet(svg, planet, name, fill_colour):
                 price = column + 2
             
             if price is prices[row]:
-                symbolname = get_symbol_name(resources[row])
+                symbolname = generate_svg_symbols.get_symbol_name(resources[row])
             else:
-                symbolname = get_symbol_name('0')
+                symbolname = generate_svg_symbols.get_symbol_name('0')
             svg.use_symbol(
                 symbolname,
                 "{}_name_{}_row_{}_column".format(name, row, column),

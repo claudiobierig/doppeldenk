@@ -7,22 +7,6 @@ from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.create_svg import generate_svg_symbols
 
 
-def get_symbol_name(resource):
-    if resource is '0':
-        return 'resource_placeholder'
-    elif resource is '1':
-        return 'red_cross'
-    elif resource is '2':
-        return 'radioactive'
-    elif resource is '3':
-        return 'food'
-    elif resource is '4':
-        return 'water'
-    elif resource is '5':
-        return 'building_resource'
-    return resource
-
-
 def create_playerboard(svg, colour, playername, position):
     """
     create a playerboard in the svg with fill_colour colour at position
@@ -58,7 +42,7 @@ def create_playerboard(svg, colour, playername, position):
             }
         )
         subgroup.use_symbol(
-            get_symbol_name(resource),
+            generate_svg_symbols.get_symbol_name(resource),
             "resource_{}_{}".format(resource, playername),
             [
                 (position[0] + 45 + 110*column)*2/3,
