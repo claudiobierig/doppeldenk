@@ -2,14 +2,6 @@
 
 ## Prio
 
-- [ ] Add Event additional resource
-  - [x] Model Changes:
-  - [x] View Changes:
-  - [x] Logic Changes:
-  - [x] Form Changes:
-  - [ ] JS Changes:
-    - [ ] Cost Influence needs to be adapted
-  - [x] Testcases adapt
 - [ ] Add JS Live Update
   - [ ] Timemarker Update
     - [ ] Rename to player number

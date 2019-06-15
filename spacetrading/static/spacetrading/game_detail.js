@@ -127,6 +127,9 @@ function setViewPlayerState()
     var player_number = active_player.player_number
     var money = active_player.money
     var traded = false
+    if(game_data.add_demand){
+        traded = true
+    }
     for(var resource = 0; resource <5; resource++)
     {
         var amount = active_player.resources[resource]
@@ -138,7 +141,10 @@ function setViewPlayerState()
                     const cost = supplyAmount*getCost(active_planet.planet_supply_resources, active_planet.planet_supply_resources_price, (resource + 1).toString())
                     amount = amount + supplyAmount
                     money = money - cost
-                    traded = true
+                    if(!game_data.add_demand)
+                    {
+                        traded = true
+                    }
                 }
             }catch{}
             try{
@@ -146,9 +152,21 @@ function setViewPlayerState()
                 const demandAmount = parseInt(demandSelect.options[demandSelect.selectedIndex].value)
                 if(demandAmount > 0){
                     const cost = demandAmount*getCost(active_planet.planet_demand_resources, active_planet.planet_demand_resources_price, (resource + 1).toString())
-                    traded = true
+                    if(!game_data.add_demand)
+                    {
+                        traded = true
+                    }
                     amount = amount - demandAmount
                     money = money + cost
+                }
+                else if(game_data.add_demand)
+                {
+                    console.log("hello")
+                    if(active_planet.planet_demand_resources.includes((resource + 1).toString()))
+                    {
+                        console.log("world")
+                        traded = false
+                    }
                 }
             }catch{}
         }
