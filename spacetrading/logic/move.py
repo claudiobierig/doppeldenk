@@ -79,7 +79,10 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
                 raise MoveError("You need to specify a time you want to spend.")
 
     trade_balance = 0
-    traded = False
+    if game.add_demand:
+        traded = True
+    else:
+        traded = False
 
     if active_planet is None:
         return trade_balance
@@ -93,7 +96,8 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
                 trade_balance = trade_balance - \
                     data[PLANET_SUPPLY_MAPPING[resource]] * \
                         active_planet.planet_supply_resources_price[active_planet.planet_supply_resources.index(resource)]
-                traded = True
+                if not game.add_demand:
+                    traded = True
 
     for resource in active_planet.planet_demand_resources:
         if resource != '0':
@@ -104,7 +108,10 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
                 trade_balance = trade_balance + \
                     data[PLANET_DEMAND_MAPPING[resource]] * \
                         active_planet.planet_demand_resources_price[active_planet.planet_demand_resources.index(resource)]
-                traded = True
+                if game.add_demand:
+                    traded = True
+            elif game.add_demand:
+                traded = False
 
     trade_balance = trade_balance - get_cost_influence(
         traded, data.get("buy_influence", 0), game.planet_influence_track[active_planet.planet_number][active_player.player_number])
