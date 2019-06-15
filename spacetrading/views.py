@@ -158,7 +158,6 @@ class GameMove(generic.detail.SingleObjectMixin, generic.FormView, LoginRequired
                     messages.error(request, 'Error: Neither performed a regular move nor passed.')
                     return HttpResponseRedirect(self.request.path_info)
                 
-                print(form.cleaned_data)
                 try:
                     move.move(game_instance, form.cleaned_data)
                 except move.MoveError as exception:
