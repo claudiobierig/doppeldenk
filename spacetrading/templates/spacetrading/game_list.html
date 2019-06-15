@@ -71,7 +71,7 @@
           {% endwith %}
           </td>
           <td class="align-middle">
-            Players: {{ game.number_of_players }}, Resource limit: {{ game.resource_limit }}
+            Players: {{ game.number_of_players }}, Resource limit: {{ game.resource_limit }}{% if game.midgame_scoring %}, Midgame Scoring{% endif %}{%if game.add_demand %}, Add Resources{% endif %}
           </td>
       </tr>
     {% endfor %}
