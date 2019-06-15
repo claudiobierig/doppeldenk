@@ -2,56 +2,58 @@
 
 ## Prio
 
-- Add Event additional resource
-  * Model Changes:
-    * Planet:
-      * extra_resource
-      * extra_resource_time
-      * extra_resource_price
-    * Game:
-      * new_demand_time
-      * new_demand_move
-      * new_demand (bool)
-  - View Changes:
-    - Add planet changes to ? (if new_demand)
-    - Add game changes to game_board (if new_demand)
-  - Logic Changes:
-    * Initialize:
-      * game constant (resp. get from data)
-      * planet, need to make sure one of the remaining 3
-    - Move:
-      - Cost Influence needs to be adapted
-      - Add new_demand event
-  - Form Changes:
-    - Add tickbox to create form
-  - JS Changes:
-    - Cost Influence needs to be adapted
-  - Testcases adapt
-- Add JS Live Update
-  - Timemarker Update
-    - Rename to player number
-    - On Change in timeform
-      - Get Timemarker
-      - Compute new x, y
-      - Append to group timemarkers
-    - On click on timebox
-      - change timeform
-  - Influence points
-    - move markers to extra group
-    - rename to numbers
-    - On change influence form
-      - Get Marker
-      - Compute new x,y for all influencemarkers of this planet
-      - Update all
-    - On click box of same planet
-      - If larger, change influenceform
-  - Market prices
-    - on change of supply/demand forms
-      - if traded adjust which symbol is used
-  - Allow only possible choices
-    - Market actions
-    - Time selection
-    - Influence
+- [ ] Add Event additional resource
+  - [x] Model Changes:
+    - [x] Planet:
+      - [x] extra_resource
+      - [x] extra_resource_time
+      - [x] extra_resource_price
+    - [x] Game:
+      - [x] new_demand_time
+      - [x] new_demand_move
+      - [x] new_demand (bool)
+  - [x] View Changes:
+    - [x] Add planet changes to ? (if new_demand)
+    - [x] Add game changes to game_board (if new_demand)
+  - [ ] Logic Changes:
+    - [x] Initialize:
+      - [x] game constant (resp. get from data)
+      - [x] planet, need to make sure one of the remaining 3
+    - [ ] Move:
+      - [ ] Cost Influence needs to be adapted
+      - [x] Add new_demand event
+  - [x] Form Changes:
+    - [x] Add tickbox to create form
+  - [ ] JS Changes:
+    - [ ] Cost Influence needs to be adapted
+  - [ ] Testcases adapt
+    - [x] Initial
+    - [ ] Move
+- [ ] Add JS Live Update
+  - [ ] Timemarker Update
+    - [ ] Rename to player number
+    - [ ] On Change in timeform
+      - [ ] Get Timemarker
+      - [ ] Compute new x, y
+      - [ ] Append to group timemarkers
+    - [ ] On click on timebox
+      - [ ] change timeform
+  - [ ] Influence points
+    - [ ] move markers to extra group
+    - [ ] rename to numbers
+    - [ ] On change influence form
+      - [ ] Get Marker
+      - [ ] Compute new x,y for all influencemarkers of this planet
+      - [ ] Update all
+    - [ ] On click box of same planet
+      - [ ] If larger, change influenceform
+  - [ ] Market prices
+    - [ ] on change of supply/demand forms
+      - [ ] if traded adjust which symbol is used
+  - [ ] Allow only possible choices
+    - [ ] Market actions
+    - [ ] Time selection
+    - [ ] Influence
 
 ## Planed Features (~50h + Refactoring + ~80h Eurocrisis)
 
