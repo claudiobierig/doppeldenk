@@ -39,14 +39,8 @@
   - influence points
   - market prices
 - Fix SVGs so they can be used for both printing and webpage (10h)
-- Update to new rules after WE (14h)
-  - Add event to add demand resources (8h)
-  - Change cost influence (4h)
-  - Rulebook update (2h)
 - Improve UI and UX (2h)
   - Different resource symbols, building resource -> oil barrel (2h)
-- Fix supply resource to planet (only demand is random)
-- Update Printing Material (8h)
 - Add EuroCrisis (80h + refactoring)
 
 ## Open Bugs
