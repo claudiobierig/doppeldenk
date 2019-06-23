@@ -303,7 +303,7 @@ def draw_timemarkers(svg, game, players):
                     player.time_spent,
                     player.last_move,
                     player.colour,
-                    player.user.get_username(),
+                    "player_{}".format(player.player_number),
                     'disc_3d'
                 ]
             )

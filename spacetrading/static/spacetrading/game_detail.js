@@ -82,7 +82,9 @@ function clickHex(hex_element)
     
     lastClickedHex = hex_element
     var timeField = document.getElementById("id_spend_time")
-    timeField.value = computeDistance(hex_element)
+    const distance = computeDistance(hex_element)
+    timeField.value = distance
+    setTimeMarker(active_player.time_spent + distance)
 }
 
 
@@ -161,10 +163,8 @@ function setViewPlayerState()
                 }
                 else if(game_data.add_demand)
                 {
-                    console.log("hello")
                     if(active_planet.planet_demand_resources.includes((resource + 1).toString()))
                     {
-                        console.log("world")
                         traded = false
                     }
                 }
@@ -196,6 +196,77 @@ function setGameState()
     if(active_planet != null){
         document.getElementById("table_head").setAttribute("style", "background-color:" + active_planet.colour)
     }
+}
+
+function getStackPosition(time)
+{
+    var stack_position = 0
+    for(player in game_data.players)
+    {
+        if(time == game_data.players[player].time_spent)
+        {
+            stack_position++
+        }
+    }
+    if(game_data.planet_rotation_event_time == time)
+    {
+        stack_position++
+    }
+    if(game_data.offer_demand_event_time == time)
+    {
+        stack_position++
+    }
+    if(game_data.midgame_scoring && game_data.midgame_scoring_event_time == time)
+    {
+        stack_position++
+    }
+    if(game_data.add_demand && game_data.add_demand_event_time == time)
+    {
+        stack_position++
+    }
+    return stack_position
+}
+
+function getPosition(time_spent)
+{
+    const SIZE_TIMEBOX = 30
+    const stack_position = getStackPosition(time_spent)
+    var time_space = time_spent % 100
+    var x_pos = 0
+    var y_pos = 0
+
+    if(0 <= time_space && time_space <= 30)
+    {
+        x_pos = time_space * SIZE_TIMEBOX
+        y_pos = 15
+    }
+    else if( 30 < time_space && time_space <= 50)
+    {
+        x_pos = 30 * SIZE_TIMEBOX
+        y_pos = 15 + (time_space - 30) * SIZE_TIMEBOX
+    }
+    else if( 50 < time_space && time_space <= 80)
+    {
+        x_pos = (80 - time_space) * SIZE_TIMEBOX
+        y_pos = 15 + 20*SIZE_TIMEBOX
+    }
+    else if( 80 < time_space && time_space < 100)
+    {
+        x_pos = 0
+        y_pos = 15 + (100 - time_space) * SIZE_TIMEBOX
+    }
+    y_pos = y_pos - stack_position*4
+    return [x_pos.toString(), y_pos.toString()]
+}
+
+function setTimeMarker(time)
+{
+    const position = getPosition(time)
+    var timemarkers = document.getElementById("timemarkers")
+    var timemarker = document.getElementById("timemarker_player_" + active_player.player_number)
+    timemarker.setAttribute("x", position[0])
+    timemarker.setAttribute("y", position[1])
+    timemarkers.appendChild(timemarker)
 }
 
 const game_data = JSON.parse(document.getElementById("game_data").innerHTML)

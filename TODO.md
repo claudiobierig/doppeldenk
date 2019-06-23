@@ -4,11 +4,11 @@
 
 - [ ] Add JS Live Update
   - [ ] Timemarker Update
-    - [ ] Rename to player number
+    - [x] Rename to player number
     - [ ] On Change in timeform
-      - [ ] Get Timemarker
-      - [ ] Compute new x, y
-      - [ ] Append to group timemarkers
+      - [x] Get Timemarker
+      - [x] Compute new x, y
+      - [x] Append to group timemarkers
     - [ ] On click on timebox
       - [ ] change timeform
   - [ ] Influence points
