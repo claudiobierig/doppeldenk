@@ -191,7 +191,7 @@ def draw_hex_grid(parent, planets, user_active):
         )
 
 
-def draw_timebox(position, size, name, time, parent):
+def draw_timebox(position, size, name, time, parent, user_active):
     """
     draw one box of the timeline
     """
@@ -205,6 +205,8 @@ def draw_timebox(position, size, name, time, parent):
         'time': str(time),
         'class': 'timebox'
     }
+    if user_active:
+        additional_arguments["onClick"] = "clickTimebox(this)"
 
     parent.create_rectangle((position_x, position_y), (width, height),
                             name, fill_colour=fill_colour,
@@ -219,7 +221,7 @@ def draw_timebox(position, size, name, time, parent):
     )
 
 
-def draw_timeline(svg):
+def draw_timeline(svg, user_active):
     """
     create the whole timeline
     """
@@ -227,19 +229,19 @@ def draw_timeline(svg):
     for i in range(0, 31):
         draw_timebox((i * SIZE_TIMEBOX, 0),
                      (SIZE_TIMEBOX, SIZE_TIMEBOX),
-                     "timebox_" + str(i), i, layer)
+                     "timebox_" + str(i), i, layer, user_active)
     for i in range(31, 51):
         draw_timebox((30 * SIZE_TIMEBOX, (i - 30) * SIZE_TIMEBOX),
                      (SIZE_TIMEBOX, SIZE_TIMEBOX),
-                     "timebox_" + str(i), i, layer)
+                     "timebox_" + str(i), i, layer, user_active)
     for i in range(51, 81):
         draw_timebox(((80 - i) * SIZE_TIMEBOX, 20 * SIZE_TIMEBOX),
                      (SIZE_TIMEBOX, SIZE_TIMEBOX),
-                     "timebox_" + str(i), i, layer)
+                     "timebox_" + str(i), i, layer, user_active)
     for i in range(81, 100):
         draw_timebox((0, (100 - i) * SIZE_TIMEBOX),
                      (SIZE_TIMEBOX, SIZE_TIMEBOX),
-                     "timebox_" + str(i), i, layer)
+                     "timebox_" + str(i), i, layer, user_active)
 
 
 def draw_sun(svg, size, radius):
@@ -297,7 +299,7 @@ def draw_timemarkers(svg, game, players):
     """
     timemarkers = []
     for player in players:
-        if player.last_move >= 0:
+        if player.last_move >= 0 and not player.has_passed:
             timemarkers.append(
                 [
                     player.time_spent,
@@ -409,7 +411,7 @@ def draw_gameboard(game, planets, players, user_active, bg_image="/static/auth/b
     generate_svg_symbols.add_posibility_for_square_3d(svg)
     svg.create_image(bg_image, width="1200",
                      height="876", x_pos="0", y_pos="0")
-    draw_timeline(svg)
+    draw_timeline(svg, user_active)
     draw_hex_grid(svg, planets, user_active)
 
     for planet in planets:

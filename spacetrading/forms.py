@@ -158,7 +158,11 @@ class Move(forms.Form):
                 label=mark_safe("Spend {}".format(symbols["time"])),
                 min_value=0, max_value=100,
                 widget=forms.NumberInput(
-                    attrs={'class': 'form-control form-control-sm'}),
+                    attrs={
+                        'onchange': 'timeChanged()',
+                        'class': 'form-control form-control-sm'
+                    }
+                ),
                 initial=0,
                 required=False
             )

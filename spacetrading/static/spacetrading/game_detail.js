@@ -45,6 +45,9 @@ function getActivePlanet()
 }
 
 function computeDistance(hex_element){
+    if(hex_element == null){
+        return 0
+    }
     const destination_q = hex_element.getAttribute("coord_q")
     const destination_r = hex_element.getAttribute("coord_r")
     const destination_s = -destination_q -destination_r
@@ -203,9 +206,11 @@ function getStackPosition(time)
     var stack_position = 0
     for(player in game_data.players)
     {
-        if(time == game_data.players[player].time_spent)
-        {
-            stack_position++
+        if(time == game_data.players[player].time_spent &&
+           game_data.players[player].player_number != active_player.player_number &&
+           !game_data.players[player].has_passed
+        ){
+                stack_position++
         }
     }
     if(game_data.planet_rotation_event_time == time)
@@ -267,6 +272,32 @@ function setTimeMarker(time)
     timemarker.setAttribute("x", position[0])
     timemarker.setAttribute("y", position[1])
     timemarkers.appendChild(timemarker)
+}
+
+function timeChanged()
+{
+    const distance = computeDistance(lastClickedHex)
+    var timeField = document.getElementById("id_spend_time")
+    if(timeField.value < distance){
+        timeField.value = distance
+    }
+    setTimeMarker(active_player.time_spent + parseInt(timeField.value))
+}
+
+function clickTimebox(timebox)
+{
+    const timeChosen = parseInt(timebox.getAttribute("time"))
+    const distance = computeDistance(lastClickedHex)
+    const minTime = active_player.time_spent + distance
+    var timeField = document.getElementById("id_spend_time")
+    if(timeChosen > minTime){
+        timeField.value = timeChosen - active_player.time_spent
+    }
+    else
+    {
+        timeField.value = minTime - active_player.time_spent
+    }
+    setTimeMarker(active_player.time_spent + parseInt(timeField.value))
 }
 
 const game_data = JSON.parse(document.getElementById("game_data").innerHTML)

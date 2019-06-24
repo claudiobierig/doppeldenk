@@ -3,14 +3,7 @@
 ## Prio
 
 - [ ] Add JS Live Update
-  - [ ] Timemarker Update
-    - [x] Rename to player number
-    - [ ] On Change in timeform
-      - [x] Get Timemarker
-      - [x] Compute new x, y
-      - [x] Append to group timemarkers
-    - [ ] On click on timebox
-      - [ ] change timeform
+  - [x] Timemarker Update
   - [ ] Influence points
     - [ ] move markers to extra group
     - [ ] rename to numbers
