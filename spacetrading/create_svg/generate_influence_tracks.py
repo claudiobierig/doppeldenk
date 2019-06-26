@@ -55,7 +55,7 @@ def draw_influence_tracks(game, planets, players):
             y_pos = (20 - points)*SIZE_TIMEBOX + 15 - 4*stack_position
             planet_tracks_svg.use_symbol(
                 'disc_3d',
-                'influence_marker_{}_{}'.format(player.user.get_username(), planet.name),
+                'influence_marker_{}_{}'.format(player.player_number, planet.name),
                 position=[x_pos, y_pos],
                 fill_colour=player.colour
             )

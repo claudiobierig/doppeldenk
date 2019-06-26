@@ -5,12 +5,11 @@
 - [ ] Add JS Live Update
   - [x] Timemarker Update
   - [ ] Influence points
-    - [ ] move markers to extra group
-    - [ ] rename to numbers
-    - [ ] On change influence form
-      - [ ] Get Marker
-      - [ ] Compute new x,y for all influencemarkers of this planet
-      - [ ] Update all
+    - [x] rename to numbers
+    - [x] On change influence form
+      - [x] Get Marker
+      - [x] Compute new x,y for all influencemarkers of this planet
+      - [x] Update all
     - [ ] On click box of same planet
       - [ ] If larger, change influenceform
   - [ ] Market prices
@@ -18,7 +17,7 @@
       - [ ] if traded adjust which symbol is used
   - [ ] Allow only possible choices
     - [ ] Market actions
-    - [ ] Time selection
+    - [x] Time selection
     - [ ] Influence
 
 ## Planed Features (~50h + Refactoring + ~80h Eurocrisis)

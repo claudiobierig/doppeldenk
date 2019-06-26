@@ -94,6 +94,7 @@ function clickHex(hex_element)
 function refreshChoices()
 {
     setViewPlayerState()
+    setInfluenceTrack()
 }
 
 function getCost(resources, cost, resource)
@@ -201,7 +202,7 @@ function setGameState()
     }
 }
 
-function getStackPosition(time)
+function getStackPositionTimeline(time)
 {
     var stack_position = 0
     for(player in game_data.players)
@@ -235,7 +236,7 @@ function getStackPosition(time)
 function getPosition(time_spent)
 {
     const SIZE_TIMEBOX = 30
-    const stack_position = getStackPosition(time_spent)
+    const stack_position = getStackPositionTimeline(time_spent)
     var time_space = time_spent % 100
     var x_pos = 0
     var y_pos = 0
@@ -298,6 +299,45 @@ function clickTimebox(timebox)
         timeField.value = minTime - active_player.time_spent
     }
     setTimeMarker(active_player.time_spent + parseInt(timeField.value))
+}
+
+function getPositionInfluence(influence, stack_position)
+{
+    return [active_planet.planet_number*30, (20 - influence)*30 + 15 - 4*stack_position]
+}
+
+function setInfluenceMarker(player_number, influence, stack_position)
+{
+    var influenceMarker = document.getElementById("influence_marker_" + player_number + "_" + active_planet.name)
+    console.log(influenceMarker)
+    console.log("influence_marker_" + player_number + "_" + active_planet.name)
+    const position = getPositionInfluence(influence, stack_position)
+    influenceMarker.setAttribute("x", position[0])
+    influenceMarker.setAttribute("y", position[1])
+}
+
+function setInfluenceTrack()
+{
+    if(active_planet == null){
+        return
+    }
+    const currentInfluence = getCurrentInfluence()
+    const influenceField = document.getElementById("id_buy_influence")
+    const influenceSelect = document.getElementById("id_buy_influence")
+    const boughtInfluence = parseInt(influenceSelect.options[influenceSelect.selectedIndex].value)
+    const totalInfluence = currentInfluence + boughtInfluence
+    var influence_points = []
+    for(p in game_data.players){
+        var influence = 0
+        if(game_data.players[p].player_number == active_player.player_number){
+            influence = totalInfluence
+        }else{
+            influence = game_data.planet_influence_track[active_planet.planet_number][p]
+        }
+        const stack_position = influence_points.filter(x => x === influence).length
+        influence_points.push(influence)
+        setInfluenceMarker(game_data.players[p].player_number, influence, stack_position)
+    }
 }
 
 const game_data = JSON.parse(document.getElementById("game_data").innerHTML)
