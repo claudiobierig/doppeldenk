@@ -25,13 +25,16 @@ def create_game(data, user):
     resource_limit = data['resource_limit']
     midgame_scoring = data.get('midgame_scoring', False)
     add_demand = data.get('add_demand', False)
+    finish_time = data.get('finish_time', gamesettings.FINISH_TIME)
     game = Game.objects.create_game(
         game_name=name,
         number_of_players=number_of_players,
         offer_demand_event_time=gamesettings.OFFER_DEMAND_EVENT_TIMES[number_of_players-1],
         resource_limit=resource_limit,
         midgame_scoring=midgame_scoring,
-        add_demand=add_demand
+        midgame_scoring_event_time=finish_time/2,
+        add_demand=add_demand,
+        finish_time=finish_time
     )
     supply_resources = ['2', '5', '1', '3', '4']
     remaining_demand_resources = {'1', '2', '3', '4', '5'}

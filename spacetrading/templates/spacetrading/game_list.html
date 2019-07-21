@@ -57,7 +57,7 @@
           <td class="align-middle">
           {% with players=game.players.all %}
           {% for player in players|dictsort:"player_number" %}
-          {% is_active player players as active %}  
+          {% is_active player players game.finish_time as active %}  
           
             {% if game.is_active %}{% if active %}
             <font color="red">

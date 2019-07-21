@@ -277,7 +277,8 @@ class GameManager(models.Manager):
             midgame_scoring_event_move=gamesettings.MIDGAME_SCORING_MOVE,
             add_demand=False,
             add_demand_event_time=gamesettings.ADD_DEMAND_TIME,
-            add_demand_event_move=gamesettings.ADD_DEMAND_MOVE
+            add_demand_event_move=gamesettings.ADD_DEMAND_MOVE,
+            finish_time=gamesettings.FINISH_TIME
     ):
         if planet_influence_track is None:
             planet_influence_track = [
@@ -303,7 +304,8 @@ class GameManager(models.Manager):
             midgame_scoring_event_time=midgame_scoring_event_time,
             add_demand=add_demand,
             add_demand_event_time=add_demand_event_time,
-            add_demand_event_move=add_demand_event_move
+            add_demand_event_move=add_demand_event_move,
+            finish_time=finish_time
         )
         return game
 
@@ -371,6 +373,8 @@ class Game(models.Model):
     add_demand_event_time = models.IntegerField(default=17)
     add_demand_event_move = models.IntegerField(default=-8)
 
+    finish_time = models.IntegerField(default=100)
+
     objects = GameManager()
 
     def get_absolute_url(self):
@@ -389,7 +393,7 @@ class Game(models.Model):
         return user_group_set
 
     def get_active_player(self):
-        return move.get_active_player(self.players.all())
+        return move.get_active_player(self.players.all(), self.finish_time)
 
     def get_active_user(self):
         return self.get_active_player().user
@@ -418,7 +422,8 @@ class Game(models.Model):
             'midgame_scoring_event_time': self.midgame_scoring_event_time,
             'add_demand': self.add_demand,
             'add_demand_event_time': self.add_demand_event_time,
-            'add_demand_event_move': self.add_demand_event_move
+            'add_demand_event_move': self.add_demand_event_move,
+            'finish_time': self.finish_time
         }
 
         return game_data

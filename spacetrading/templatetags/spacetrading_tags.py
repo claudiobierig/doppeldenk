@@ -14,6 +14,6 @@ def get_class(label):
         return "table-light"
 
 @register.simple_tag
-def is_active(player, players):
-    active_player = move.get_active_player(players)
+def is_active(player, players, finish_time):
+    active_player = move.get_active_player(players, finish_time)
     return player is active_player

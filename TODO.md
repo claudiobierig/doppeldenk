@@ -1,21 +1,5 @@
 # TODO
 
-## **Shorter Time (80)**
-
-- [ ] Models
-  - [ ] Add game model variable
-- [ ] Forms
-  - [ ] Add field
-- [ ] Logic
-  - [ ] Initialize
-    - [ ] Use form entry
-    - [ ] Set midgame scoring time resp.
-  - [ ] Move
-    - [ ] Use game variable instead of 100
-- [ ] Tests
-  - [ ] Use gamesetup with 100 and all tests shall pass
-  - [ ] Add test to initialize game
-
 ## **Influence at higher level**
 
 - [ ] Forms
@@ -64,6 +48,7 @@
 ## **Show number of games in which we are active player**
 
 ## **JS Live update**
+
 - [x] Timemarker Update
 - [ ] Influence points
   - [x] rename to numbers
@@ -84,12 +69,14 @@
 ## **Fix SVGs so they can be used for both printing and webpage**
 
 ## **Improve UI and UX**
+
 - [ ] Different resource symbols, building resource -> oil barrel
 - [ ] Change red border for planet we want to fly to
 
 ## **Add EuroCrisis**
 
 ## **Refactoring**
+
 - [ ] Groundwork to add EuroCrisis
   - [ ] Move lists, etc. to doppeldenk
     - [ ] Check how to present multiple lists in one view

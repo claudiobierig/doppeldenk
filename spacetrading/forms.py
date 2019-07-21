@@ -4,7 +4,7 @@ forms needed to play spacetrading
 
 from django import forms
 from django.utils.safestring import mark_safe
-from spacetrading.logic import move
+from spacetrading.logic import move, gamesettings
 
 
 class NewGame(forms.Form):
@@ -34,6 +34,13 @@ class NewGame(forms.Form):
         max_value=15,
         min_value=5,
         initial=5,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+    finish_time = forms.IntegerField(
+        label="Finish Time",
+        min_value=60,
+        max_value=100,
+        initial=gamesettings.FINISH_TIME,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
     midgame_scoring = forms.BooleanField(
