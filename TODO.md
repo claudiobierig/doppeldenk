@@ -7,9 +7,9 @@
 - [x] Forms
   - [x] Add field
 - [ ] Logic
-  - [ ] Initialize
-    - [ ] Use form entry
-    - [ ] Set midgame scoring time resp.
+  - [x] Initialize
+    - [x] Use form entry
+    - [x] Set midgame scoring time resp.
   - [ ] Move
     - [ ] Use game variable instead of 100
 - [ ] Tests
