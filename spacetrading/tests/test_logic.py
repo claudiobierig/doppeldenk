@@ -25,7 +25,8 @@ class MoveTest(TestCase):
             "play_all_players": True,
             "resource_limit": 5,
             "midgame_scoring": True,
-            "add_demand": True
+            "add_demand": True,
+            "finish_time": 100
         }
         initialize.create_game(data, self.user1)
         games = Game.objects.filter(game_name=game_name)
@@ -93,23 +94,23 @@ class MoveTest(TestCase):
         self.assertEqual(None, move.get_next_event(self.game, self.players))
 
     def test_get_active_player(self):
-        self.assertEqual(move.get_active_player(self.players), self.players[0])
+        self.assertEqual(move.get_active_player(self.players, self.game.finish_time), self.players[0])
         for player in self.players:
             player.time_spent = 0
             player.last_move = player.player_number + 1
-        self.assertEqual(move.get_active_player(self.players), self.players[3])
+        self.assertEqual(move.get_active_player(self.players, self.game.finish_time), self.players[3])
         self.players[3].time_spent = 4
-        self.assertEqual(move.get_active_player(self.players), self.players[2])
+        self.assertEqual(move.get_active_player(self.players, self.game.finish_time), self.players[2])
         for player in self.players:
             player.time_spent = 100
-        self.assertEqual(move.get_active_player(self.players), self.players[3])
+        self.assertEqual(move.get_active_player(self.players, self.game.finish_time), self.players[3])
         self.players[3].time_spent = 101
-        self.assertEqual(move.get_active_player(self.players), self.players[2])
+        self.assertEqual(move.get_active_player(self.players, self.game.finish_time), self.players[2])
         self.players[2].has_passed = True
-        self.assertEqual(move.get_active_player(self.players), self.players[1])
+        self.assertEqual(move.get_active_player(self.players, self.game.finish_time), self.players[1])
         self.players[1].has_passed = True
         self.players[0].has_passed = True
-        self.assertEqual(move.get_active_player(self.players), None)
+        self.assertEqual(move.get_active_player(self.players, self.game.finish_time), None)
 
     def test_is_before(self):
         self.assertTrue(move.is_before([0, 2], [10, 3]))
@@ -190,7 +191,7 @@ class MoveTest(TestCase):
         self.assertEqual(self.players[2].points, 1)
         self.assertEqual(self.players[3].points, 0)
         self.assertEqual(self.game.midgame_scoring_event_move, 1)
-        self.assertEqual(self.game.midgame_scoring_event_time, 2*gamesettings.MIDGAME_SCORING_TIME)
+        self.assertEqual(self.game.midgame_scoring_event_time, self.game.finish_time)
 
     def test_compute_points(self):
         self.game.planet_influence_track = [
@@ -231,7 +232,7 @@ class MoveTest(TestCase):
             'coord_q': 0,
             'coord_r': 0
         }
-        active_player = move.get_active_player(self.players)
+        active_player = move.get_active_player(self.players, self.game.finish_time)
         active_planet = move.get_active_planet(active_player.ship_position, self.planets)
         with self.assertRaises(move.MoveError):
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
@@ -243,7 +244,7 @@ class MoveTest(TestCase):
         }
         self.assertEqual(0, move.get_trade_balance_or_raise(active_player, active_planet, self.game, data))
         for i, _ in enumerate(self.players):
-            active_player = move.get_active_player(self.players)
+            active_player = move.get_active_player(self.players, self.game.finish_time)
             active_planet = move.get_active_planet(active_player.ship_position, self.planets)
             data = {
                 'coord_q': self.planets[i].position_of_hexes[self.planets[i].current_position][0],
@@ -253,7 +254,7 @@ class MoveTest(TestCase):
             self.players = self.game.players.all().order_by('player_number')
             self.planets = self.game.planets.all().order_by('planet_number')
 
-        active_player = move.get_active_player(self.players)
+        active_player = move.get_active_player(self.players, self.game.finish_time)
         active_planet = move.get_active_planet(active_player.ship_position, self.planets)
         data = {
             'coord_q': active_player.ship_position[0],
@@ -289,7 +290,7 @@ class MoveTest(TestCase):
         self.assertEqual('f', self.game.game_state)
 
     def test_change_active_player_startup(self):
-        active_player = move.get_active_player(self.players)
+        active_player = move.get_active_player(self.players, self.game.finish_time)
         active_planet = move.get_active_planet(active_player.ship_position, self.planets)
         data = {
             'coord_q': 1,
@@ -304,7 +305,7 @@ class MoveTest(TestCase):
 
     def test_change_active_player_normal_move(self):
         for i, _ in enumerate(self.players):
-            active_player = move.get_active_player(self.players)
+            active_player = move.get_active_player(self.players, self.game.finish_time)
             active_planet = move.get_active_planet(active_player.ship_position, self.planets)
             data = {
                 'coord_q': self.planets[i].position_of_hexes[self.planets[i].current_position][0],
@@ -314,7 +315,7 @@ class MoveTest(TestCase):
             self.players = self.game.players.all().order_by('player_number')
             self.planets = self.game.planets.all().order_by('planet_number')
         
-        active_player = move.get_active_player(self.players)
+        active_player = move.get_active_player(self.players, self.game.finish_time)
         active_planet = move.get_active_planet(active_player.ship_position, self.planets)
         data = {
             'coord_q': 1,
@@ -349,7 +350,7 @@ class MoveTest(TestCase):
 
     def test_change_active_planet(self):
         for i, _ in enumerate(self.players):
-            active_player = move.get_active_player(self.players)
+            active_player = move.get_active_player(self.players, self.game.finish_time)
             active_planet = move.get_active_planet(active_player.ship_position, self.planets)
             data = {
                 'coord_q': self.planets[i].position_of_hexes[self.planets[i].current_position][0],
@@ -359,7 +360,7 @@ class MoveTest(TestCase):
             self.players = self.game.players.all().order_by('player_number')
             self.planets = self.game.planets.all().order_by('planet_number')
         
-        active_player = move.get_active_player(self.players)
+        active_player = move.get_active_player(self.players, self.game.finish_time)
         active_planet = move.get_active_planet(active_player.ship_position, self.planets)
         old_prices = self.get_prices([active_planet])
 
@@ -387,7 +388,7 @@ class MoveTest(TestCase):
             self.planets = self.game.planets.all().order_by('planet_number')
         self.players = self.game.players.all().order_by('player_number')
 
-        active_player = move.get_active_player(self.players)
+        active_player = move.get_active_player(self.players, self.game.finish_time)
         active_planet = move.get_active_planet(active_player.ship_position, self.planets)
         data = {'buy_influence': 5}
         move.change_game(self.game, self.players, self.planets, active_planet, active_player.player_number, data)

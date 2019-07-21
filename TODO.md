@@ -6,14 +6,14 @@
   - [x] Add game model variable
 - [x] Forms
   - [x] Add field
-- [ ] Logic
+- [x] Logic
   - [x] Initialize
     - [x] Use form entry
     - [x] Set midgame scoring time resp.
   - [x] Move
     - [x] Use game variable instead of 100
 - [ ] Tests
-  - [ ] Use gamesetup with 100 and all tests shall pass
+  - [x] Use gamesetup with 100 and all tests shall pass
   - [ ] Add test to initialize game
 
 ## **Influence at higher level**
