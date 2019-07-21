@@ -2,8 +2,8 @@
 
 ## **Shorter Time (80)**
 
-- [ ] Models
-  - [ ] Add game model variable
+- [x] Models
+  - [x] Add game model variable
 - [ ] Forms
   - [ ] Add field
 - [ ] Logic
@@ -84,12 +84,14 @@
 ## **Fix SVGs so they can be used for both printing and webpage**
 
 ## **Improve UI and UX**
+
 - [ ] Different resource symbols, building resource -> oil barrel
 - [ ] Change red border for planet we want to fly to
 
 ## **Add EuroCrisis**
 
 ## **Refactoring**
+
 - [ ] Groundwork to add EuroCrisis
   - [ ] Move lists, etc. to doppeldenk
     - [ ] Check how to present multiple lists in one view
