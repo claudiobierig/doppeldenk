@@ -144,7 +144,7 @@ def draw_player_boards(players, game):
 
     svg = Svg(width=480, height=240, id_name="playerboards")
     add_symbols(svg)
-    active_player = move.get_active_player(players)
+    active_player = move.get_active_player(players, game.finish_time)
     for index, player in enumerate(players):
         active = False
         if active_player is not None and active_player.player_number == player.player_number:

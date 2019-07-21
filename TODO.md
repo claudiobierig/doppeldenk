@@ -10,8 +10,8 @@
   - [x] Initialize
     - [x] Use form entry
     - [x] Set midgame scoring time resp.
-  - [ ] Move
-    - [ ] Use game variable instead of 100
+  - [x] Move
+    - [x] Use game variable instead of 100
 - [ ] Tests
   - [ ] Use gamesetup with 100 and all tests shall pass
   - [ ] Add test to initialize game

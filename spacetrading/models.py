@@ -393,7 +393,7 @@ class Game(models.Model):
         return user_group_set
 
     def get_active_player(self):
-        return move.get_active_player(self.players.all())
+        return move.get_active_player(self.players.all(), self.finish_time)
 
     def get_active_user(self):
         return self.get_active_player().user

@@ -106,7 +106,7 @@ class GameDisplay(generic.DetailView, LoginRequiredMixin):
         game_instance = super().get_object()
         planets = game_instance.planets.all().order_by('planet_number')
         players = game_instance.players.all().order_by('player_number')
-        active_player = move.get_active_player(players)
+        active_player = move.get_active_player(players, game_instance.finish_time)
         if active_player is None:
             active_planet = None
         else:

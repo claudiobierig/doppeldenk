@@ -27,7 +27,7 @@ def move(game, data):
     changes db or if move invalid throws an MoveError
     """
     players = game.players.all()
-    active_player = get_active_player(players)
+    active_player = get_active_player(players, game.finish_time)
     planets = game.planets.all().order_by('planet_number')
     active_planet = get_active_planet(
         active_player.ship_position, planets)
@@ -41,7 +41,7 @@ def move(game, data):
     change_game(game, players, planets, active_planet,
                 active_player.player_number, data)
     players = game.players.all()
-    active_player = get_active_player(players)
+    active_player = get_active_player(players, game.finish_time)
     if active_player is None:
         finish_game(game)
 
@@ -245,7 +245,7 @@ def get_next_event(game, players):
     return None if a player has to move before the next event
     otherwise return the corresponding Event enum entry
     """
-    active_player = get_active_player(players)
+    active_player = get_active_player(players, game.finish_time)
     if active_player is None:
         return None
 
@@ -324,7 +324,7 @@ def midgame_scoring(game, players):
     1 point for 2nd
     both only if scored at all
     """
-    game.midgame_scoring_event_time = 100
+    game.midgame_scoring_event_time = game.finish_time
     game.midgame_scoring_event_move = game.next_move_number
     game.next_move_number = game.next_move_number + 1
     game.save()
@@ -349,13 +349,13 @@ def add_demand(game, planets):
     game.next_move_number = game.next_move_number + 1
     game.save()
 
-def get_active_player(players):
+def get_active_player(players, finish_time):
     """
     returns the active_player or None (not considering events)
     """
     active_player = None
     for player in players:
-        if player.has_passed or player.time_spent > 100:
+        if player.has_passed or player.time_spent > finish_time:
             continue
         if active_player is None:
             active_player = player
