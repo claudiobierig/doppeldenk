@@ -4,8 +4,8 @@
 
 - [x] Models
   - [x] Add game model variable
-- [ ] Forms
-  - [ ] Add field
+- [x] Forms
+  - [x] Add field
 - [ ] Logic
   - [ ] Initialize
     - [ ] Use form entry
@@ -64,6 +64,7 @@
 ## **Show number of games in which we are active player**
 
 ## **JS Live update**
+
 - [x] Timemarker Update
 - [ ] Influence points
   - [x] rename to numbers

@@ -36,6 +36,13 @@ class NewGame(forms.Form):
         initial=5,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
+    finish_time = forms.IntegerField(
+        label="Finish Time",
+        min_value=60,
+        max_value=100,
+        initial=80,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
     midgame_scoring = forms.BooleanField(
         label="Midgame scoring",
         required=False,

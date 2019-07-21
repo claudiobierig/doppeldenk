@@ -20,6 +20,10 @@
     {{ form.resource_limit }}
   </div>
   <div class="form-group">
+    <label for="{{ form.finish_time.auto_id }}">{{ form.finish_time.label }}</label>
+    {{ form.finish_time }}
+  </div>
+  <div class="form-group">
     <div class="form-check">
       {{ form.midgame_scoring }}
       <label for="{{ form.midgame_scoring.auto_id }}" class="form-check-label" >{{ form.midgame_scoring.label }}</label>
