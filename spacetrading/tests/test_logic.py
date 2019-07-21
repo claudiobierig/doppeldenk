@@ -421,19 +421,21 @@ class InitializeTest(TestCase):
             "play_all_players": [False, True],
             "resource_limit": [5, 9],
             "midgame_scoring": [False, True],
-            "add_demand": [False, True]
+            "add_demand": [False, True],
+            "finish_time": [80, 100]
         }
         combined_possibilities = itertools.product(
             possibilities["number_of_players"],
             possibilities["play_all_players"],
             possibilities["resource_limit"],
             possibilities["midgame_scoring"],
-            possibilities["add_demand"]
+            possibilities["add_demand"],
+            possibilities["finish_time"]
         )
 
-        for index, (number_of_players, play_all_players, resource_limit, midgame_scoring, add_demand) in \
+        for index, (number_of_players, play_all_players, resource_limit, midgame_scoring, add_demand, finish_time) in \
             enumerate(combined_possibilities):
-            print(f"Settings: {number_of_players}, {play_all_players}, {resource_limit}, {midgame_scoring}, {add_demand}")
+            print(f"Settings: {number_of_players}, {play_all_players}, {resource_limit}, {midgame_scoring}, {add_demand}, {finish_time}")
             game_name = "test_{}".format(index)
             data = {
                 "name": game_name,
@@ -441,7 +443,8 @@ class InitializeTest(TestCase):
                 "play_all_players": play_all_players,
                 "resource_limit": resource_limit,
                 "midgame_scoring": midgame_scoring,
-                "add_demand": add_demand
+                "add_demand": add_demand,
+                "finish_time": finish_time
             }
             initialize.create_game(data, self.user1)
             games = Game.objects.filter(game_name=game_name)
@@ -477,7 +480,7 @@ class InitializeTest(TestCase):
             self.assertEqual(game.add_demand, add_demand)
             if midgame_scoring:
                 self.assertEqual(game.midgame_scoring_event_move, gamesettings.MIDGAME_SCORING_MOVE)
-                self.assertEqual(game.midgame_scoring_event_time, gamesettings.MIDGAME_SCORING_TIME)
+                self.assertEqual(game.midgame_scoring_event_time, game.finish_time/2)
 
             if add_demand:
                 self.assertEqual(game.add_demand_event_move, gamesettings.ADD_DEMAND_MOVE)
@@ -487,6 +490,8 @@ class InitializeTest(TestCase):
             self.assertEqual(game.planet_rotation_event_time, gamesettings.PLANET_ROTATION_TIME)
             self.assertEqual(game.offer_demand_event_move, gamesettings.OFFER_DEMAND_EVENT_MOVE)
             self.assertEqual(game.offer_demand_event_time, gamesettings.OFFER_DEMAND_EVENT_TIMES[number_of_players - 1])
+
+            self.assertEqual(game.finish_time, finish_time)
 
             self.assertEqual(game.next_move_number, gamesettings.FIRST_MOVE_NUMBER)
             self.assertEqual(game.planet_influence_track, [
