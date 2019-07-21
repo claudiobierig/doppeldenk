@@ -1,16 +1,5 @@
 # TODO
 
-## **Influence at higher level**
-
-- [ ] Forms
-  - [ ] Add field to setup start influence
-- [ ] Logic
-  - [ ] Initialize
-    - [ ] Use form entry
-- [ ] Tests
-  - [ ] Use old gamesetup and all tests shall pass
-  - [ ] Add test to initialize game
-
 ## **Resource against influence**
 
 - [ ] Models

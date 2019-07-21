@@ -26,6 +26,7 @@ def create_game(data, user):
     midgame_scoring = data.get('midgame_scoring', False)
     add_demand = data.get('add_demand', False)
     finish_time = data.get('finish_time', gamesettings.FINISH_TIME)
+    start_influence = data.get('start_influence', gamesettings.START_INFLUENCE)
     game = Game.objects.create_game(
         game_name=name,
         number_of_players=number_of_players,
@@ -34,7 +35,8 @@ def create_game(data, user):
         midgame_scoring=midgame_scoring,
         midgame_scoring_event_time=finish_time/2,
         add_demand=add_demand,
-        finish_time=finish_time
+        finish_time=finish_time,
+        start_influence=start_influence
     )
     supply_resources = ['2', '5', '1', '3', '4']
     remaining_demand_resources = {'1', '2', '3', '4', '5'}

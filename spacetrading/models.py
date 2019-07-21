@@ -278,16 +278,11 @@ class GameManager(models.Manager):
             add_demand=False,
             add_demand_event_time=gamesettings.ADD_DEMAND_TIME,
             add_demand_event_move=gamesettings.ADD_DEMAND_MOVE,
-            finish_time=gamesettings.FINISH_TIME
+            finish_time=gamesettings.FINISH_TIME,
+            start_influence=gamesettings.START_INFLUENCE
     ):
         if planet_influence_track is None:
-            planet_influence_track = [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ]
+            planet_influence_track = [ [start_influence]*4 for _ in range(5) ]
         game = self.create(
             game_name=game_name,
             number_of_players=number_of_players,

@@ -26,7 +26,8 @@ class MoveTest(TestCase):
             "resource_limit": 5,
             "midgame_scoring": True,
             "add_demand": True,
-            "finish_time": 100
+            "finish_time": 100,
+            "start_influence": 0
         }
         initialize.create_game(data, self.user1)
         games = Game.objects.filter(game_name=game_name)
@@ -422,7 +423,8 @@ class InitializeTest(TestCase):
             "resource_limit": [5, 9],
             "midgame_scoring": [False, True],
             "add_demand": [False, True],
-            "finish_time": [80, 100]
+            "finish_time": [80, 100],
+            "start_influence": [2]
         }
         combined_possibilities = itertools.product(
             possibilities["number_of_players"],
@@ -430,12 +432,13 @@ class InitializeTest(TestCase):
             possibilities["resource_limit"],
             possibilities["midgame_scoring"],
             possibilities["add_demand"],
-            possibilities["finish_time"]
+            possibilities["finish_time"],
+            possibilities["start_influence"]
         )
 
-        for index, (number_of_players, play_all_players, resource_limit, midgame_scoring, add_demand, finish_time) in \
+        for index, (number_of_players, play_all_players, resource_limit, midgame_scoring, add_demand, finish_time, start_influence) in \
             enumerate(combined_possibilities):
-            print(f"Settings: {number_of_players}, {play_all_players}, {resource_limit}, {midgame_scoring}, {add_demand}, {finish_time}")
+            print(f"Settings: {number_of_players}, {play_all_players}, {resource_limit}, {midgame_scoring}, {add_demand}, {finish_time}, {start_influence}")
             game_name = "test_{}".format(index)
             data = {
                 "name": game_name,
@@ -444,7 +447,8 @@ class InitializeTest(TestCase):
                 "resource_limit": resource_limit,
                 "midgame_scoring": midgame_scoring,
                 "add_demand": add_demand,
-                "finish_time": finish_time
+                "finish_time": finish_time,
+                "start_influence": start_influence
             }
             initialize.create_game(data, self.user1)
             games = Game.objects.filter(game_name=game_name)
@@ -494,13 +498,7 @@ class InitializeTest(TestCase):
             self.assertEqual(game.finish_time, finish_time)
 
             self.assertEqual(game.next_move_number, gamesettings.FIRST_MOVE_NUMBER)
-            self.assertEqual(game.planet_influence_track, [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ])
+            self.assertEqual(game.planet_influence_track, [ [gamesettings.START_INFLUENCE]*4 for _ in range(5) ])
 
             planet_demand_resources = []
             planet_supply_resources = []
