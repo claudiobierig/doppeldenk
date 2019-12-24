@@ -1,6 +1,7 @@
 *.svg
 *.pyc
 .env
+staticfiles
 #PROD stuff
 .env.prod
 .env.prod.db
