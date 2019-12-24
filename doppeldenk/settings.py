@@ -27,10 +27,9 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = [
-    'whispering-hollows-23926.herokuapp.com',
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS",
+                               "whispering-hollows-23926.herokuapp.com 127.0.0.1 localhost"
+                               ).split(" ")
 
 
 # Application definition
@@ -85,10 +84,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'doppeldenk',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': 'db',
-        'PORT': '5432',
+        'USER': os.environ.get("SQL_USER", 'admin'),
+        'PASSWORD': os.environ.get("SQL_PASSWORD", 'admin'),
+        'HOST': os.environ.get("SQL_HOST", 'localhost'),
+        'PORT':  os.environ.get("SQL_PORT", ''),
     }
 }
 
