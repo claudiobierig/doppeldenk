@@ -134,7 +134,7 @@ USE_TZ = True
 # The absolute path to the directory where collectstatic will collect static files for deployment.
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_URL = '/static/'
+STATIC_URL = '/{}/'.format(os.environ.get("STATIC_URL", 'static'))
 
 
 STATICFILES_DIRS = [

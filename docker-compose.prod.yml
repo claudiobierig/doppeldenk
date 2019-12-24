@@ -7,11 +7,9 @@ services:
       dockerfile: Dockerfile.prod
     command: gunicorn doppeldenk.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - .:/usr/src/app/
-    ports:
-      - 8000:8000
-    #expose:
-    #  - 8000
+      - static_volume:/home/app/web/staticfiles
+    expose:
+      - 8000
     depends_on:
       - db
     env_file:
@@ -23,12 +21,15 @@ services:
     env_file:
       - ./.env.prod.db
 
-  #nginx:
-  #  build: ./nginx
-  #  ports:
-  #    - 1337:80
-  #  depends_on:
-  #    - web
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    ports:
+      - 1337:80
+    depends_on:
+      - web
 
 volumes:
   postgres_data:
+  static_volume:
