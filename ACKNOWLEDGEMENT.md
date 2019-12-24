@@ -22,3 +22,4 @@
   - [BSD](https://opensource.org/licenses/BSD-3-Clause): Django, dj-database-url, lxml
   - [MIT](https://opensource.org/licenses/MIT): django-extensions, gunicorn, whitenoise
   - [LGPL](https://www.gnu.org/copyleft/lesser.html): psycopg2
+- [Docker Tutorial](https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/)

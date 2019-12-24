@@ -27,10 +27,9 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = [
-    'whispering-hollows-23926.herokuapp.com',
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS",
+                               "whispering-hollows-23926.herokuapp.com 127.0.0.1 localhost"
+                               ).split(" ")
 
 
 # Application definition
@@ -84,11 +83,11 @@ WSGI_APPLICATION = 'doppeldenk.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'doppeldenk',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': os.environ.get("SQL_NAME", 'doppeldenk'),
+        'USER': os.environ.get("SQL_USER", 'admin'),
+        'PASSWORD': os.environ.get("SQL_PASSWORD", 'admin'),
+        'HOST': os.environ.get("SQL_HOST", 'localhost'),
+        'PORT':  os.environ.get("SQL_PORT", ''),
     }
 }
 
@@ -135,7 +134,7 @@ USE_TZ = True
 # The absolute path to the directory where collectstatic will collect static files for deployment.
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_URL = '/static/'
+STATIC_URL = '/{}/'.format(os.environ.get("STATIC_URL", 'static'))
 
 
 STATICFILES_DIRS = [

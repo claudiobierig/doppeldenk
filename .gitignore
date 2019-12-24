@@ -1,9 +1,10 @@
 *.svg
 *.pyc
-node_modules
-package-lock.json
 .env
-.jshintrc
+staticfiles
+#PROD stuff
+.env.prod
+.env.prod.db
 #Visual Studio Code stuff
 .vscode
 launch.json

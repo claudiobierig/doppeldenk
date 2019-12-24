@@ -53,6 +53,42 @@ For deploying to heroku follow the tutorial a bit longer.
 python3 manage.py test
 ~~~
 
+## Docker
+
+Setup with docker:
+
+~~~bash
+DOCKER_COMPOSE_FILE=docker-compose.yml # or docker-compose.prod.yml. Add the .env files below first.
+docker-compose -f $DOCKER_COMPOSE_FILE up -d --build
+docker-compose -f $DOCKER_COMPOSE_FILE exec web python manage.py migrate --noinput
+docker-compose -f $DOCKER_COMPOSE_FILE exec web python manage.py collectstatic --no-input --clear
+docker-compose -f $DOCKER_COMPOSE_FILE exec web python manage.py createsuperuser
+~~~
+
+Webpage should now be available at [http://localhost:8000/](http://localhost:8000/) for dev setup or [http://localhost:1337/](http://localhost:1337/) for prod setup. In prod the following two files need to be added, where the marked variables need to be replaced:
+
+### .env.prod
+
+~~~txt
+DJANGO_DEBUG=False
+SECRET_KEY=***secret_key***
+DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+SQL_NAME=***doppeldenk_prod***
+SQL_USER=***user***
+SQL_PASSWORD=***password***
+SQL_HOST=db
+SQL_PORT=5432
+STATIC_URL=staticfiles
+~~~
+
+### .env.prod.db
+
+~~~txt
+POSTGRES_USER=***user***
+POSTGRES_PASSWORD=***password***
+POSTGRES_DB=***doppeldenk_prod***
+~~~
+
 ## Open Points
 
 Listed in TODO.md
