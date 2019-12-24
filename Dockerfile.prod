@@ -1,8 +1,8 @@
-# pull official base image
 ###########
 # BUILDER #
 ###########
 
+# pull official base image
 FROM python:3.6.10-alpine3.9 as builder
 
 # set work directory
