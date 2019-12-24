@@ -4,13 +4,10 @@ services:
   web:
     build: .
     command: python3 manage.py runserver 0.0.0.0:8000
-    #command: gunicorn doppeldenk.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/usr/src/app/
     ports:
       - 8000:8000
-    #expose:
-    #  - 8000
     depends_on:
       - db
     env_file:
@@ -23,13 +20,6 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=doppeldenk
-
-  #nginx:
-  #  build: ./nginx
-  #  ports:
-  #    - 1337:80
-  #  depends_on:
-  #    - web
 
 volumes:
   postgres_data:

@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'doppeldenk.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'doppeldenk',
+        'NAME': os.environ.get("SQL_NAME", 'doppeldenk'),
         'USER': os.environ.get("SQL_USER", 'admin'),
         'PASSWORD': os.environ.get("SQL_PASSWORD", 'admin'),
         'HOST': os.environ.get("SQL_HOST", 'localhost'),
