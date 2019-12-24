@@ -53,6 +53,18 @@ For deploying to heroku follow the tutorial a bit longer.
 python3 manage.py test
 ~~~
 
+## Docker
+
+Setup with docker:
+
+~~~bash
+docker-compose up -d --build
+docker-compose exec web python manage.py migrate --noinput
+docker-compose exec web python manage.py createsuperuser
+~~~
+
+Webpage should now be available at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+
 ## Open Points
 
 Listed in TODO.md

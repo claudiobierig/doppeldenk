@@ -87,8 +87,8 @@ DATABASES = {
         'NAME': 'doppeldenk',
         'USER': 'admin',
         'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
