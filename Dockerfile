@@ -18,4 +18,5 @@ RUN apk update && \
 
 RUN pip3 install -r requirements.txt
 
-
+RUN chmod +x /usr/src/app/entrypoint.sh
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
