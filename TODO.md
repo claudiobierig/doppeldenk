@@ -3,7 +3,7 @@
 - [ ] Cleanup
   - [ ] Remove some of the old rules which won't be used
 - [ ] UI
-  - [ ] cherry-pick from feature branch
+  - [x] cherry-pick from feature branch
   - [ ] switch from svg to artwork
     - [ ] will need to add pics for planets (might just add a svg)
     - [ ] will need to compute which planet we want to from mouse coordinates
@@ -16,7 +16,8 @@
     - [ ] Add meteor
       - [ ] No UI
       - [ ] Just pick up minerals
-    - [ ] Influence
+  - [ ] Influence
+  - [ ] Fix demand resource
 - [ ] AI compatible
   - [ ] Can we add a layer such that logic code can be used for both?
 

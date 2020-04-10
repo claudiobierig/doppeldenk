@@ -100,31 +100,6 @@ def draw_planet_ellipse(svg, planet, center):
                          stroke_width="2")
 
 
-def print_hexes(positions, colour, parent, parentname):
-    """
-    print hexes of one planet
-    """
-    for index, position in enumerate(positions):
-        hex_coordinates = get_hex_coordinates(position, HEX_SIZE)
-        hex_center = get_hex_center(hex_coordinates, HEX_SIZE)
-        parent.create_hex(parentname + "_" + str(index), hex_center,
-                          hex_coordinates, HEX_SIZE, colour,
-                          parentname + "_hex", fill_opacity="0.3")
-        position_x = hex_center[0]
-        position_y = hex_center[1] - HEX_SIZE / 2 - FONT_SIZE - FONT_PADDING
-        content = str(int(hex_coordinates[0])) + "," + str(int(
-            hex_coordinates[1])) + "," + str(int(- hex_coordinates[0] - hex_coordinates[1]))
-        parent.create_text(
-            parentname +
-            "_coordinates_" +
-            str(index),
-            (position_x,
-             position_y),
-            content,
-            font_size=FONT_SIZE,
-            font_colour="#FFFFFF")
-
-
 def draw_hex_grid(parent, planets, user_active):
     """
     draw the hex grid
@@ -146,6 +121,7 @@ def draw_hex_grid(parent, planets, user_active):
             fill_opacity = "0"
             stroke_width = "0.5"
             stroke_opacity = "0.5"
+            hex_center = get_hex_center(coords, HEX_SIZE)
             for hex_field in colored_hexes:
                 if coords == hex_field[0]:
                     colour = hex_field[1].colour
@@ -158,7 +134,6 @@ def draw_hex_grid(parent, planets, user_active):
                         fill_opacity = "0.25"
                     break
 
-            hex_center = get_hex_center(coords, HEX_SIZE)
             layer.create_hex(
                 name_hex,
                 hex_center,
@@ -172,23 +147,6 @@ def draw_hex_grid(parent, planets, user_active):
                 stroke_width=stroke_width,
                 enableOnClick=user_active
             )
-
-    coordinate_group = parent.create_subgroup('coordinates')
-
-    for hex_field in colored_hexes:
-        content = "{},{},{}".format(
-            hex_field[0][0],
-            hex_field[0][1],
-            -hex_field[0][0] - hex_field[0][1]
-        )
-        hex_center = get_hex_center(hex_field[0], HEX_SIZE)
-        coordinate_group.create_text(
-            "coordinates_{}".format(content),
-            [hex_center[0], hex_center[1] - HEX_SIZE/2 - FONT_PADDING - FONT_SIZE],
-            content,
-            font_size=FONT_SIZE,
-            font_colour="#FFFFFF"
-        )
 
 
 def draw_timebox(position, size, name, time, parent, user_active):
@@ -379,7 +337,7 @@ def draw_playerhelp(svg, position, midgame_scoring=True, add_demand=True):
         playerhelps.append(("midgame_scoring", "Midgame scoring", "blue"))
     if add_demand:
         playerhelps.append(("add_demand", "Add Demand", "green"))
-    
+
     for index, (id_help, text, colour) in enumerate(playerhelps):
         svg.create_rectangle(
             [position[0], position[1] + 25*index],
@@ -401,6 +359,7 @@ def draw_playerhelp(svg, position, midgame_scoring=True, add_demand=True):
             text_align="center",
             text_anchor="middle"
         )
+
 
 def draw_gameboard(game, planets, players, user_active, bg_image="/static/auth/bg.jpeg", printing_material=False):
     """
