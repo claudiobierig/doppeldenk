@@ -32,8 +32,16 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
-      env_file:
-      - ./.env.dev
+      env:
+        DJANGO_DEBUG: True
+        SECRET_KEY: foo
+        DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
+        SQL_NAME: doppeldenk
+        SQL_USER: admin
+        SQL_PASSWORD: admin
+        SQL_HOST: db
+        SQL_PORT: 5432
+
       run: |
         pip install pytest
         pytest
