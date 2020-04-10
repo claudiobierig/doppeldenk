@@ -1,32 +1,24 @@
 # TODO
 
-## **Resource against influence**
-
-- [ ] Models
-  - [ ] Add game model variable bool
-  - [ ] Add game model variable resource
-- [ ] Forms
-  - [ ] Create
-    - [ ] Add checkbox
-  - [ ] Trade
-    - [ ] Add checkbox (only if resource is present)
-- [ ] Logic
-  - [ ] Initialize
-    - [ ] Use form entry
-    - [ ] Same as additional_demand
-  - [ ] Move
-    - [ ] No influence price reduction
-    - [ ] Trade of resource against influence
-- [ ] Views
-  - [ ] Make sure additional_demand and resource_against_influence are not both selected
-  - [ ] planet_market: where to put extra resource? remove 2nd row?
-- [ ] Js
-  - [ ] Update influence track when checkbox is clicked
-  - [ ] No influence price reduction
-- [ ] Tests
-  - [ ] Use old gamesetup and all tests shall pass
-  - [ ] Add test to initialize game
-  - [ ] Add test to trade resource against influence
+- [ ] Cleanup
+  - [ ] Remove some of the old rules which won't be used
+- [ ] UI
+  - [ ] cherry-pick from feature branch
+  - [ ] switch from svg to artwork
+    - [ ] will need to add pics for planets (might just add a svg)
+    - [ ] will need to compute which planet we want to from mouse coordinates
+    - [ ] might stay with current playerboards
+- [ ] rule changes
+  - [ ] Add goals
+    - [ ] Add earth
+      - [ ] Different rules
+      - [ ] Different UI
+    - [ ] Add meteor
+      - [ ] No UI
+      - [ ] Just pick up minerals
+    - [ ] Influence
+- [ ] AI compatible
+  - [ ] Can we add a layer such that logic code can be used for both?
 
 ## **List of finished games**
 

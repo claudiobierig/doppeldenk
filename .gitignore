@@ -10,3 +10,4 @@ staticfiles
 launch.json
 config.py
 objectdb
+venv
