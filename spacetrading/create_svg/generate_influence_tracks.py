@@ -48,7 +48,7 @@ def draw_influence_tracks(game, planets, players):
         planet_points = []
         for player in players:
             points = game.planet_influence_track[planet_number][player.player_number]
-            #TODO: points larger than 20
+            # TODO: points larger than 20
             stack_position = planet_points.count(points)
             planet_points.append(points)
             x_pos = planet_number*SIZE_TIMEBOX
@@ -61,6 +61,7 @@ def draw_influence_tracks(game, planets, players):
             )
     svg_string = planet_tracks_svg.get_string()
     return svg_string
+
 
 if __name__ == '__main__':
     pass

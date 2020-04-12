@@ -61,6 +61,7 @@ class NewGame(forms.Form):
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
 
+
 class Move(forms.Form):
     """
     Form to make a move
@@ -117,12 +118,11 @@ class Move(forms.Form):
             time = False
         else:
             time = True
-        
+
         for direction, mapping, resources, cost in [
                 ("Sell", move.PLANET_DEMAND_MAPPING, planet_demand_resources, planet_demand_resources_price),
                 ("Buy", move.PLANET_SUPPLY_MAPPING, planet_supply_resources, planet_supply_resources_price)
-                
-            ]:
+                ]:
             for resource in range(1, 6):
                 fieldname = mapping[str(resource)]
                 if str(resource) in resources:
@@ -145,7 +145,6 @@ class Move(forms.Form):
                         required=False,
                         initial=0
                     )
-
 
         if influence:
             self.base_fields["buy_influence"] = forms.IntegerField(
@@ -186,6 +185,5 @@ class Move(forms.Form):
                 required=False,
                 initial=0
             )
-
 
         super(Move, self).__init__(*args, **kwargs)

@@ -7,8 +7,8 @@ from enum import Enum
 from spacetrading.logic import gamesettings
 
 
-PLANET_DEMAND_MAPPING = {str(i) : "planet_demand_resource_{}".format(i) for i in range(1, 6)}
-PLANET_SUPPLY_MAPPING = {str(i) : "planet_supply_resource_{}".format(i) for i in range(1, 6)}
+PLANET_DEMAND_MAPPING = {str(i): "planet_demand_resource_{}".format(i) for i in range(1, 6)}
+PLANET_SUPPLY_MAPPING = {str(i): "planet_supply_resource_{}".format(i) for i in range(1, 6)}
 
 
 class Event(Enum):
@@ -60,10 +60,10 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
     if active_player is None:
         finish_game(game)
         raise MoveError("no active player")
-    if data.get('move_type', 'Regular') is 'Regular':
+    if data.get('move_type', 'Regular') == 'Regular':
         if data.get('coord_q', None) is None or \
-            data.get('coord_r', None) is None or \
-            [data['coord_q'], data['coord_r']] == [0, 0]:
+                data.get('coord_r', None) is None or \
+                [data['coord_q'], data['coord_r']] == [0, 0]:
             raise MoveError("You didn't choose where to fly.")
         distance = compute_distance(
             active_player.ship_position,
@@ -95,7 +95,7 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
             if data.get(PLANET_SUPPLY_MAPPING[resource], 0) > 0:
                 trade_balance = trade_balance - \
                     data[PLANET_SUPPLY_MAPPING[resource]] * \
-                        active_planet.planet_supply_resources_price[active_planet.planet_supply_resources.index(resource)]
+                    active_planet.planet_supply_resources_price[active_planet.planet_supply_resources.index(resource)]
                 if not game.add_demand:
                     traded = True
 
@@ -107,14 +107,17 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
             if data.get(PLANET_DEMAND_MAPPING[resource], 0) > 0:
                 trade_balance = trade_balance + \
                     data[PLANET_DEMAND_MAPPING[resource]] * \
-                        active_planet.planet_demand_resources_price[active_planet.planet_demand_resources.index(resource)]
+                    active_planet.planet_demand_resources_price[active_planet.planet_demand_resources.index(resource)]
                 if game.add_demand:
                     traded = True
             elif game.add_demand:
                 traded = False
 
-    trade_balance = trade_balance - get_cost_influence(
-        traded, data.get("buy_influence", 0), game.planet_influence_track[active_planet.planet_number][active_player.player_number])
+    trade_balance -= get_cost_influence(
+        traded,
+        data.get("buy_influence", 0),
+        game.planet_influence_track[active_planet.planet_number][active_player.player_number]
+    )
     if trade_balance + active_player.money < 0:
         raise MoveError("You have not enough money")
     return trade_balance
@@ -152,7 +155,7 @@ def change_active_player(active_player, active_planet, next_move_number, data, t
     """
     performs changes on active_player
     """
-    if data.get('move_type', 'Regular') is 'Regular':
+    if data.get('move_type', 'Regular') == 'Regular':
         if active_player.last_move < 0:
             active_player.time_spent = 0
         else:
@@ -160,7 +163,7 @@ def change_active_player(active_player, active_planet, next_move_number, data, t
                 data['spend_time']
         active_player.last_move = next_move_number
         active_player.ship_position = [data['coord_q'], data['coord_r']]
-    elif data.get('move_type', 'Regular') is 'Pass':
+    elif data.get('move_type', 'Regular') == 'Pass':
         active_player.has_passed = True
 
     if active_planet is not None:
@@ -266,6 +269,7 @@ def get_next_event(game, players):
 
     return result
 
+
 def next_turn(events):
     """
     list of (turn, move, returnvalue)
@@ -333,6 +337,7 @@ def midgame_scoring(game, players):
         player.points = points
         player.save()
 
+
 def add_demand(game, planets):
     """
     add a demand resource to the planets demands
@@ -348,6 +353,7 @@ def add_demand(game, planets):
     game.add_demand_event_move = game.next_move_number
     game.next_move_number = game.next_move_number + 1
     game.save()
+
 
 def get_active_player(players, finish_time):
     """

@@ -148,7 +148,7 @@ LOGIN_REDIRECT_URL = '/'
 #    'group_models': True,
 # }
 #
-#TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
+# TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/

@@ -241,7 +241,6 @@ class Player(models.Model):
 
     def get_json(self):
         player_data = {
-            #'name': self.user.get_username(),
             'resources': self.resources,
             'money': self.money,
             'ship_position': self.ship_position,
@@ -282,7 +281,7 @@ class GameManager(models.Manager):
             start_influence=gamesettings.START_INFLUENCE
     ):
         if planet_influence_track is None:
-            planet_influence_track = [ [start_influence]*4 for _ in range(5) ]
+            planet_influence_track = [[start_influence]*4 for _ in range(5)]
         game = self.create(
             game_name=game_name,
             number_of_players=number_of_players,
@@ -378,7 +377,7 @@ class Game(models.Model):
 
     def is_active(self):
         """Return True if game_state is running otherwise False"""
-        return (self.game_state is 'r')
+        return (self.game_state == 'r')
 
     def get_users(self):
         user_group_set = set()

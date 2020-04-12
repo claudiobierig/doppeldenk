@@ -39,7 +39,6 @@ def draw_planet(svg, planet, name, fill_colour):
         fill_colour=fill_colour,
         id_name="box_{}".format(name)
     )
-    #svg.create_path("M {left},{middle} H {right}".format(left=left, middle=middle, right=right), stroke_colour="black")
     for i in range(1, 8):
         svg.create_text(
             "{}_pricetext_{}".format(name, i),
@@ -94,14 +93,18 @@ def draw_planet(svg, planet, name, fill_colour):
     )
 
     resources = [planet.planet_demand_resources[1], planet.planet_demand_resources[0], planet.planet_supply_resources[0]]
-    prices = [planet.planet_demand_resources_price[1], planet.planet_demand_resources_price[0], planet.planet_supply_resources_price[0]]
+    prices = [
+        planet.planet_demand_resources_price[1],
+        planet.planet_demand_resources_price[0],
+        planet.planet_supply_resources_price[0]
+    ]
     for row in range(3):
         for column in range(6):
-            if row is 2:
+            if row == 2:
                 price = column + 1
             else:
                 price = column + 2
-            
+
             if price is prices[row]:
                 symbolname = generate_svg_symbols.get_symbol_name(resources[row])
             else:

@@ -70,7 +70,7 @@ def create_game(data, user):
         first = remaining_counted[0][0]
         traded_resources.sort(key=lambda tup: (-tup[2]))
         for element in traded_resources:
-            if not first in element[0]:
+            if first not in element[0]:
                 add_demand_resources[element[1]] = first
                 remaining_add_demand_resources.remove(first)
                 traded_resources.remove(element)
