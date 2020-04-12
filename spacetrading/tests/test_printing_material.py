@@ -1,5 +1,9 @@
 from django.test import TestCase
-from spacetrading.create_svg import generate_gameboard, generate_planet_market, generate_printing_player_boards, generate_plain_symbols, generate_svg_symbols
+from spacetrading.create_svg import generate_gameboard
+from spacetrading.create_svg import generate_planet_market
+from spacetrading.create_svg import generate_printing_player_boards
+from spacetrading.create_svg import generate_plain_symbols
+from spacetrading.create_svg import generate_svg_symbols
 from spacetrading.create_svg import generate_politician_cards
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.models import Game
