@@ -66,5 +66,6 @@ def draw_additional_resource_board(game, planets):
     svg_string = svg.get_string()
     return svg_string
 
+
 if __name__ == '__main__':
     pass

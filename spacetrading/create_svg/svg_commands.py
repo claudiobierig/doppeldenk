@@ -352,7 +352,8 @@ class Svg(object):
         image.text = " "
         return Svg(image)
 
-    def create_scoring_track(self, size_box, subgroup_name, x_elements, y_elements, grey_element, fill_colour="#FFFFFF", font_size=8, additional_arguments=None):
+    def create_scoring_track(self, size_box, subgroup_name, x_elements, y_elements,
+                             grey_element, fill_colour="#FFFFFF", font_size=8, additional_arguments=None):
         """
         create the whole scoring track
         """
@@ -404,7 +405,8 @@ class Svg(object):
                 additional_arguments
             )
 
-    def draw_scoring_box(self, position, size, id_name, number, grey_element, fill_colour="#FFFFFF", font_size=8, additional_arguments=None):
+    def draw_scoring_box(self, position, size, id_name, number, grey_element,
+                         fill_colour="#FFFFFF", font_size=8, additional_arguments=None):
         """
         draw one box of the scoring track
         """
@@ -451,7 +453,6 @@ def get_position(size, x_elements, y_elements, points, stack_position):
     given the points and the number of markers below in the stack
     return the position where to print the marker
     """
-    HEIGHT_DISC = 4
     POSITION_LOWEST_DISC = 15
     space = points % (2*(x_elements+y_elements))
     if 0 <= space <= x_elements:
