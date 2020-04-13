@@ -683,44 +683,34 @@ def add_posibility_for_planet(svg):
     )
 
 
+NAME_TO_ADD_SYMBOL_FUNCTION = {
+    "politician": add_posibility_for_politician,
+    "time": add_posibility_for_time,
+    "production": add_posibility_for_production,
+    "planet_rotation": add_posibility_for_planet_rotation,
+    "influence": add_posibility_for_influence,
+    "star": add_posibility_for_star,
+    "water": add_posibility_for_water,
+    "building_resource": add_posibility_for_building_res,
+    "coin": add_posibility_for_coin,
+    "disc_3d": add_posibility_for_disc_3d,
+    "resource_placeholder": add_posibility_for_empty_res,
+    "food": add_posibility_for_food,
+    "radioactive": add_posibility_for_radioactive,
+    "red_cross": add_posibility_for_red_cross,
+    "square_3d": add_posibility_for_square_3d,
+    "arrow": add_posibility_for_arrow,
+    "planet": add_posibility_for_planet
+}
+
+
 def add_posibility_for_symbol(svg, name):
     """
     add the symbol defined by name to svg
     """
-    if name == "politician":
-        add_posibility_for_politician(svg)
-    elif name == "time":
-        add_posibility_for_time(svg)
-    elif name == "production":
-        add_posibility_for_production(svg)
-    elif name == "planet_rotation":
-        add_posibility_for_planet_rotation(svg)
-    elif name == "influence":
-        add_posibility_for_influence(svg)
-    elif name == "star":
-        add_posibility_for_star(svg)
-    elif name == "water":
-        add_posibility_for_water(svg)
-    elif name == "building_resource":
-        add_posibility_for_building_res(svg)
-    elif name == "coin":
-        add_posibility_for_coin(svg)
-    elif name == "disc_3d":
-        add_posibility_for_disc_3d(svg)
-    elif name == "resource_placeholder":
-        add_posibility_for_empty_res(svg)
-    elif name == "food":
-        add_posibility_for_food(svg)
-    elif name == "radioactive":
-        add_posibility_for_radioactive(svg)
-    elif name == "red_cross":
-        add_posibility_for_red_cross(svg)
-    elif name == "square_3d":
-        add_posibility_for_square_3d(svg)
-    elif name == "arrow":
-        add_posibility_for_arrow(svg)
-    elif name == "planet":
-        add_posibility_for_planet(svg)
+    add_posibility = NAME_TO_ADD_SYMBOL_FUNCTION.get(name, None)
+    if add_posibility is not None:
+        add_posibility(svg)
 
 
 def main():
