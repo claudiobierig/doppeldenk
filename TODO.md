@@ -17,7 +17,7 @@
       - [ ] No UI
       - [ ] Just pick up minerals
   - [ ] Influence
-  - [ ] Fix demand resource
+  - [x] Fix demand resource
 - [ ] AI compatible
   - [ ] Can we add a layer such that logic code can be used for both?
 
