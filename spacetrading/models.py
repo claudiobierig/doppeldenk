@@ -32,10 +32,7 @@ class PlanetManager(models.Manager):
             planet_supply_resources=None,
             planet_supply_resources_price=None,
             position_of_hexes=None,
-            planet_number=0,
-            add_demand_resource='0',
-            add_demand_resource_price=0,
-            add_demand_resource_time=0
+            planet_number=0
     ):
         if planet_demand_resources is None:
             planet_demand_resources = ['0', '0', '0', '0', '0']
@@ -62,10 +59,7 @@ class PlanetManager(models.Manager):
             radius_x=radius_x,
             radius_y=radius_y,
             offset=offset,
-            planet_number=planet_number,
-            add_demand_resource=add_demand_resource,
-            add_demand_resource_price=add_demand_resource_price,
-            add_demand_resource_time=add_demand_resource_time
+            planet_number=planet_number
         )
         return planet
 
@@ -127,16 +121,6 @@ class Planet(models.Model):
 
     planet_number = models.IntegerField(default=0)
 
-    add_demand_resource = models.CharField(
-        max_length=1,
-        choices=RESOURCES,
-        blank=True,
-        default='0',
-        help_text='Resources the planet supplies',
-    )
-    add_demand_resource_price = models.IntegerField(default=0)
-    add_demand_resource_time = models.IntegerField(default=0)
-
     objects = PlanetManager()
 
     def get_json(self):
@@ -153,10 +137,7 @@ class Planet(models.Model):
             'radius_x': self.radius_x,
             'radius_y': self.radius_y,
             'offset': self.offset,
-            'planet_number': self.planet_number,
-            'add_demand_resource': self.add_demand_resource,
-            'add_demand_resource_price': self.add_demand_resource_price,
-            'add_demand_resource_time': self.add_demand_resource_time
+            'planet_number': self.planet_number
         }
         return planet_data
 
@@ -274,9 +255,6 @@ class GameManager(models.Manager):
             midgame_scoring=False,
             midgame_scoring_event_time=gamesettings.MIDGAME_SCORING_TIME,
             midgame_scoring_event_move=gamesettings.MIDGAME_SCORING_MOVE,
-            add_demand=False,
-            add_demand_event_time=gamesettings.ADD_DEMAND_TIME,
-            add_demand_event_move=gamesettings.ADD_DEMAND_MOVE,
             finish_time=gamesettings.FINISH_TIME,
             start_influence=gamesettings.START_INFLUENCE
     ):
@@ -296,9 +274,6 @@ class GameManager(models.Manager):
             midgame_scoring=midgame_scoring,
             midgame_scoring_event_move=midgame_scoring_event_move,
             midgame_scoring_event_time=midgame_scoring_event_time,
-            add_demand=add_demand,
-            add_demand_event_time=add_demand_event_time,
-            add_demand_event_move=add_demand_event_move,
             finish_time=finish_time
         )
         return game
@@ -363,10 +338,6 @@ class Game(models.Model):
     midgame_scoring_event_time = models.IntegerField(default=50)
     midgame_scoring_event_move = models.IntegerField(default=-10)
 
-    add_demand = models.BooleanField(default=False)
-    add_demand_event_time = models.IntegerField(default=17)
-    add_demand_event_move = models.IntegerField(default=-8)
-
     finish_time = models.IntegerField(default=100)
 
     objects = GameManager()
@@ -414,9 +385,6 @@ class Game(models.Model):
             'midgame_scoring': self.midgame_scoring,
             'midgame_scoring_event_move': self.midgame_scoring_event_move,
             'midgame_scoring_event_time': self.midgame_scoring_event_time,
-            'add_demand': self.add_demand,
-            'add_demand_event_time': self.add_demand_event_time,
-            'add_demand_event_move': self.add_demand_event_move,
             'finish_time': self.finish_time
         }
 

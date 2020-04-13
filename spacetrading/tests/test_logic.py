@@ -26,7 +26,6 @@ class MoveTest(TestCase):
             "play_all_players": True,
             "resource_limit": 5,
             "midgame_scoring": True,
-            "add_demand": True,
             "finish_time": 100,
             "start_influence": 0
         }
@@ -60,8 +59,6 @@ class MoveTest(TestCase):
         self.assertEqual(None, move.get_next_event(self.game, self.players))
         for player in self.players:
             player.time_spent = 21
-        self.assertEqual(move.Event.ADD_DEMAND, move.get_next_event(self.game, self.players))
-        move.add_demand(self.game, self.planets)
         self.assertEqual(move.Event.OFFER_DEMAND, move.get_next_event(self.game, self.players))
         move.offer_demand(self.game, self.planets)
         self.assertEqual(move.Event.PLANET_ROTATION, move.get_next_event(self.game, self.players))
@@ -73,10 +70,6 @@ class MoveTest(TestCase):
         move.planet_rotation(self.game, self.players, self.planets)
         self.assertEqual(move.Event.OFFER_DEMAND, move.get_next_event(self.game, self.players))
         move.offer_demand(self.game, self.planets)
-
-        self.assertEqual(move.Event.ADD_DEMAND, move.get_next_event(self.game, self.players))
-        move.add_demand(self.game, self.planets)
-
         self.assertEqual(move.Event.OFFER_DEMAND, move.get_next_event(self.game, self.players))
         move.offer_demand(self.game, self.planets)
         self.assertEqual(move.Event.PLANET_ROTATION, move.get_next_event(self.game, self.players))
@@ -88,9 +81,6 @@ class MoveTest(TestCase):
         move.offer_demand(self.game, self.planets)
         self.assertEqual(move.Event.MIDGAME_SCORING, move.get_next_event(self.game, self.players))
         move.midgame_scoring(self.game, self.players)
-
-        self.assertEqual(move.Event.ADD_DEMAND, move.get_next_event(self.game, self.players))
-        move.add_demand(self.game, self.planets)
 
         self.assertEqual(None, move.get_next_event(self.game, self.players))
 
@@ -440,7 +430,6 @@ class InitializeTest(TestCase):
             "play_all_players": [False, True],
             "resource_limit": [5, 9],
             "midgame_scoring": [False, True],
-            "add_demand": [False, True],
             "finish_time": [80, 100],
             "start_influence": [2]
         }
@@ -449,13 +438,12 @@ class InitializeTest(TestCase):
             possibilities["play_all_players"],
             possibilities["resource_limit"],
             possibilities["midgame_scoring"],
-            possibilities["add_demand"],
             possibilities["finish_time"],
             possibilities["start_influence"]
         )
 
         for index, (number_of_players, play_all_players, resource_limit, midgame_scoring,
-                    add_demand, finish_time, start_influence) in enumerate(combined_possibilities):
+                    finish_time, start_influence) in enumerate(combined_possibilities):
             game_name = "test_{}".format(index)
             data = {
                 "name": game_name,
@@ -463,7 +451,6 @@ class InitializeTest(TestCase):
                 "play_all_players": play_all_players,
                 "resource_limit": resource_limit,
                 "midgame_scoring": midgame_scoring,
-                "add_demand": add_demand,
                 "finish_time": finish_time,
                 "start_influence": start_influence
             }
@@ -500,14 +487,9 @@ class InitializeTest(TestCase):
 
             self.assertEqual(game.resource_limit, resource_limit)
             self.assertEqual(game.midgame_scoring, midgame_scoring)
-            self.assertEqual(game.add_demand, add_demand)
             if midgame_scoring:
                 self.assertEqual(game.midgame_scoring_event_move, gamesettings.MIDGAME_SCORING_MOVE)
                 self.assertEqual(game.midgame_scoring_event_time, game.finish_time/2)
-
-            if add_demand:
-                self.assertEqual(game.add_demand_event_move, gamesettings.ADD_DEMAND_MOVE)
-                self.assertEqual(game.add_demand_event_time, gamesettings.ADD_DEMAND_TIME)
 
             self.assertEqual(game.planet_rotation_event_move, gamesettings.PLANET_ROTATION_MOVE)
             self.assertEqual(game.planet_rotation_event_time, gamesettings.PLANET_ROTATION_TIME)
@@ -521,7 +503,6 @@ class InitializeTest(TestCase):
 
             planet_demand_resources = []
             planet_supply_resources = []
-            planet_add_demand_resources = []
             for index_planet, planet in enumerate(planets):
                 self.assertEqual(index_planet, planet.planet_number)
                 self.assertEqual(planet.name, gamesettings.PLANETS[planet.planet_number][0])
@@ -533,16 +514,9 @@ class InitializeTest(TestCase):
 
                 self.assertGreaterEqual(planet.planet_demand_resources_price[0], gamesettings.SETUP_PLANET_DEMAND_PRICE[0])
                 self.assertLessEqual(planet.planet_demand_resources_price[0], gamesettings.SETUP_PLANET_DEMAND_PRICE[-1])
-                self.assertGreaterEqual(planet.add_demand_resource_price, gamesettings.SETUP_PLANET_DEMAND_PRICE[0])
-                self.assertLessEqual(planet.add_demand_resource_price, gamesettings.SETUP_PLANET_DEMAND_PRICE[-1])
 
                 planet_demand_resources.append(planet.planet_demand_resources[0])
                 planet_supply_resources.append(planet.planet_supply_resources[0])
-                planet_add_demand_resources.append(planet.add_demand_resource)
-                self.assertEqual(
-                    len({planet.planet_demand_resources[0], planet.planet_supply_resources[0], planet.add_demand_resource}),
-                    3
-                )
                 self.assertGreaterEqual(planet.planet_supply_resources_price[0], gamesettings.SETUP_PLANET_SUPPLY_PRICE[0])
                 self.assertLessEqual(planet.planet_supply_resources_price[0], gamesettings.SETUP_PLANET_SUPPLY_PRICE[-1])
                 for i in range(1, 5):
@@ -551,4 +525,3 @@ class InitializeTest(TestCase):
 
             self.assertEqual(sorted(planet_demand_resources), ['1', '2', '3', '4', '5'])
             self.assertEqual(sorted(planet_supply_resources), ['1', '2', '3', '4', '5'])
-            self.assertEqual(sorted(planet_add_demand_resources), ['1', '2', '3', '4', '5'])
