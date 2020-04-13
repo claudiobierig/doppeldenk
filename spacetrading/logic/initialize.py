@@ -78,7 +78,7 @@ def create_game(data, user):
             current_position=random.randint(0, current_planet[1] - 1),
             planet_demand_resources=[demand_resources[index], '0', '0', '0', '0'],
             planet_demand_resources_price=[
-                demand_prices[2*index], 0, 0, 0, 0
+                demand_prices[index], 0, 0, 0, 0
             ],
             planet_supply_resources=[supply_resources[index], '0', '0', '0', '0'],
             planet_supply_resources_price=[
