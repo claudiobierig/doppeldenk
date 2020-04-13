@@ -18,7 +18,6 @@ class Event(Enum):
     PLANET_ROTATION = 1
     OFFER_DEMAND = 2
     MIDGAME_SCORING = 3
-    ADD_DEMAND = 4
 
 
 def move(game, data):
@@ -79,10 +78,7 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
                 raise MoveError("You need to specify a time you want to spend.")
 
     trade_balance = 0
-    if game.add_demand:
-        traded = True
-    else:
-        traded = False
+    traded = False
 
     if active_planet is None:
         return trade_balance
@@ -96,8 +92,7 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
                 trade_balance = trade_balance - \
                     data[PLANET_SUPPLY_MAPPING[resource]] * \
                     active_planet.planet_supply_resources_price[active_planet.planet_supply_resources.index(resource)]
-                if not game.add_demand:
-                    traded = True
+                traded = True
 
     for resource in active_planet.planet_demand_resources:
         if resource != '0':
@@ -108,10 +103,6 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
                 trade_balance = trade_balance + \
                     data[PLANET_DEMAND_MAPPING[resource]] * \
                     active_planet.planet_demand_resources_price[active_planet.planet_demand_resources.index(resource)]
-                if game.add_demand:
-                    traded = True
-            elif game.add_demand:
-                traded = False
 
     trade_balance -= get_cost_influence(
         traded,
@@ -210,8 +201,6 @@ def change_game(game, players, planets, active_planet, active_player_number, dat
             offer_demand(game, planets)
         elif next_event == Event.MIDGAME_SCORING:
             midgame_scoring(game, players)
-        elif next_event == Event.ADD_DEMAND:
-            add_demand(game, planets)
         next_event = get_next_event(game, players)
     if active_planet is not None:
         active_planet_number = active_planet.planet_number
@@ -262,9 +251,7 @@ def get_next_event(game, players):
     if game.midgame_scoring:
         midgame_scoring_event = (game.midgame_scoring_event_time, game.midgame_scoring_event_move, Event.MIDGAME_SCORING)
         events.append(midgame_scoring_event)
-    if game.add_demand:
-        add_demand_event = (game.add_demand_event_time, game.add_demand_event_move, Event.ADD_DEMAND)
-        events.append(add_demand_event)
+
     result = next_turn(events)
 
     return result
@@ -336,23 +323,6 @@ def midgame_scoring(game, players):
         points = compute_points(game, player, [2, 1])
         player.points = points
         player.save()
-
-
-def add_demand(game, planets):
-    """
-    add a demand resource to the planets demands
-    """
-    for planet in planets:
-        if planet.add_demand_resource_time == game.add_demand_event_time:
-            planet.planet_demand_resources[1] = planet.add_demand_resource
-            planet.planet_demand_resources_price[1] = planet.add_demand_resource_price
-            planet.save()
-            break
-
-    game.add_demand_event_time = game.add_demand_event_time + gamesettings.ADD_DEMAND_TIME
-    game.add_demand_event_move = game.next_move_number
-    game.next_move_number = game.next_move_number + 1
-    game.save()
 
 
 def get_active_player(players, finish_time):
