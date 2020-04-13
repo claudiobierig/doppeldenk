@@ -295,16 +295,6 @@ def draw_timemarkers(svg, game, players):
                 "square_3d"
             ]
         )
-    if game.add_demand:
-        timemarkers.append(
-            [
-                game.add_demand_event_time,
-                game.add_demand_event_move,
-                "green",
-                "add_demand",
-                "square_3d"
-            ]
-        )
 
     timemarkers.sort(key=operator.itemgetter(0, 1))
     timemarkers_svg = svg.create_subgroup('timemarkers')
@@ -324,7 +314,7 @@ def draw_timemarkers(svg, game, players):
         )
 
 
-def draw_playerhelp(svg, position, midgame_scoring=True, add_demand=True):
+def draw_playerhelp(svg, position, midgame_scoring=True):
     """
     draw playerhelp
     """
@@ -335,8 +325,6 @@ def draw_playerhelp(svg, position, midgame_scoring=True, add_demand=True):
     ]
     if midgame_scoring:
         playerhelps.append(("midgame_scoring", "Midgame scoring", "blue"))
-    if add_demand:
-        playerhelps.append(("add_demand", "Add Demand", "green"))
 
     for index, (id_help, text, colour) in enumerate(playerhelps):
         svg.create_rectangle(
@@ -380,7 +368,7 @@ def draw_gameboard(game, planets, players, user_active, bg_image="/static/auth/b
     if not printing_material:
         draw_player_ships(svg, players)
         draw_timemarkers(svg, game, players)
-    draw_playerhelp(svg, [WIDTH - 130, 40], game.midgame_scoring, game.add_demand)
+    draw_playerhelp(svg, [WIDTH - 130, 40], game.midgame_scoring)
     svg_string = svg.get_string()
 
     return svg_string
