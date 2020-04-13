@@ -24,11 +24,6 @@
         <ul>
             <li id="resource_limit"></li>
             <li id="midgame_scoring"></li>
-            <li id="add_demand">{% if add_demand %}
-                Additional demand resources are added during the game.
-            {% else %}
-                No additional demand resources.
-            {% endif %}</li>
         </ul>
         </div></div>
 
@@ -88,11 +83,6 @@
 {% for planet in planet_market %}
     {{ planet |safe }}
 {% endfor %}
-{% if add_demand %}
-    {{ add_demand_resources |safe }}
-{% endif %}
-
-
 
 <script type="text/javascript" src="/static/spacetrading/game_detail.js"></script>
 {% endblock %}
