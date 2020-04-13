@@ -4,7 +4,6 @@ from spacetrading.create_svg import generate_planet_market
 from spacetrading.create_svg import generate_printing_player_boards
 from spacetrading.create_svg import generate_plain_symbols
 from spacetrading.create_svg import generate_svg_symbols
-from spacetrading.create_svg import generate_politician_cards
 from spacetrading.create_svg.svg_commands import Svg
 from spacetrading.models import Game
 from spacetrading.logic.initialize import create_game
@@ -152,25 +151,4 @@ class GeneratePrintingMaterial(TestCase):
             html_file.write(star_svg.get_string())
             html_file.write(planet_svg.get_string())
 
-            html_file.write("</body>")
-
-    def test_generate_politician_cards(self):
-        data = {
-            "name": "empty_gameboard",
-            "number_of_players": 0,
-            "play_all_players": False,
-            "resource_limit": 5
-        }
-        create_game(
-            data,
-            None
-        )
-        game = Game.objects.get(game_name="empty_gameboard")
-        planets = game.planets.all().order_by('planet_number')
-        svgs = generate_politician_cards.draw_politicians(planets)
-        html_filename = "printing_material/politicians.html"
-        with open(html_filename, "w") as html_file:
-            html_file.write("<!DOCTYPE html><body>")
-            for svg in svgs:
-                html_file.write(svg.get_string())
             html_file.write("</body>")
