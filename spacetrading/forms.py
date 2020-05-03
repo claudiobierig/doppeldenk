@@ -102,16 +102,16 @@ class Move(forms.Form):
         active_player = args[0].get("active_player", None)
         symbols = args[0].get("symbols", None)
         if active_planet is None:
-            planet_supply_resources = []
-            planet_demand_resources = []
-            planet_supply_resources_price = []
-            planet_demand_resources_price = []
+            planet_supply_resource = '0'
+            planet_demand_resource = '0'
+            planet_supply_resource_price = 0
+            planet_demand_resource_price = 0
             influence = False
         else:
-            planet_supply_resources = active_planet.planet_supply_resources
-            planet_demand_resources = active_planet.planet_demand_resources
-            planet_supply_resources_price = active_planet.planet_supply_resources_price
-            planet_demand_resources_price = active_planet.planet_demand_resources_price
+            planet_supply_resource = active_planet.planet_supply_resource
+            planet_demand_resource = active_planet.planet_demand_resource
+            planet_supply_resource_price = active_planet.planet_supply_resource_price
+            planet_demand_resource_price = active_planet.planet_demand_resource_price
             influence = True
 
         if active_player is None or active_player.time_spent < 0:
@@ -119,13 +119,13 @@ class Move(forms.Form):
         else:
             time = True
 
-        for direction, mapping, resources, cost in [
-                ("Sell", move.PLANET_DEMAND_MAPPING, planet_demand_resources, planet_demand_resources_price),
-                ("Buy", move.PLANET_SUPPLY_MAPPING, planet_supply_resources, planet_supply_resources_price)
+        for direction, mapping, traded_resource, cost in [
+                ("Sell", move.PLANET_DEMAND_MAPPING, planet_demand_resource, planet_demand_resource_price),
+                ("Buy", move.PLANET_SUPPLY_MAPPING, planet_supply_resource, planet_supply_resource_price)
                 ]:
             for resource in range(1, 6):
                 fieldname = mapping[str(resource)]
-                if str(resource) in resources:
+                if str(resource) == traded_resource:
                     self.base_fields[fieldname] = forms.IntegerField(
                         label=mark_safe("{} {}".format(direction, symbols[self.RESOURCE_TO_SYMBOL[str(resource)]])),
                         max_value=9, min_value=0,
@@ -137,7 +137,7 @@ class Move(forms.Form):
                             }
                         ),
                         initial=0,
-                        help_text="{}".format(cost[resources.index(str(resource))])
+                        help_text=str(cost)
                     )
                 else:
                     self.base_fields[fieldname] = forms.IntegerField(

@@ -27,21 +27,13 @@ class PlanetManager(models.Manager):
             radius_x=100,
             radius_y=100,
             offset=0,
-            planet_demand_resources=None,
-            planet_demand_resources_price=None,
-            planet_supply_resources=None,
-            planet_supply_resources_price=None,
+            planet_demand_resource='0',
+            planet_demand_resource_price=0,
+            planet_supply_resource='0',
+            planet_supply_resource_price=0,
             position_of_hexes=None,
             planet_number=0
     ):
-        if planet_demand_resources is None:
-            planet_demand_resources = ['0', '0', '0', '0', '0']
-        if planet_demand_resources_price is None:
-            planet_demand_resources_price = [0, 0, 0, 0, 0]
-        if planet_supply_resources is None:
-            planet_supply_resources = ['0', '0', '0', '0', '0']
-        if planet_supply_resources_price is None:
-            planet_supply_resources_price = [0, 0, 0, 0, 0]
         if position_of_hexes is None:
             position_of_hexes = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0],
                                  [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
@@ -51,10 +43,10 @@ class PlanetManager(models.Manager):
             colour=colour,
             number_of_hexes=number_of_hexes,
             current_position=current_position,
-            planet_demand_resources=planet_demand_resources,
-            planet_demand_resources_price=planet_demand_resources_price,
-            planet_supply_resources=planet_supply_resources,
-            planet_supply_resources_price=planet_supply_resources_price,
+            planet_demand_resource=planet_demand_resource,
+            planet_demand_resource_price=planet_demand_resource_price,
+            planet_supply_resource=planet_supply_resource,
+            planet_supply_resource_price=planet_supply_resource_price,
             position_of_hexes=position_of_hexes,
             radius_x=radius_x,
             radius_y=radius_y,
@@ -70,10 +62,10 @@ class Planet(models.Model):
         - colour (string)
         - number_of_hexes (int)
         - current_position (int)
-        - planet_demand_resources[5] (enum)
-        - planet_demand_resources_price[5] (int)
-        - planet_supply_resources[5] (enum)
-        - planet_supply_resources_price[5] (int)
+        - planet_demand_resource (enum)
+        - planet_demand_resource_price (int)
+        - planet_supply_resource (enum)
+        - planet_supply_resource_price (int)
     """
     name = models.CharField(max_length=50)
     colour = models.CharField(max_length=50, default="#000000")
@@ -86,33 +78,25 @@ class Planet(models.Model):
         20
     )
     current_position = models.IntegerField()
-    planet_demand_resources = ArrayField(
-        models.CharField(
-            max_length=1,
-            choices=RESOURCES,
-            blank=True,
-            default='0',
-            help_text='Resources the planet demands',
-        ),
-        5
+    planet_demand_resource = models.CharField(
+        max_length=1,
+        choices=RESOURCES,
+        blank=True,
+        default='0',
+        help_text='Resource the planet demands',
     )
-    planet_demand_resources_price = ArrayField(
-        models.IntegerField(),
-        5
+    planet_demand_resource_price = models.IntegerField(
+        default=0
     )
-    planet_supply_resources = ArrayField(
-        models.CharField(
-            max_length=1,
-            choices=RESOURCES,
-            blank=True,
-            default='0',
-            help_text='Resources the planet supplies',
-        ),
-        5
+    planet_supply_resource = models.CharField(
+        max_length=1,
+        choices=RESOURCES,
+        blank=True,
+        default='0',
+        help_text='Resource the planet supplies',
     )
-    planet_supply_resources_price = ArrayField(
-        models.IntegerField(),
-        5
+    planet_supply_resource_price = models.IntegerField(
+        default=0
     )
 
     radius_x = models.IntegerField()
@@ -130,10 +114,10 @@ class Planet(models.Model):
             'number_of_hexes': self.number_of_hexes,
             'position_of_hexes': self.position_of_hexes,
             'current_position': self.current_position,
-            'planet_demand_resources': self.planet_demand_resources,
-            'planet_demand_resources_price': self.planet_demand_resources_price,
-            'planet_supply_resources': self.planet_supply_resources,
-            'planet_supply_resources_price': self.planet_supply_resources_price,
+            'planet_demand_resource': self.planet_demand_resource,
+            'planet_demand_resource_price': self.planet_demand_resource_price,
+            'planet_supply_resource': self.planet_supply_resource,
+            'planet_supply_resource_price': self.planet_supply_resource_price,
             'radius_x': self.radius_x,
             'radius_y': self.radius_y,
             'offset': self.offset,
@@ -145,10 +129,10 @@ class Planet(models.Model):
         return str("name: {planet.name}, "
                    "number_of_hexes: {planet.number_of_hexes}, "
                    "current_position: {planet.current_position}, "
-                   "planet_demand_resources: {planet.planet_demand_resources}, "
-                   "planet_demand_resources_price: {planet.planet_demand_resources_price}, "
-                   "planet_supply_resources: {planet.planet_supply_resources}, "
-                   "planet_supply_resources_price: {planet.planet_supply_resources_price}".format(planet=self))
+                   "planet_demand_resource: {planet.planet_demand_resource}, "
+                   "planet_demand_resource_price: {planet.planet_demand_resource_price}, "
+                   "planet_supply_resource: {planet.planet_supply_resource}, "
+                   "planet_supply_resource_price: {planet.planet_supply_resource_price}".format(planet=self))
 
 
 class PlayerManager(models.Manager):

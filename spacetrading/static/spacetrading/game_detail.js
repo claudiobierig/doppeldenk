@@ -59,10 +59,7 @@ function computeDistance(hex_element){
         Math.abs(destination_r-current_r),
         Math.abs(destination_s-current_s)
     )
-    if(distance > 0){
-        return distance + 2
-    }
-    return 4
+    return distance + 2
 }
 
 function clickHex(hex_element)
@@ -97,15 +94,6 @@ function refreshChoices()
     setInfluenceTrack()
 }
 
-function getCost(resources, cost, resource)
-{
-    for(var i=0; i<resources.length; i++){
-        if(resource == resources[i]){
-            return cost[i]
-        }
-    }
-    return 0
-}
 
 function getCurrentInfluence()
 {
@@ -133,9 +121,6 @@ function setViewPlayerState()
     var player_number = active_player.player_number
     var money = active_player.money
     var traded = false
-    if(game_data.add_demand){
-        traded = true
-    }
     for(var resource = 0; resource <5; resource++)
     {
         var amount = active_player.resources[resource]
@@ -144,33 +129,20 @@ function setViewPlayerState()
                 const supplySelect = document.getElementById("id_planet_supply_resource_" + (resource + 1))
                 const supplyAmount = parseInt(supplySelect.options[supplySelect.selectedIndex].value)
                 if(supplyAmount > 0){
-                    const cost = supplyAmount*getCost(active_planet.planet_supply_resources, active_planet.planet_supply_resources_price, (resource + 1).toString())
+                    const cost = supplyAmount*active_planet.planet_supply_resource_price
                     amount = amount + supplyAmount
                     money = money - cost
-                    if(!game_data.add_demand)
-                    {
-                        traded = true
-                    }
+                    traded = true
                 }
             }catch{}
             try{
                 const demandSelect = document.getElementById("id_planet_demand_resource_" + (resource + 1))
                 const demandAmount = parseInt(demandSelect.options[demandSelect.selectedIndex].value)
                 if(demandAmount > 0){
-                    const cost = demandAmount*getCost(active_planet.planet_demand_resources, active_planet.planet_demand_resources_price, (resource + 1).toString())
-                    if(!game_data.add_demand)
-                    {
-                        traded = true
-                    }
+                    const cost = demandAmount*active_planet.planet_demand_resource_price
+                    traded = true
                     amount = amount - demandAmount
                     money = money + cost
-                }
-                else if(game_data.add_demand)
-                {
-                    if(active_planet.planet_demand_resources.includes((resource + 1).toString()))
-                    {
-                        traded = false
-                    }
                 }
             }catch{}
         }
@@ -223,10 +195,6 @@ function getStackPositionTimeline(time)
         stack_position++
     }
     if(game_data.midgame_scoring && game_data.midgame_scoring_event_time == time)
-    {
-        stack_position++
-    }
-    if(game_data.add_demand && game_data.add_demand_event_time == time)
     {
         stack_position++
     }

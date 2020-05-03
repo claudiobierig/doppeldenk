@@ -36,22 +36,22 @@ def create_game(data, user):
         finish_time=finish_time,
         start_influence=start_influence
     )
-    supply_resources = ['2', '5', '1', '3', '4']
-    remaining_demand_resources = {'1', '2', '3', '4', '5'}
-    demand_resources = []
+    demand_resources = ['1', '5', '2', '3', '4']
+    remaining_supply_resources = {'1', '2', '3', '4', '5'}
+    supply_resources = []
     for i in range(3):
-        demand_resource = random.sample(remaining_demand_resources - set(supply_resources[i]), 1)[0]
-        remaining_demand_resources.remove(demand_resource)
-        demand_resources.append(demand_resource)
+        demand_resource = random.sample(remaining_supply_resources - set(demand_resources[i]), 1)[0]
+        remaining_supply_resources.remove(demand_resource)
+        supply_resources.append(demand_resource)
 
-    remaining_demand_resources = list(remaining_demand_resources)
-    random.shuffle(remaining_demand_resources)
-    if supply_resources[3] is remaining_demand_resources[0] or supply_resources[4] is remaining_demand_resources[1]:
-        demand_resources.append(remaining_demand_resources[1])
-        demand_resources.append(remaining_demand_resources[0])
+    remaining_supply_resources = list(remaining_supply_resources)
+    random.shuffle(remaining_supply_resources)
+    if demand_resources[3] is remaining_supply_resources[0] or demand_resources[4] is remaining_supply_resources[1]:
+        supply_resources.append(remaining_supply_resources[1])
+        supply_resources.append(remaining_supply_resources[0])
     else:
-        demand_resources.append(remaining_demand_resources[0])
-        demand_resources.append(remaining_demand_resources[1])
+        supply_resources.append(remaining_supply_resources[0])
+        supply_resources.append(remaining_supply_resources[1])
 
     player = Player.objects.create_player(
         user=user,
@@ -76,14 +76,10 @@ def create_game(data, user):
             colour=current_planet[2],
             number_of_hexes=current_planet[1],
             current_position=random.randint(0, current_planet[1] - 1),
-            planet_demand_resources=[demand_resources[index], '0', '0', '0', '0'],
-            planet_demand_resources_price=[
-                demand_prices[index], 0, 0, 0, 0
-            ],
-            planet_supply_resources=[supply_resources[index], '0', '0', '0', '0'],
-            planet_supply_resources_price=[
-                supply_prices[index], 0, 0, 0, 0
-            ],
+            planet_demand_resource=demand_resources[index],
+            planet_demand_resource_price=demand_prices[index],
+            planet_supply_resource=supply_resources[index],
+            planet_supply_resource_price=supply_prices[index],
             position_of_hexes=current_planet[3],
             radius_x=current_planet[4][0],
             radius_y=current_planet[4][1],

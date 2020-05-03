@@ -2,6 +2,11 @@
 
 - [ ] Cleanup
   - [ ] Remove some of the old rules which won't be used
+  - [x] Only one resource instead of array
+  - [x] Split get_tradebalance...
+  - [ ] Make enum for resources
+  - [ ] check if we can move logic into classes, which become base of model classes
+    - [ ] move django stuff out (save, get_all, etc.)
 - [ ] UI
   - [x] cherry-pick from feature branch
   - [ ] switch from svg to artwork
@@ -17,7 +22,9 @@
       - [ ] No UI
       - [ ] Just pick up minerals
   - [ ] Influence
-  - [ ] Fix demand resource
+  - [x] Fix demand resource
+  - [ ] Scoring every 20 turns
+  - [ ] Adjust points for scoring
 - [ ] AI compatible
   - [ ] Can we add a layer such that logic code can be used for both?
 
