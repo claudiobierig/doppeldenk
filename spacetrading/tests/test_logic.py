@@ -43,6 +43,7 @@ class MoveTest(TestCase):
         self.assertEqual(6, move.compute_distance(coord1, coord2))
         self.assertEqual(5, move.compute_distance(coord2, coord3))
         self.assertEqual(5, move.compute_distance(coord1, coord3))
+        self.assertEqual(2, move.compute_distance(coord1, coord1))
 
     def test_get_next_event(self):
         self.assertEqual(None, move.get_next_event(self.game, self.players))
@@ -227,25 +228,50 @@ class MoveTest(TestCase):
         self.assertEqual(16, move.get_cost_influence(True, 3, 5))
         self.assertEqual(21, move.get_cost_influence(False, 3, 5))
 
-    def test_get_trade_balance_or_raise(self):
+    def test_is_travel_allowed(self):
         data = {
             'coord_q': 0,
             'coord_r': 0
         }
         active_player = move.get_active_player(self.players, self.game.finish_time)
-        active_planet = move.get_active_planet(active_player.ship_position, self.planets)
         with self.assertRaises(move.MoveError):
-            move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
+            move.is_travel_allowed(active_player, self.game, data)
         with self.assertRaises(move.MoveError):
-            move.get_trade_balance_or_raise(active_player, active_planet, self.game, {})
+            move.is_travel_allowed(active_player, self.game, {})
         data = {
             'coord_q': 1,
             'coord_r': 1
         }
-        self.assertEqual(0, move.get_trade_balance_or_raise(active_player, active_planet, self.game, data))
+        move.is_travel_allowed(active_player, self.game, data)
         for i, _ in enumerate(self.players):
             active_player = move.get_active_player(self.players, self.game.finish_time)
-            active_planet = move.get_active_planet(active_player.ship_position, self.planets)
+            data = {
+                'coord_q': self.planets[i].position_of_hexes[self.planets[i].current_position][0],
+                'coord_r': self.planets[i].position_of_hexes[self.planets[i].current_position][1]
+            }
+            move.move(self.game, data)
+            self.players = self.game.players.all().order_by('player_number')
+
+        active_player = move.get_active_player(self.players, self.game.finish_time)
+        data = {
+            'coord_q': active_player.ship_position[0],
+            'coord_r': active_player.ship_position[1]
+        }
+
+        with self.assertRaises(move.MoveError):
+            move.is_travel_allowed(active_player, self.game, data)
+        data['spend_time'] = 1
+        with self.assertRaises(move.MoveError):
+            move.is_travel_allowed(active_player, self.game, data)
+        data['spend_time'] = 2
+        move.is_travel_allowed(active_player, self.game, data)
+        with self.assertRaises(move.MoveError):
+            move.is_travel_allowed(None, self.game, {})
+        self.assertEqual('f', self.game.game_state)
+
+    def test_get_trade_balance_or_raise(self):
+        for i, _ in enumerate(self.players):
+            active_player = move.get_active_player(self.players, self.game.finish_time)
             data = {
                 'coord_q': self.planets[i].position_of_hexes[self.planets[i].current_position][0],
                 'coord_r': self.planets[i].position_of_hexes[self.planets[i].current_position][1]
@@ -256,17 +282,6 @@ class MoveTest(TestCase):
 
         active_player = move.get_active_player(self.players, self.game.finish_time)
         active_planet = move.get_active_planet(active_player.ship_position, self.planets)
-        data = {
-            'coord_q': active_player.ship_position[0],
-            'coord_r': active_player.ship_position[1]
-        }
-
-        with self.assertRaises(move.MoveError):
-            move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
-        data['spend_time'] = 3
-        with self.assertRaises(move.MoveError):
-            move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
-        data['spend_time'] = 4
         self.assertEqual(0, move.get_trade_balance_or_raise(active_player, active_planet, self.game, data))
         data[move.PLANET_SUPPLY_MAPPING[active_planet.planet_supply_resource]] = self.game.resource_limit + 1
         with self.assertRaises(move.MoveError):
@@ -293,9 +308,6 @@ class MoveTest(TestCase):
             -active_planet.planet_supply_resource_price + 2*active_planet.planet_demand_resource_price,
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
         )
-        with self.assertRaises(move.MoveError):
-            move.get_trade_balance_or_raise(None, None, self.game, {})
-        self.assertEqual('f', self.game.game_state)
 
     def test_change_active_player_startup(self):
         active_player = move.get_active_player(self.players, self.game.finish_time)

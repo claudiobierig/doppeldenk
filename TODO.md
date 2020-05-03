@@ -3,7 +3,7 @@
 - [ ] Cleanup
   - [ ] Remove some of the old rules which won't be used
   - [x] Only one resource instead of array
-  - [ ] Split get_tradebalance...
+  - [x] Split get_tradebalance...
   - [ ] Make enum for resources
   - [ ] check if we can move logic into classes, which become base of model classes
     - [ ] move django stuff out (save, get_all, etc.)

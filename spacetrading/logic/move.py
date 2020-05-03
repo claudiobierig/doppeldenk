@@ -30,6 +30,7 @@ def move(game, data):
     planets = game.planets.all().order_by('planet_number')
     active_planet = get_active_planet(
         active_player.ship_position, planets)
+    is_travel_allowed(active_player, game, data)
     trade_balance = get_trade_balance_or_raise(
         active_player, active_planet, game, data
     )
@@ -51,10 +52,9 @@ class MoveError(Exception):
     """
 
 
-def get_trade_balance_or_raise(active_player, active_planet, game, data):
+def is_travel_allowed(active_player, game, data):
     """
-    returns value smaller than -active_player.money if move is not valid
-    trading balance otherwise
+    raises a MoveError if data doesn't contain a valid destination/time pair
     """
     if active_player is None:
         finish_game(game)
@@ -77,6 +77,12 @@ def get_trade_balance_or_raise(active_player, active_planet, game, data):
             if data.get('spend_time') is None:
                 raise MoveError("You need to specify a time you want to spend.")
 
+
+def get_trade_balance_or_raise(active_player, active_planet, game, data):
+    """
+    returns value smaller than -active_player.money if move is not valid
+    trading balance otherwise
+    """
     trade_balance = 0
     traded = False
 
@@ -215,9 +221,6 @@ def compute_distance(coordinates1, coordinates2):
     """
     computes how long the ships needs to fly from coordinates1 to coordinates2
     """
-    if coordinates1 == coordinates2:
-        return gamesettings.IDLE_MOVE_TIME
-
     absolute_distance = max(
         abs(coordinates1[0]-coordinates2[0]),
         abs(coordinates1[1]-coordinates2[1]),

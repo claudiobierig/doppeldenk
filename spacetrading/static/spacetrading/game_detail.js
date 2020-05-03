@@ -59,10 +59,7 @@ function computeDistance(hex_element){
         Math.abs(destination_r-current_r),
         Math.abs(destination_s-current_s)
     )
-    if(distance > 0){
-        return distance + 2
-    }
-    return 4
+    return distance + 2
 }
 
 function clickHex(hex_element)
