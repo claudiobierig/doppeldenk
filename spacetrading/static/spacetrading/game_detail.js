@@ -97,15 +97,6 @@ function refreshChoices()
     setInfluenceTrack()
 }
 
-function getCost(resources, cost, resource)
-{
-    for(var i=0; i<resources.length; i++){
-        if(resource == resources[i]){
-            return cost[i]
-        }
-    }
-    return 0
-}
 
 function getCurrentInfluence()
 {
@@ -141,7 +132,7 @@ function setViewPlayerState()
                 const supplySelect = document.getElementById("id_planet_supply_resource_" + (resource + 1))
                 const supplyAmount = parseInt(supplySelect.options[supplySelect.selectedIndex].value)
                 if(supplyAmount > 0){
-                    const cost = supplyAmount*getCost(active_planet.planet_supply_resources, active_planet.planet_supply_resources_price, (resource + 1).toString())
+                    const cost = supplyAmount*active_planet.planet_supply_resource_price
                     amount = amount + supplyAmount
                     money = money - cost
                     traded = true
@@ -151,7 +142,7 @@ function setViewPlayerState()
                 const demandSelect = document.getElementById("id_planet_demand_resource_" + (resource + 1))
                 const demandAmount = parseInt(demandSelect.options[demandSelect.selectedIndex].value)
                 if(demandAmount > 0){
-                    const cost = demandAmount*getCost(active_planet.planet_demand_resources, active_planet.planet_demand_resources_price, (resource + 1).toString())
+                    const cost = demandAmount*active_planet.planet_demand_resource_price
                     traded = true
                     amount = amount - demandAmount
                     money = money + cost

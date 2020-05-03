@@ -158,7 +158,7 @@ class MoveTest(TestCase):
 
     def get_prices(self, planets):
         return {
-            planet.name: (planet.planet_demand_resources_price[0], planet.planet_supply_resources_price[0])
+            planet.name: (planet.planet_demand_resource_price, planet.planet_supply_resource_price)
             for planet in planets
         }
 
@@ -268,29 +268,29 @@ class MoveTest(TestCase):
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
         data['spend_time'] = 4
         self.assertEqual(0, move.get_trade_balance_or_raise(active_player, active_planet, self.game, data))
-        data[move.PLANET_SUPPLY_MAPPING[active_planet.planet_supply_resources[0]]] = self.game.resource_limit + 1
+        data[move.PLANET_SUPPLY_MAPPING[active_planet.planet_supply_resource]] = self.game.resource_limit + 1
         with self.assertRaises(move.MoveError):
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
-        data[move.PLANET_SUPPLY_MAPPING[active_planet.planet_supply_resources[0]]] = 1
+        data[move.PLANET_SUPPLY_MAPPING[active_planet.planet_supply_resource]] = 1
         self.assertEqual(
-            -active_planet.planet_supply_resources_price[0],
+            -active_planet.planet_supply_resource_price,
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
         )
         data['buy_influence'] = 1
         self.assertEqual(
-            -active_planet.planet_supply_resources_price[0] - 1,
+            -active_planet.planet_supply_resource_price - 1,
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
         )
         data['buy_influence'] = 5
         with self.assertRaises(move.MoveError):
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
         data['buy_influence'] = 0
-        data[move.PLANET_DEMAND_MAPPING[active_planet.planet_demand_resources[0]]] = 2
+        data[move.PLANET_DEMAND_MAPPING[active_planet.planet_demand_resource]] = 2
         with self.assertRaises(move.MoveError):
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
-        active_player.resources[int(active_planet.planet_demand_resources[0]) - 1] = 2
+        active_player.resources[int(active_planet.planet_demand_resource) - 1] = 2
         self.assertEqual(
-            -active_planet.planet_supply_resources_price[0] + 2*active_planet.planet_demand_resources_price[0],
+            -active_planet.planet_supply_resource_price + 2*active_planet.planet_demand_resource_price,
             move.get_trade_balance_or_raise(active_player, active_planet, self.game, data)
         )
         with self.assertRaises(move.MoveError):
@@ -329,8 +329,8 @@ class MoveTest(TestCase):
             'coord_q': 1,
             'coord_r': 1,
             'spend_time': 50,
-            move.PLANET_SUPPLY_MAPPING[active_planet.planet_supply_resources[0]]: 1,
-            move.PLANET_DEMAND_MAPPING[active_planet.planet_demand_resources[0]]: 0
+            move.PLANET_SUPPLY_MAPPING[active_planet.planet_supply_resource]: 1,
+            move.PLANET_DEMAND_MAPPING[active_planet.planet_demand_resource]: 0
         }
         trade_balance = 17
         next_move = 18
@@ -340,7 +340,7 @@ class MoveTest(TestCase):
         self.assertEqual(player.ship_position, [1, 1])
         self.assertEqual(player.time_spent, 50)
         self.assertEqual(player.last_move, next_move)
-        self.assertEqual(player.resources[int(active_planet.planet_supply_resources[0]) - 1], 1)
+        self.assertEqual(player.resources[int(active_planet.planet_supply_resource) - 1], 1)
         self.assertEqual(player.money, 10 + trade_balance)
         self.assertFalse(player.has_passed)
         data['move_type'] = 'Pass'
@@ -352,7 +352,7 @@ class MoveTest(TestCase):
         self.assertEqual(player.ship_position, [1, 1])
         self.assertEqual(player.time_spent, 50)
         self.assertEqual(player.last_move, next_move)
-        self.assertEqual(player.resources[int(active_planet.planet_supply_resources[0]) - 1], 2)
+        self.assertEqual(player.resources[int(active_planet.planet_supply_resource) - 1], 2)
         self.assertEqual(player.money, 10 + 2*trade_balance)
         self.assertTrue(player.has_passed)
 
@@ -374,8 +374,8 @@ class MoveTest(TestCase):
 
         for i in range(5):
             data = {
-                move.PLANET_DEMAND_MAPPING[active_planet.planet_demand_resources[0]]: 1,
-                move.PLANET_SUPPLY_MAPPING[active_planet.planet_supply_resources[0]]: 1
+                move.PLANET_DEMAND_MAPPING[active_planet.planet_demand_resource]: 1,
+                move.PLANET_SUPPLY_MAPPING[active_planet.planet_supply_resource]: 1
             }
             move.change_active_planet(active_planet, data)
             new_prices = self.get_prices([active_planet])
@@ -512,16 +512,13 @@ class InitializeTest(TestCase):
                 self.assertLess(planet.current_position, planet.number_of_hexes)
                 self.assertGreaterEqual(planet.current_position, 0)
 
-                self.assertGreaterEqual(planet.planet_demand_resources_price[0], gamesettings.SETUP_PLANET_DEMAND_PRICE[0])
-                self.assertLessEqual(planet.planet_demand_resources_price[0], gamesettings.SETUP_PLANET_DEMAND_PRICE[-1])
+                self.assertGreaterEqual(planet.planet_demand_resource_price, gamesettings.SETUP_PLANET_DEMAND_PRICE[0])
+                self.assertLessEqual(planet.planet_demand_resource_price, gamesettings.SETUP_PLANET_DEMAND_PRICE[-1])
 
-                planet_demand_resources.append(planet.planet_demand_resources[0])
-                planet_supply_resources.append(planet.planet_supply_resources[0])
-                self.assertGreaterEqual(planet.planet_supply_resources_price[0], gamesettings.SETUP_PLANET_SUPPLY_PRICE[0])
-                self.assertLessEqual(planet.planet_supply_resources_price[0], gamesettings.SETUP_PLANET_SUPPLY_PRICE[-1])
-                for i in range(1, 5):
-                    self.assertEqual(planet.planet_demand_resources[i], '0')
-                    self.assertEqual(planet.planet_supply_resources[i], '0')
+                planet_demand_resources.append(planet.planet_demand_resource)
+                planet_supply_resources.append(planet.planet_supply_resource)
+                self.assertGreaterEqual(planet.planet_supply_resource_price, gamesettings.SETUP_PLANET_SUPPLY_PRICE[0])
+                self.assertLessEqual(planet.planet_supply_resource_price, gamesettings.SETUP_PLANET_SUPPLY_PRICE[-1])
 
             self.assertEqual(sorted(planet_demand_resources), ['1', '2', '3', '4', '5'])
             self.assertEqual(sorted(planet_supply_resources), ['1', '2', '3', '4', '5'])

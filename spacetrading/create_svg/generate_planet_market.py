@@ -92,15 +92,14 @@ def draw_planet(svg, planet, name, fill_colour):
         font_weight="bold"
     )
 
-    resources = [planet.planet_demand_resources[1], planet.planet_demand_resources[0], planet.planet_supply_resources[0]]
+    resources = [planet.planet_demand_resource, planet.planet_supply_resource]
     prices = [
-        planet.planet_demand_resources_price[1],
-        planet.planet_demand_resources_price[0],
-        planet.planet_supply_resources_price[0]
+        planet.planet_demand_resource_price,
+        planet.planet_supply_resource_price
     ]
-    for row in range(3):
+    for row in range(2):
         for column in range(6):
-            if row == 2:
+            if row == 1:
                 price = column + 1
             else:
                 price = column + 2
@@ -112,8 +111,8 @@ def draw_planet(svg, planet, name, fill_colour):
             svg.use_symbol(
                 symbolname,
                 "{}_name_{}_row_{}_column".format(name, row, column),
-                position=[(x_offset[row] + column*x_shift)/scale_factor,
-                          (y_offset + y_shift[row])/scale_factor],
+                position=[(x_offset[row + 1] + column*x_shift)/scale_factor,
+                          (y_offset + y_shift[row + 1])/scale_factor],
                 additional_arguments={
                     "transform": f"scale({scale_factor})"
                 }
