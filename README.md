@@ -45,6 +45,11 @@ python manage.py runserver
 
 For deploying to heroku follow the tutorial a bit longer.
 
+~~~bash
+# Ubuntu 20
+sudo apt-get install python3-lxml
+~~~
+
 ## Run Tests
 
 ~~~bash
